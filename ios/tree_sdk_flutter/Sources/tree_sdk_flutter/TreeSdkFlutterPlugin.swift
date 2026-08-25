@@ -117,6 +117,11 @@ public class TreeSdkFlutterPlugin: NSObject, FlutterPlugin {
         }
         let hosting = UIHostingController(rootView: root)
         hosting.modalPresentationStyle = .fullScreen
+        // The SDK ships one light palette. SwiftUI's .preferredColorScheme
+        // covers its own views; this also pins the UIKit trait, so anything
+        // UIKit-backed inside (keyboards, pickers, share sheets) matches
+        // instead of following a dark host.
+        hosting.overrideUserInterfaceStyle = .light
         controller = hosting
         presented = hosting
         host.present(hosting, animated: true) {

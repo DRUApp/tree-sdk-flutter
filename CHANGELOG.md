@@ -1,3 +1,11 @@
+## 0.1.4
+
+* Requires `TreeSDK` 0.1.4: the SDK is pinned to the light colour scheme. It has
+  one palette and no dark variant, and on a dark device its diary rows rendered
+  as black cards with dark text. The plugin also pins the hosting controller's
+  `overrideUserInterfaceStyle`, so UIKit-backed pieces (keyboard, pickers) match
+  instead of following a dark host.
+
 ## 0.1.3
 
 * Requires `TreeSDK` 0.1.3, which carries a reminder-notification fix and a

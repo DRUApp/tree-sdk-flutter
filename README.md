@@ -16,7 +16,7 @@ dependencies:
   tree_sdk_flutter:
     git:
       url: https://github.com/DRUApp/tree-sdk-flutter.git
-      ref: v0.1.3
+      ref: v0.1.4
 ```
 
 ## Use
@@ -43,6 +43,13 @@ final open = await TreeSdk.isPresented;
 ```
 
 Calling `start` while it's already open is a no-op.
+
+## Appearance
+
+The SDK renders **light only**. It ships a single palette with no dark variant,
+so the plugin pins both the SwiftUI colour scheme and the hosting controller's
+`overrideUserInterfaceStyle`. A host in dark mode gets the SDK in light
+regardless — nothing to configure, and no half-dark screens.
 
 ## Modules
 
