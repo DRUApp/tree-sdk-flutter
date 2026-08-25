@@ -16,7 +16,7 @@ dependencies:
   tree_sdk_flutter:
     git:
       url: https://github.com/DRUApp/tree-sdk-flutter.git
-      ref: v0.1.2
+      ref: v0.1.3
 ```
 
 ## Use

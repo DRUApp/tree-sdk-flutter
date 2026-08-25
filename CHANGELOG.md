@@ -1,3 +1,8 @@
+## 0.1.3
+
+* Requires `TreeSDK` 0.1.3, which carries a reminder-notification fix and a
+  custom alert sound (`tree_reminder.caf`). No plugin API change.
+
 ## 0.1.2
 
 * Requires `TreeSDK` 0.1.2: `modules` now actually gates the UI. Leaving out
