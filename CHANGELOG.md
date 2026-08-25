@@ -1,3 +1,15 @@
+## 0.1.1
+
+* Requires `TreeSDK` 0.1.1, which verifies host-supplied tokens on `start`
+  instead of accepting any non-empty string — an invalid or expired token now
+  fails loudly rather than presenting a session whose every request 401s.
+* Added unified-log instrumentation on subsystem `com.dru.tree_sdk_flutter`:
+  config, initialize outcome, presentation, every `getToken` (length only,
+  never the token), and close. Read it with
+  `xcrun simctl spawn booted log stream --predicate 'subsystem == "com.dru.tree_sdk_flutter"'`.
+  `print`/`debugPrint` was unusable here — Flutter's stdout does not reach the
+  unified log.
+
 ## 0.1.0
 
 * First packaged release.

@@ -16,7 +16,7 @@ dependencies:
   tree_sdk_flutter:
     git:
       url: https://github.com/DRUApp/tree-sdk-flutter.git
-      ref: v0.1.0
+      ref: v0.1.1
 ```
 
 ## Use
@@ -83,6 +83,27 @@ in Dart before anything reaches the platform.
   needs the HealthKit entitlement and `NSHealthShareUsageDescription`; reminder
   notifications need the SDK's permission prompt, which it currently requests on
   its own schedule. Without those, both features are inert but harmless.
+
+## Debugging
+
+The bridge logs to the unified log on subsystem `com.dru.tree_sdk_flutter` —
+config, initialize outcome, presentation, every `getToken`, and close:
+
+```bash
+xcrun simctl spawn booted log stream --level debug --style compact \
+  --predicate 'subsystem == "com.dru.tree_sdk_flutter"'
+```
+
+Use `log stream --device` for a physical device. Tokens are logged **by length
+only**, never by value.
+
+Note `print`/`debugPrint` from Dart does not reach the unified log and is not
+visible to `simctl launch --console`, which is why the native side does the
+logging.
+
+Expect one `getToken` per backend request — nine or so to render Explore. If
+your provider hits the network every time, that's nine calls to your auth
+endpoint per screen. Cache.
 
 ## Wire contract
 

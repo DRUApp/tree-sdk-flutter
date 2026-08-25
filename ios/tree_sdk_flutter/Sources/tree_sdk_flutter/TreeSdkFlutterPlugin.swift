@@ -1,7 +1,21 @@
 import Flutter
+import OSLog
 import SwiftUI
 import TreeSDK
 import UIKit
+
+/// Unified-log channel for the bridge.
+///
+/// `os.Logger` rather than `print`, because Flutter's stdout does not reach the
+/// unified log and so is invisible to `simctl spawn booted log`. Read it with:
+///
+///     xcrun simctl spawn booted log stream --level debug \
+///       --predicate 'subsystem == "com.dru.tree_sdk_flutter"'
+///
+/// Interpolations are marked `.public` deliberately: os_log redacts dynamic
+/// strings otherwise and every line would read `<private>`. Nothing secret is
+/// logged — tokens are reported by length only, never by value.
+private let log = Logger(subsystem: "com.dru.tree_sdk_flutter", category: "bridge")
 
 /// Presents the native SDK over the Flutter view.
 ///
@@ -9,9 +23,9 @@ import UIKit
 /// then present `TreeRootView` in a `UIHostingController`. The SDK owns
 /// navigation from there and dismisses itself back to Flutter.
 ///
-/// One method out, `getToken`: when the host chose token-provider auth, the SDK
-/// asks Dart for a bearer token. It is called on *every* request, so the Dart
-/// side is expected to cache.
+/// Two calls out: `getToken`, when the host chose token-provider auth and the
+/// SDK needs a bearer token — called on *every* request, so the Dart side is
+/// expected to cache — and `onClose`, when the user leaves the SDK's UI.
 public class TreeSdkFlutterPlugin: NSObject, FlutterPlugin {
     private let channel: FlutterMethodChannel
 
@@ -27,12 +41,14 @@ public class TreeSdkFlutterPlugin: NSObject, FlutterPlugin {
         let channel = FlutterMethodChannel(name: "tree_sdk_flutter",
                                            binaryMessenger: registrar.messenger())
         registrar.addMethodCallDelegate(TreeSdkFlutterPlugin(channel: channel), channel: channel)
+        log.debug("registered")
     }
 
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         switch call.method {
         case "start":
             guard let arguments = call.arguments as? [String: Any] else {
+                log.error("start FAILED — arguments were not a map")
                 result(Self.error("configuration", "start expects a map of arguments."))
                 return
             }
@@ -40,6 +56,7 @@ public class TreeSdkFlutterPlugin: NSObject, FlutterPlugin {
         case "isPresented":
             result(presented != nil)
         default:
+            log.error("unhandled method \(call.method, privacy: .public)")
             result(FlutterMethodNotImplemented)
         }
     }
@@ -48,24 +65,34 @@ public class TreeSdkFlutterPlugin: NSObject, FlutterPlugin {
 
     private func start(_ arguments: [String: Any], result: @escaping FlutterResult) {
         if presented != nil {
-            // Already up. The Dart caller got its answer the first time.
+            log.info("start ignored — the SDK is already on screen")
             result(nil)
             return
         }
+
         let config: TreeSDKConfig
         switch parseConfig(from: arguments) {
         case let .failure(message):
+            log.error("start FAILED at config — \(message, privacy: .public)")
             result(Self.error("configuration", message))
             return
         case let .success(parsed):
             config = parsed
         }
 
+        let auth = arguments["auth"] as? String ?? "?"
+        let modules = config.enabledModules.map(\.rawValue).sorted().joined(separator: ",")
+        log.info("start: auth=\(auth, privacy: .public) env=\(config.environment.name, privacy: .public) baseURL=\(config.baseURL, privacy: .public) user=\(config.treeUserID, privacy: .public) lang=\(config.languageCode, privacy: .public) modules=\(modules, privacy: .public)")
+
         Task { @MainActor in
+            log.debug("initialize: establishing the session")
             switch await TreeSDK.initialize(config) {
             case let .err(failure):
-                result(Self.error(Self.code(for: failure), failure.message))
+                let code = Self.code(for: failure)
+                log.error("start FAILED at initialize — code=\(code, privacy: .public) message=\(failure.message, privacy: .public)")
+                result(Self.error(code, failure.message))
             case let .ok(sdk):
+                log.info("initialize ok — session established")
                 self.present(sdk, initial: Self.screen(from: arguments), result: result)
             }
         }
@@ -74,6 +101,7 @@ public class TreeSdkFlutterPlugin: NSObject, FlutterPlugin {
     @MainActor
     private func present(_ sdk: TreeSDK, initial: TreeScreen, result: @escaping FlutterResult) {
         guard let host = Self.topViewController() else {
+            log.error("start FAILED at present — no view controller to present from")
             result(Self.error("no_window", "No view controller to present from."))
             return
         }
@@ -82,6 +110,7 @@ public class TreeSdkFlutterPlugin: NSObject, FlutterPlugin {
         // controller through its own view and leak it on every open.
         weak var controller: UIViewController?
         let root = TreeRootView(sdk: sdk, initial: initial) { [weak self] in
+            log.info("closed by the user")
             controller?.dismiss(animated: true)
             self?.presented = nil
             self?.channel.invokeMethod("onClose", arguments: nil)
@@ -90,7 +119,10 @@ public class TreeSdkFlutterPlugin: NSObject, FlutterPlugin {
         hosting.modalPresentationStyle = .fullScreen
         controller = hosting
         presented = hosting
-        host.present(hosting, animated: true) { result(nil) }
+        host.present(hosting, animated: true) {
+            log.info("presented on \(initial.rawValue, privacy: .public)")
+            result(nil)
+        }
     }
 
     // MARK: - Token provider
@@ -100,16 +132,20 @@ public class TreeSdkFlutterPlugin: NSObject, FlutterPlugin {
         try await withCheckedThrowingContinuation { continuation in
             // Platform channels are main-thread only.
             DispatchQueue.main.async {
+                log.debug("getToken: asking the host")
                 self.channel.invokeMethod("getToken", arguments: nil) { response in
                     switch response {
                     case let token as String where !token.isEmpty:
+                        log.debug("getToken ok — \(token.count, privacy: .public) chars")
                         continuation.resume(returning: token)
                     case let error as FlutterError:
+                        log.error("getToken FAILED — code=\(error.code, privacy: .public) message=\(error.message ?? "none", privacy: .public)")
                         continuation.resume(throwing: TokenProviderError(
                             "\(error.code): \(error.message ?? "token provider failed")"))
                     default:
                         // Also covers FlutterMethodNotImplemented, the sentinel
                         // returned when Dart has no handler installed.
+                        log.error("getToken FAILED — no usable token in the response")
                         continuation.resume(throwing: TokenProviderError(
                             "The token provider returned no usable token."))
                     }
