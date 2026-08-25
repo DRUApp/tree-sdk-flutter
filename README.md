@@ -15,7 +15,7 @@ bumping this package; no call-site change.
 dependencies:
   tree_sdk_flutter:
     git:
-      url: https://github.com/DRUApp/flutter-tree-sdk.git
+      url: https://github.com/DRUApp/tree-sdk-flutter.git
       ref: v0.1.0
 ```
 
