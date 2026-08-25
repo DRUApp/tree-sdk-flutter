@@ -171,6 +171,48 @@ void main() {
     });
   });
 
+  group('module gating', () {
+    test('an initial screen outside the enabled modules is rejected', () {
+      expect(
+        start(modules: {TreeModule.medications}, initial: TreeScreen.diary),
+        throwsA(
+          isA<TreeSdkException>().having(
+            (e) => e.code,
+            'code',
+            'configuration',
+          ),
+        ),
+      );
+      expect(
+        start(modules: {TreeModule.diary}, initial: TreeScreen.chat),
+        throwsA(isA<TreeSdkException>()),
+      );
+      expect(calls, isEmpty);
+    });
+
+    test('reminders needs diary or medications, not nawaf', () {
+      expect(TreeScreen.reminders.isAllowedBy({TreeModule.diary}), isTrue);
+      expect(
+        TreeScreen.reminders.isAllowedBy({TreeModule.medications}),
+        isTrue,
+      );
+      expect(TreeScreen.reminders.isAllowedBy({TreeModule.nawafAi}), isFalse);
+    });
+
+    test('explore is never gated', () {
+      for (final module in TreeModule.values) {
+        expect(TreeScreen.explore.isAllowedBy({module}), isTrue);
+      }
+    });
+
+    test('a single module still opens its own screen', () async {
+      await start(modules: {TreeModule.diary}, initial: TreeScreen.diary);
+      final arguments = calls.single.arguments as Map<Object?, Object?>;
+      expect(arguments['modules'], <String>['diary']);
+      expect(arguments['initial'], 'diary');
+    });
+  });
+
   // The Swift side matches these against TreeModule/TreeScreen/TreeEnvironment,
   // so a rename on either side has to break something.
   test('wire values match the Swift enums', () {

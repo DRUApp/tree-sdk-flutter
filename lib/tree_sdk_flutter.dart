@@ -37,6 +37,21 @@ enum TreeScreen {
 
   const TreeScreen(this.wire);
   final String wire;
+
+  /// Whether [modules] permits opening on this screen. Mirrors Swift's
+  /// `TreeModuleAccess.allows`, which gates navigation and hides entry points.
+  bool isAllowedBy(Set<TreeModule> modules) => switch (this) {
+    // The hub is never gated; its cards are, individually.
+    TreeScreen.explore => true,
+    TreeScreen.diary => modules.contains(TreeModule.diary),
+    TreeScreen.medications => modules.contains(TreeModule.medications),
+    // Reminders is not a module of its own — it reminds you to log readings
+    // or take medicines, so it needs at least one of them.
+    TreeScreen.reminders =>
+      modules.contains(TreeModule.diary) ||
+          modules.contains(TreeModule.medications),
+    TreeScreen.chat => modules.contains(TreeModule.nawafAi),
+  };
 }
 
 /// Which backend the SDK talks to. Wire values must match Swift's
@@ -157,6 +172,13 @@ class TreeSdk {
       throw TreeSdkException(
         'configuration',
         "languageCode must be 'en' or 'ar'; got '$languageCode'.",
+      );
+    }
+    if (!initial.isAllowedBy(modules)) {
+      throw TreeSdkException(
+        'configuration',
+        'initial ${initial.name} is not reachable with modules '
+            '${modules.map((m) => m.name).toList()}.',
       );
     }
 

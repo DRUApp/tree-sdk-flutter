@@ -1,3 +1,15 @@
+## 0.1.2
+
+* Requires `TreeSDK` 0.1.2: `modules` now actually gates the UI. Leaving out
+  `TreeModule.diary` or `.medications` hides the corresponding Explore cards,
+  the metric carousel, and the Diary's Medication tab, and blocks navigation
+  into those screens — previously it gated only the Nawaf bubble.
+* `TreeScreen.isAllowedBy` exposes the same rule, and `start` rejects an
+  `initial` screen that `modules` does not permit instead of silently opening
+  somewhere else.
+* Note `TreeScreen.reminders` needs `diary` or `medications`: reminders is not a
+  module of its own.
+
 ## 0.1.1
 
 * Requires `TreeSDK` 0.1.1, which verifies host-supplied tokens on `start`

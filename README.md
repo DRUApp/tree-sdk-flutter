@@ -16,7 +16,7 @@ dependencies:
   tree_sdk_flutter:
     git:
       url: https://github.com/DRUApp/tree-sdk-flutter.git
-      ref: v0.1.1
+      ref: v0.1.2
 ```
 
 ## Use
@@ -43,6 +43,23 @@ final open = await TreeSdk.isPresented;
 ```
 
 Calling `start` while it's already open is a no-op.
+
+## Modules
+
+`modules` is a licence, not a hint. Leaving one out hides its entry points and
+blocks navigation into it:
+
+| omitted | what disappears |
+|---|---|
+| `TreeModule.diary` | the metric carousel, "Add New Reading", the My Diary card, the Diary screen |
+| `TreeModule.medications` | the Medications card, the Diary's Medication tab, the Medications screen |
+| `TreeModule.nawafAi` | the floating chat bubble and the chat screen |
+
+`TreeScreen.reminders` is not a module of its own — it needs `diary` or
+`medications`. `TreeScreen.explore` is always reachable; its cards are gated
+individually. Passing an `initial` screen that `modules` does not permit is a
+`configuration` error, so check with `TreeScreen.diary.isAllowedBy(modules)` if
+you build the set dynamically.
 
 ## Auth
 
@@ -115,7 +132,7 @@ Four enums cross the channel as strings and **must** match the Swift raw values:
 ## Development
 
 ```bash
-flutter test      # 11 tests, no simulator needed
+flutter test      # 15 tests, no simulator needed
 ```
 
 `ios/tree_sdk_flutter/Package.swift` depends on `TreeSDK` by version. To develop
