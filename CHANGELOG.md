@@ -1,3 +1,9 @@
+## 0.1.6
+
+* Requires `TreeSDK` 0.1.6: saving a diary reading now asks Nawaf to comment on
+  it and shows the reply beside the floating button. Gated on `nawafAI` being
+  enabled, and silent for device-synced entries. No plugin API change.
+
 ## 0.1.5
 
 * Requires `TreeSDK` 0.1.5. Medication: a dose logged from "Log details" is
