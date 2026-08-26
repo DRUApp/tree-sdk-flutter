@@ -1,3 +1,15 @@
+## 0.1.5
+
+* Requires `TreeSDK` 0.1.5. Medication: a dose logged from "Log details" is
+  written back to the medicine, and the screen reopens on the last log's dose,
+  tags and notes instead of a bare 1. HbA1c: the lab photo no longer spins
+  forever when it can't be fetched, and tapping "upload Photo" asks for photo
+  access up front (native Full / Limited / Don't Allow) before opening the
+  library picker.
+* **Hosts should declare `NSPhotoLibraryUsageDescription`** in their app's
+  Info.plist. Without it the SDK falls back to `PHPickerViewController`, which
+  needs no permission — requesting access without the key would crash the host.
+
 ## 0.1.4
 
 * Requires `TreeSDK` 0.1.4: the SDK is pinned to the light colour scheme. It has
