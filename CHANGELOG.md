@@ -1,3 +1,12 @@
+## 0.1.8
+
+* Requires `TreeSDK` 0.1.8 — second QA round, no plugin API change: the Arabic
+  weight picker matches the old app (unit beside the whole number, drums pinned
+  LTR); reminder notification bodies are localized; presented sheets keep the
+  SDK's RTL/locale, which fixes the medication time wheel in Arabic; saving or
+  updating a log shows the old app's confirmation toast; an HbA1c photo is no
+  longer cropped and opens full screen with pinch-zoom.
+
 ## 0.1.7
 
 * Requires `TreeSDK` 0.1.7 — a round of QA fixes, none of which change the
