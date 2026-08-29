@@ -103,10 +103,18 @@ in Dart before anything reaches the platform.
   target manually.
 - **Repository access.** Both this repo and `DRUApp/ios-tree-sdk` are private, so
   the host's machine and CI need credentials for each.
-- **HealthKit and notifications are not configured by this plugin.** Steps sync
-  needs the HealthKit entitlement and `NSHealthShareUsageDescription`; reminder
-  notifications need the SDK's permission prompt, which it currently requests on
-  its own schedule. Without those, both features are inert but harmless.
+- **HealthKit, photos and notifications are not configured by this plugin.**
+  Steps sync needs the HealthKit entitlement and `NSHealthShareUsageDescription`;
+  reminder notifications need the SDK's permission prompt, which it currently
+  requests on its own schedule. Without those, both features are inert but
+  harmless.
+- **The HbA1c photo sources follow the host's usage strings.** "upload Photo"
+  offers Camera and Photos. `NSPhotoLibraryUsageDescription` turns the Photos row
+  into the native Allow Full / Limited / Don't Allow flow; without it the SDK
+  falls back to `PHPickerViewController`, which asks for nothing (requesting
+  access with no usage description is a hard crash, so the SDK will not do it).
+  `NSCameraUsageDescription` is what makes the Camera row appear at all, for the
+  same reason.
 
 ## Debugging
 

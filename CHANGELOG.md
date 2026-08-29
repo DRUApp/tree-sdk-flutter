@@ -1,3 +1,16 @@
+## 0.1.7
+
+* Requires `TreeSDK` 0.1.7 — a round of QA fixes, none of which change the
+  plugin API: the Nawaf bubble now lives in its own window so sheets and
+  full-screen covers can't hide it; tapping a reminder notification opens the
+  screen it reminded you about; medication doses appear in the diary's All list;
+  medication reminders survive a reminders sync and re-arm on load; water logs
+  keep the container the user picked; Arabic fixes on the weight wheel.
+* Host apps that want the full HbA1c photo flow should declare
+  `NSPhotoLibraryUsageDescription` and `NSCameraUsageDescription`, and Steps sync
+  still needs the HealthKit entitlement plus `NSHealthShareUsageDescription`.
+  See the README's requirements section.
+
 ## 0.1.6
 
 * Requires `TreeSDK` 0.1.6: saving a diary reading now asks Nawaf to comment on
