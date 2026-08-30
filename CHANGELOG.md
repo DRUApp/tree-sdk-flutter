@@ -1,3 +1,10 @@
+## 0.2.1
+
+* Requires `TreeSDK` 0.1.9 (iOS): the Steps screen uses the supplied design
+  assets — the footprint glyph in the ring and the routing icon on Total
+  Distance — and the diary chip bar gets its own steps icon, with the selected
+  chip now scrolling into view. No plugin or Android change.
+
 ## 0.2.0
 
 * **Android support.** `TreeSdk.start` now works on Android as well as iOS —
