@@ -5,8 +5,11 @@
 /// its UI over the Flutter view; it returns once the SDK is *on screen*, not
 /// when the user leaves it. Listen for [TreeSdk.onClose] to know that.
 ///
-/// **iOS only for now.** The Android SDK is not released yet, so [TreeSdk.start]
-/// throws [TreeSdkException] with code `unsupported_platform` everywhere else.
+/// **iOS and Android.** Everywhere else, [TreeSdk.start] throws
+/// [TreeSdkException] with code `unsupported_platform`. On Android,
+/// [TreeScreen.chat] is not yet a valid [start]'s `initial` screen — Nawaf is
+/// reached through its floating button instead of a dedicated screen there —
+/// and throws the same code.
 library;
 
 import 'dart:async';
@@ -150,10 +153,23 @@ class TreeSdk {
     },
     TreeScreen initial = TreeScreen.explore,
   }) async {
-    if (defaultTargetPlatform != TargetPlatform.iOS) {
+    switch (defaultTargetPlatform) {
+      case TargetPlatform.iOS:
+      case TargetPlatform.android:
+        break;
+      default:
+        throw TreeSdkException(
+          'unsupported_platform',
+          'The Tree SDK supports iOS and Android only.',
+        );
+    }
+    if (defaultTargetPlatform == TargetPlatform.android &&
+        initial == TreeScreen.chat) {
       throw TreeSdkException(
         'unsupported_platform',
-        'The Tree SDK is iOS-only for now; the Android SDK is not released yet.',
+        'TreeScreen.chat is not available as an initial screen on Android '
+            'yet; Nawaf is reached through its floating button instead of a '
+            'dedicated chat screen there.',
       );
     }
     if (treeUserId.trim().isEmpty) {

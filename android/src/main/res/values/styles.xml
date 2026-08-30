@@ -1,0 +1,13 @@
+<resources>
+    <!--
+      Plain Material3 theme, no action bar — TreeRootView draws its own chrome (the Explore hub's
+      back arrow, each screen's own header), same as the iOS side's UIHostingController with no
+      navigation bar of its own.
+
+      `.Light`, not `.DayNight`: the SDK ships one palette and no dark variant (same note as the
+      iOS README — "A host in dark mode gets the SDK in light regardless"). Pinning the Activity
+      theme to light keeps system-drawn chrome (dialogs, the keyboard, default widgets) consistent
+      with that instead of following a dark host/device.
+    -->
+    <style name="TreeSdkFlutterTheme" parent="Theme.Material3.Light.NoActionBar" />
+</resources>
