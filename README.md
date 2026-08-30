@@ -3,11 +3,11 @@
 Flutter bridge to the **Tree SDK**: Nawaf AI chat, health diary, medications and
 reminders, backed by the Dru B2B API, in English and Arabic.
 
-The plugin is the single entry point for both native SDKs. **Only iOS is
-released today** — on any other platform `TreeSdk.start` throws
-`TreeSdkException('unsupported_platform')`, so an Android build compiles and
-runs, it just can't open the SDK yet. When the Android SDK lands, hosts get it by
-bumping this package; no call-site change.
+The plugin is the single entry point for both native SDKs: **iOS and
+Android**. On any other platform `TreeSdk.start` throws
+`TreeSdkException('unsupported_platform')`. One call site, either platform —
+see [Android notes](#android-notes) below for the one behavioral difference
+today (`TreeScreen.chat` as an `initial` screen).
 
 ## Install
 
@@ -16,7 +16,7 @@ dependencies:
   tree_sdk_flutter:
     git:
       url: https://github.com/DRUApp/tree-sdk-flutter.git
-      ref: v0.1.6
+      ref: v0.2.0
 ```
 
 ## Use
@@ -95,6 +95,8 @@ in Dart before anything reaches the platform.
 
 ## Host requirements
 
+### iOS
+
 - **iOS 16.0 minimum.** Set `IPHONEOS_DEPLOYMENT_TARGET = 16.0` in your Runner
   project. Below that, Swift Package resolution fails with an opaque error.
 - **Swift Package Manager**, i.e. `flutter config --enable-swift-package-manager`.
@@ -116,6 +118,42 @@ in Dart before anything reaches the platform.
   `NSCameraUsageDescription` is what makes the Camera row appear at all, for the
   same reason.
 
+### Android
+
+- **`minSdkVersion 26` minimum** in your app's `android/app/build.gradle` (the
+  `treesdk` library itself declares `minSdk = 26`).
+- **JitPack, with credentials.** `android/build.gradle.kts` pulls
+  `com.github.DRUApp.android-tree-sdk:treesdk:$treeSdkVersion` from
+  `https://jitpack.io` — the Android equivalent of the iOS side resolving
+  `TreeSDK` from a git tag via SPM, since `android-tree-sdk` has no Maven
+  publishing step of its own. `DRUApp/android-tree-sdk` is private, so set a
+  JitPack token in the consuming app's `~/.gradle/gradle.properties` as
+  `jitpackToken=...`, or export `JITPACK_TOKEN` — the same "host's machine and
+  CI need credentials" requirement as the iOS side, for the other repo.
+- **Pin `treeSdkVersion`.** It defaults to `main-SNAPSHOT` (JitPack's
+  build-the-tip-of-a-branch mode), which is not reproducible across builds. Set
+  a real tag or commit SHA once one exists on GitHub, e.g. in your app's
+  `android/gradle.properties`: `treeSdkVersion=1.2.3`.
+- **Notifications are not configured by this plugin.** Reminder notifications
+  need the SDK's own permission prompt, requested on its own schedule, same as
+  iOS.
+
+### Android notes
+
+- Android's `TreeSDKConfig` has no unified full-screen chat route yet — Nawaf
+  is a floating button ([`NawafFloatingButton`]) rather than a dedicated
+  screen. `start(..., initial: TreeScreen.chat)` throws
+  `TreeSdkException('unsupported_platform')` on Android specifically (checked
+  in Dart, before anything reaches the platform); every other `TreeScreen`
+  works the same as iOS.
+- `userName` is a single string in this Dart API (matching iOS), but Android's
+  native `TreeSDKConfig` models `firstName`/`lastName` separately. The plugin
+  splits it on the first space — good enough for most names, but a multi-part
+  family name may not split how you'd want. `gender` passes straight through
+  as a free-form string (`"male"` / `"female"`, matching what the SDK already
+  reads back from the user profile) — used only as a synchronous fallback
+  before the real profile loads.
+
 ## Debugging
 
 The bridge logs to the unified log on subsystem `com.dru.tree_sdk_flutter` —
@@ -129,6 +167,13 @@ xcrun simctl spawn booted log stream --level debug --style compact \
 Use `log stream --device` for a physical device. Tokens are logged **by length
 only**, never by value.
 
+On Android, the same events go to `Log.d`/`Log.i`/`Log.e` under tag
+`TreeSdkFlutter`:
+
+```bash
+adb logcat -s TreeSdkFlutter:V
+```
+
 Note `print`/`debugPrint` from Dart does not reach the unified log and is not
 visible to `simctl launch --console`, which is why the native side does the
 logging.
@@ -139,10 +184,13 @@ endpoint per screen. Cache.
 
 ## Wire contract
 
-Four enums cross the channel as strings and **must** match the Swift raw values:
-`TreeModule`, `TreeScreen`, `TreeEnvironment`, and the failure codes above.
-`test/tree_sdk_flutter_test.dart` pins the Dart side;
-`TreeRootViewTests.testScreenWireValuesAreStable` pins the Swift side.
+Four enums cross the channel as strings and **must** match the native side on
+whichever platform is running: `TreeModule`, `TreeScreen`, `TreeEnvironment`,
+and the failure codes above. `test/tree_sdk_flutter_test.dart` pins the Dart
+side; `TreeRootViewTests.testScreenWireValuesAreStable` pins the Swift side.
+On Android, `TreeSdkFlutterPlugin.moduleFromWire`/`screenFrom` do the mapping
+by hand (no wire-string enum on that side yet) — a rename on either side has
+to break a test here, same reasoning as the Swift pin.
 
 ## Development
 

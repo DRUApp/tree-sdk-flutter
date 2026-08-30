@@ -1,0 +1,20 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application>
+        <!--
+          Presents the native SDK over the Flutter view — the Android counterpart to the iOS side
+          presenting a full-screen UIHostingController. A separate Activity (rather than a Fragment
+          or an overlay Composable inside the host's own Activity) so the SDK gets its own
+          lifecycle, back-stack entry, and Compose composition, matching "the SDK owns the whole
+          screen" from this package's README.
+
+          exported=false: only this app can launch it, never another app via an implicit intent.
+          noHistory=false on purpose — the user should be able to background and return to it.
+        -->
+        <activity
+            android:name="com.dru.tree_sdk_flutter.TreeSdkFlutterActivity"
+            android:exported="false"
+            android:theme="@style/TreeSdkFlutterTheme"
+            android:windowSoftInputMode="adjustResize"
+            android:configChanges="orientation|screenSize|keyboardHidden|uiMode" />
+    </application>
+</manifest>

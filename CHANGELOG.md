@@ -1,3 +1,21 @@
+## 0.2.0
+
+* **Android support.** `TreeSdk.start` now works on Android as well as iOS —
+  same Dart API, no call-site change. Requires `android-tree-sdk`'s `treesdk`
+  module, pulled via JitPack (see README's Android host requirements).
+* Added `TreeRootView` (module gating + screen routing) and a `TreeScreen`
+  enum to `android-tree-sdk` itself, plus a `gender` field on
+  `TreeSDKConfig`, to bring the native Android SDK to parity with what this
+  plugin already assumed from iOS.
+* One platform difference: `initial: TreeScreen.chat` is iOS-only for now —
+  Android has no dedicated full-screen chat route yet (Nawaf is a floating
+  button there). Throws `TreeSdkException('unsupported_platform')` on
+  Android, checked in Dart before anything reaches the platform.
+* `userName` is split into `firstName`/`lastName` for Android's native config,
+  which models them separately rather than as one string.
+* Requires `TreeSDK` **0.1.8** on iOS, so this release also carries the two QA
+  rounds below.
+
 ## 0.1.8
 
 * Requires `TreeSDK` 0.1.8 — second QA round, no plugin API change: the Arabic
