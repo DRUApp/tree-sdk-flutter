@@ -24,7 +24,7 @@ void main() {
   }
 
   setUp(() {
-    // start() refuses to run off iOS; the host running these tests is not iOS.
+    // start() refuses to run off iOS/Android; the host running these tests is neither.
     debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
     calls.clear();
     respond = (_) => null;
@@ -105,8 +105,8 @@ void main() {
   });
 
   group('rejects bad config before reaching the platform', () {
-    test('off iOS', () {
-      debugDefaultTargetPlatformOverride = TargetPlatform.android;
+    test('off iOS and Android', () {
+      debugDefaultTargetPlatformOverride = TargetPlatform.windows;
       expect(
         start(),
         throwsA(
@@ -118,6 +118,30 @@ void main() {
         ),
       );
       expect(calls, isEmpty);
+    });
+
+    test('Android reaches the platform same as iOS', () async {
+      debugDefaultTargetPlatformOverride = TargetPlatform.android;
+      await start(initial: TreeScreen.diary, modules: {TreeModule.diary});
+      expect(calls.single.method, 'start');
+    });
+
+    test('chat as initial is rejected on Android, allowed on iOS', () {
+      debugDefaultTargetPlatformOverride = TargetPlatform.android;
+      expect(
+        start(initial: TreeScreen.chat),
+        throwsA(
+          isA<TreeSdkException>().having(
+            (e) => e.code,
+            'code',
+            'unsupported_platform',
+          ),
+        ),
+      );
+      expect(calls, isEmpty);
+
+      debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+      expect(start(initial: TreeScreen.chat), completes);
     });
 
     test('custom environment and baseUrl require each other', () {
