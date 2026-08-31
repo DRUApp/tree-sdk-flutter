@@ -1,3 +1,16 @@
+## 0.3.1
+
+* Requires `TreeSDK` 0.2.1 (iOS): the save/update toast gains the "View all"
+  action that jumps to that metric's tab, medicine dose units read Unit / وحدة
+  instead of "other" (and a dose is logged with the medicine's own unit), a
+  second attempt at connecting Apple Health offers Settings instead of doing
+  nothing, and Nawaf's requests get their own 120s timeout — a normal answer
+  takes 21–30s and was being cut off by the 30s default, which surfaced as a
+  Retry button.
+* Also carries the Android work that landed on `main` after 0.3.0 (activity and
+  plugin changes, plus a Dart addition) — not authored here, just released
+  alongside the dependency bump.
+
 ## 0.3.0
 
 * Requires `TreeSDK` 0.2.0 (iOS), which is a QA round across the native SDK:
