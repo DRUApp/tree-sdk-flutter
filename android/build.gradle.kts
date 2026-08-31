@@ -52,10 +52,6 @@ kotlin {
 }
 
 repositories {
-    // Checked first so a locally published AAR (`./gradlew :treesdk:publishToMavenLocal` inside
-    // android-tree-sdk) satisfies the dependency below before Gradle ever talks to JitPack. Empty/
-    // absent locally, this is a no-op and resolution falls through to JitPack as before.
-    mavenLocal()
     maven {
         // android-tree-sdk (github.com/DRUApp/android-tree-sdk) has no publishing step of its
         // own — JitPack builds an artifact straight from the GitHub repo, the closest Android

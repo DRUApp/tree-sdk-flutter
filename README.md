@@ -137,6 +137,39 @@ in Dart before anything reaches the platform.
 - **Notifications are not configured by this plugin.** Reminder notifications
   need the SDK's own permission prompt, requested on its own schedule, same as
   iOS.
+- **Tapping a reminder notification needs one addition to your `MainActivity`.**
+  A reminder's `PendingIntent` targets your app's launcher Activity (the SDK
+  has no Activity of its own to route to), so your `MainActivity` needs to
+  hand that intent to the plugin before it can turn into a call to `start()`:
+
+  ```kotlin
+  import android.content.Intent
+  import android.os.Bundle
+  import com.dru.tree_sdk_flutter.TreeSdkFlutterPlugin
+  import io.flutter.embedding.android.FlutterActivity
+
+  class MainActivity : FlutterActivity() {
+      override fun onCreate(savedInstanceState: Bundle?) {
+          // Before super.onCreate() — that's what creates the Flutter engine
+          // and attaches the plugin.
+          TreeSdkFlutterPlugin.notePendingReminderIntent(intent)
+          super.onCreate(savedInstanceState)
+      }
+
+      override fun onNewIntent(intent: Intent) {
+          super.onNewIntent(intent)
+          TreeSdkFlutterPlugin.notePendingReminderIntent(intent)
+      }
+  }
+  ```
+
+  On the Dart side, listen to `TreeSdk.onReminderTapped` early (e.g. your root
+  widget's `initState`) and respond by calling `start()` again with your real
+  config — same as any other entry point into the SDK. The native side reads
+  which reminder was tapped from its own intent and opens straight to that
+  reminder's screen; Dart never needs to know which one it was. See
+  `flutter_application_1`'s `MainActivity.kt` and `main.dart` for a complete
+  example. Unimplemented on iOS so far — `onReminderTapped` never fires there.
 
 ### Android notes
 

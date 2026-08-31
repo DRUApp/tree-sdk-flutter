@@ -1,5 +1,7 @@
 package com.dru.tree_sdk_flutter
 
+import android.content.Intent
+import android.os.Bundle
 import android.util.Log
 import com.dru.treesdk.TreeSDK
 import com.dru.treesdk.config.TreeAuth
@@ -8,6 +10,7 @@ import com.dru.treesdk.config.TreeModule
 import com.dru.treesdk.config.TreeSDKConfig
 import com.dru.treesdk.core.TreeFailure
 import com.dru.treesdk.core.TreeResult
+import com.dru.treesdk.modules.reminders.ReminderDeepLink
 import com.dru.treesdk.ui.TreeScreen
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
@@ -66,6 +69,7 @@ class TreeSdkFlutterPlugin : FlutterPlugin, ActivityAware, MethodChannel.MethodC
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
         activityBinding = binding
+        if (pendingReminderExtras != null) notifyReminderTapped()
     }
 
     override fun onDetachedFromActivityForConfigChanges() {
@@ -145,7 +149,9 @@ class TreeSdkFlutterPlugin : FlutterPlugin, ActivityAware, MethodChannel.MethodC
                 is TreeResult.Ok -> {
                     Log.i(TAG, "initialize ok — session established")
                     presented = true
-                    TreeSdkFlutterActivity.launch(activity, initial)
+                    val deepLinkExtras = pendingReminderExtras
+                    pendingReminderExtras = null
+                    TreeSdkFlutterActivity.launch(activity, initial, deepLinkExtras)
                 }
             }
         }
@@ -163,6 +169,12 @@ class TreeSdkFlutterPlugin : FlutterPlugin, ActivityAware, MethodChannel.MethodC
         Log.i(TAG, "closed by the user")
         presented = false
         channel.invokeMethod("onClose", null)
+    }
+
+    /** Tells Dart's `TreeSdk.onReminderTapped` stream to fire — see [notePendingReminderIntent]. */
+    private fun notifyReminderTapped() {
+        Log.i(TAG, "notifying Dart of a pending reminder deep link")
+        channel.invokeMethod("onReminderTapped", null)
     }
 
     // MARK: - Token provider
@@ -295,6 +307,20 @@ class TreeSdkFlutterPlugin : FlutterPlugin, ActivityAware, MethodChannel.MethodC
         @Volatile
         internal var activePlugin: TreeSdkFlutterPlugin? = null
 
+
+        @Volatile
+        private var pendingReminderExtras: Bundle? = null
+
+        
+        fun notePendingReminderIntent(intent: Intent) {
+            if (ReminderDeepLink.from(intent) == null) return
+            pendingReminderExtras = intent.extras?.let { Bundle(it) }
+            // The warm case: the plugin/channel already exist (the app was already running when
+            // the notification was tapped), so tell Dart right away instead of waiting for
+            // onAttachedToActivity, which won't fire again for an already-attached Activity.
+            activePlugin?.notifyReminderTapped()
+        }
+
         internal fun moduleFromWire(wire: String): TreeModule? = when (wire) {
             "nawafAI" -> TreeModule.NAWAF
             "diary" -> TreeModule.DIARY
@@ -302,11 +328,7 @@ class TreeSdkFlutterPlugin : FlutterPlugin, ActivityAware, MethodChannel.MethodC
             else -> null
         }
 
-        /**
-         * Splits a display name into first/last for `TreeSDKConfig`, which models them
-         * separately — unlike iOS's single `userName` string. Best-effort: everything after the
-         * first space becomes the last name.
-         */
+        
         internal fun splitName(name: String?): Pair<String?, String?> {
             val trimmed = name?.trim()
             if (trimmed.isNullOrEmpty()) return null to null

@@ -127,9 +127,16 @@ class TreeSdk {
   static bool _handlerInstalled = false;
   static final StreamController<void> _closed =
       StreamController<void>.broadcast();
+  static final StreamController<void> _reminderTapped =
+      StreamController<void>.broadcast();
 
   /// Fires when the user leaves the SDK and the host's UI is visible again.
   static Stream<void> get onClose => _closed.stream;
+
+  static Stream<void> get onReminderTapped {
+    _installHandler();
+    return _reminderTapped.stream;
+  }
 
   /// Whether the SDK's UI is currently on screen.
   static Future<bool> get isPresented async =>
@@ -254,6 +261,9 @@ class TreeSdk {
           return token;
         case 'onClose':
           _closed.add(null);
+          return null;
+        case 'onReminderTapped':
+          _reminderTapped.add(null);
           return null;
         default:
           throw MissingPluginException('Unhandled call ${call.method}.');
