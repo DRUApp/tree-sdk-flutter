@@ -2,11 +2,18 @@ package com.dru.tree_sdk_flutter
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color as AndroidColor
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import com.dru.treesdk.TreeSDK
+import com.dru.treesdk.modules.reminders.ReminderDeepLink
 import com.dru.treesdk.ui.TreeRootView
 import com.dru.treesdk.ui.TreeScreen
 
@@ -25,8 +32,21 @@ import com.dru.treesdk.ui.TreeScreen
  */
 class TreeSdkFlutterActivity : ComponentActivity() {
 
+    private var reminderDeepLink by mutableStateOf<ReminderDeepLink?>(null)
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        ReminderDeepLink.from(intent)?.let { reminderDeepLink = it }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.light(AndroidColor.TRANSPARENT, AndroidColor.TRANSPARENT),
+            navigationBarStyle = SystemBarStyle.light(AndroidColor.TRANSPARENT, AndroidColor.TRANSPARENT),
+        )
 
         val sdk = TreeSDK.shared
         if (sdk == null) {
@@ -41,6 +61,7 @@ class TreeSdkFlutterActivity : ComponentActivity() {
         val initial = intent.getStringExtra(EXTRA_INITIAL)
             ?.let { runCatching { TreeScreen.valueOf(it) }.getOrNull() }
             ?: TreeScreen.EXPLORE
+        reminderDeepLink = ReminderDeepLink.from(intent)
 
         setContent {
             // Fires once, on the first composition — the closest Compose equivalent to the Swift
@@ -51,6 +72,11 @@ class TreeSdkFlutterActivity : ComponentActivity() {
             TreeRootView(
                 sdk = sdk,
                 initial = initial,
+                reminderDeepLink = reminderDeepLink,
+                onReminderDeepLinkHandled = {
+                    reminderDeepLink = null
+                    ReminderDeepLink.clear(intent)
+                },
                 onClose = {
                     plugin?.notifyClosed()
                     finish()
@@ -62,9 +88,10 @@ class TreeSdkFlutterActivity : ComponentActivity() {
     companion object {
         private const val EXTRA_INITIAL = "initial"
 
-        internal fun launch(context: Context, initial: TreeScreen) {
+        internal fun launch(context: Context, initial: TreeScreen, deepLinkExtras: Bundle? = null) {
             val intent = Intent(context, TreeSdkFlutterActivity::class.java)
                 .putExtra(EXTRA_INITIAL, initial.name)
+            deepLinkExtras?.let { intent.putExtras(it) }
             if (context !is ComponentActivity) intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(intent)
         }
