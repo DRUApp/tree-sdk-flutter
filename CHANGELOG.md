@@ -1,3 +1,15 @@
+## 0.3.0
+
+* Requires `TreeSDK` 0.2.0 (iOS), which is a QA round across the native SDK:
+  weight change measured from the metric's own history (and zero instead of a
+  blank), tapping a day in the Steps Week/Month charts, a revoked Apple Health
+  permission now disconnecting, Medicine in the Explore carousel and its arrange
+  sheet, catalogue medicine photos surviving the save, a medicine reminder tap
+  opening that medicine's log, the system swipe-to-delete on Water reminder
+  times, Nawaf reopening the conversation you were just in, and the floating orb
+  dragging correctly in Arabic.
+* No plugin or Android change: the bump is the iOS dependency and this note.
+
 ## 0.2.1
 
 * Requires `TreeSDK` 0.1.9 (iOS): the Steps screen uses the supplied design
