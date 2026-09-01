@@ -1,3 +1,20 @@
+## 0.4.0
+
+* Requires `TreeSDK` 0.3.0 (iOS). The SDK now ships GT Planar as its typeface,
+  registered at runtime from the package bundle — **hosts need no font entry in
+  Info.plist**. Arabic keeps the system font, which GT Planar has no glyphs for.
+* **New host requirement:** live workout distance is read from `CMPedometer`, so
+  a host that runs the workout tracker must declare `NSMotionUsageDescription`.
+  Without it the tracker reports unavailable, distance stays 0.00 and — since
+  calories are now derived from measured pace — a live session saves 0 kcal.
+* Fixes carried from the SDK: diary tabs keep their own scroll position, a dose
+  row in the All list opens that dose to edit, swipe-to-delete on the All list,
+  the blood-pressure slider spans 40–300, the workout duration dialog is the
+  Figma card, medicine reminders are listed under Reminders, Water reminders no
+  longer revert to 11:00, the medication delete confirmation is centred and
+  names the medicine, Nawaf opens on the newest message, and Arabic gains
+  ملم زئبقي / مجم/دل / العلامات.
+
 ## 0.3.1
 
 * Requires `TreeSDK` 0.2.1 (iOS): the save/update toast gains the "View all"
