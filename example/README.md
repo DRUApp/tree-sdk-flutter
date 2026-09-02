@@ -45,18 +45,36 @@ flutter pub get
 flutter run            # needs a device/emulator (API 26+)
 ```
 
-## Build a distributable APK
+## Build a distributable APK (BetaDrop etc.)
 
 ```bash
-flutter build apk --release
+./tools/publish_local_sdk.sh     # only if the native SDK changed since last time
+flutter build apk --release --no-shrink
 ```
 
-The APK lands at `build/app/outputs/flutter-apk/app-release.apk` — install it
-directly on any Android 8.0+ (API 26+) device, or upload it wherever you want
-it reachable (Firebase App Distribution, a plain download link, etc.). It's
-signed with the Flutter debug key by default (see `android/app/build.gradle.kts`)
-so it installs out of the box; swap in your own signing config before
-distributing it beyond your own testing.
+Output: `build/app/outputs/flutter-apk/app-release.apk` — a single universal APK
+(arm64-v8a + armeabi-v7a + x86_64), so it installs on any Android 8.0+ (API 26)
+device, including emulators. Don't use `--split-per-abi` for BetaDrop; that
+produces several per-architecture APKs and testers would have to pick.
 
-Note that the release APK bundles the native SDK build that was in mavenLocal at
-build time, so publish the SDK first if you've changed it.
+Notes:
+
+- **`--no-shrink` is deliberate.** Flutter runs R8 on release builds, and the
+  Tree SDK decodes JSON reflectively (Moshi `KotlinJsonAdapterFactory`). Its
+  `consumer-rules.pro` keeps `modules.**.data.**` and `TokenBundle`, but
+  Moshi-shaped types also live in `com.dru.treesdk.session`/`config`. Anything
+  the keep rules miss is stripped and blows up at runtime *only in release*.
+  `android/app/build.gradle.kts` also sets `isMinifyEnabled = false` for the
+  same reason.
+- **Signing.** With no `android/key.properties`, the APK is signed with your
+  local debug key. It installs fine, but debug keys differ per machine, so a
+  build from another laptop can't update it. For a stable distribution track,
+  create a keystore and `key.properties` — see the comment at the top of
+  `android/app/build.gradle.kts`.
+- **Bump the version for each upload.** `version: 1.0.0+1` in `pubspec.yaml`
+  feeds `versionName`/`versionCode`; increment the `+N` build number or
+  distribution tools will treat re-uploads as the same build.
+- **The client secret is inside this APK.** `TreeClientCredentials` embeds it in
+  the binary, and anyone who downloads the APK can unzip and read it. Fine for a
+  dev backend and a known tester list; move to `TreeTokenProvider` before this
+  goes anywhere wider.
