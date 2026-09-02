@@ -1,3 +1,14 @@
+## 0.6.0
+
+* Requires `TreeSDK` 0.5.0 on iOS. That release adds `MeasurementDefinition.healthyRange`
+  — the green `risk_level` rather than `allowed_range` — which fixes "Hypoglycaemia
+  events" reading 0% and "Time in range" 100% forever, plus the chart's healthy band.
+  Also: blood-pressure insertion matched to the old app, the Explore header and Arabic
+  date/time, and the carousel status indicator.
+* No plugin API change, and no change on Android: `android-tree-sdk` is untouched by this,
+  and `TreeEnvironment` and the token store are identical on both sides, so the two SDKs
+  still agree.
+
 ## 0.5.1
 
 * Requires `TreeSDK` 0.4.1 on iOS — the design alignment pass (icons, colours, type
