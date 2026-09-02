@@ -1,3 +1,25 @@
+## 0.5.0
+
+* Requires `TreeSDK` 0.4.0 (iOS) and `android-tree-sdk` v0.4.0 — **the Android
+  SDK's first tag**, so the Gradle dependency is a reproducible version instead
+  of `main-SNAPSHOT`. Bump the two together from here on.
+* **`TreeEnvironment` now means the same thing on both platforms**, and all
+  three cases resolve the b2b: `production` → `b2b-api.dru-app.org`, `staging`
+  → `stag-b2b-api.dru-app.org`, `development` → `dev-b2b-api.dru-app.org`.
+  Previously `production`/`staging` pointed at the legacy Dru API on both, and
+  Android's `development` was `http://localhost:3002` — unreachable from a
+  phone. A host that worked around this with `TreeEnvironment.custom` plus an
+  explicit `baseUrl` can drop back to the named case.
+* **Fixes a token cache that ignored which backend minted it.** The stored
+  bundle was keyed by a constant on both platforms, and the SDK trusts any
+  unexpired one, so switching environment — or rotating a client id — silently
+  reused a foreign token and reported a working session against a backend that
+  rejects those credentials. Requests then 401 behind the UI, which looks like
+  a user with no data. The store is now namespaced by base URL and client id.
+  Existing installs re-authenticate once.
+* `mavenLocal()` now precedes JitPack, so `publishToMavenLocal` in
+  `android-tree-sdk` is picked up for local SDK work.
+
 ## 0.4.0
 
 * Requires `TreeSDK` 0.3.0 (iOS). The SDK now ships GT Planar as its typeface,

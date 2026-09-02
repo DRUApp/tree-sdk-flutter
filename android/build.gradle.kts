@@ -52,6 +52,11 @@ kotlin {
 }
 
 repositories {
+    // Wins over JitPack for a locally published build — run
+    // `./gradlew :treesdk:publishToMavenLocal` in android-tree-sdk while working on the SDK.
+    // Harmless for a partner: once treeSdkVersion names a real tag, mavenLocal has no such
+    // version and Gradle falls through to JitPack below.
+    mavenLocal()
     maven {
         // android-tree-sdk (github.com/DRUApp/android-tree-sdk) has no publishing step of its
         // own — JitPack builds an artifact straight from the GitHub repo, the closest Android
@@ -71,10 +76,12 @@ repositories {
 }
 
 dependencies {
-    // Pin this to a real android-tree-sdk tag (or commit SHA) once one is pushed — see this
-    // package's README for how to override treeSdkVersion. "main-SNAPSHOT" tracks the tip of
-    // main, which JitPack rebuilds on demand but is not reproducible across builds.
-    val treeSdkVersion = (findProperty("treeSdkVersion") as String?) ?: "main-SNAPSHOT"
+    // A real tag, so the build is reproducible — "main-SNAPSHOT" tracks the tip of main, which
+    // JitPack rebuilds on demand and is not. Bump in lockstep with ../ios/tree_sdk_flutter/
+    // Package.swift: the two native SDKs must agree, most concretely on TreeEnvironment's
+    // hostnames. Override with -PtreeSdkVersion=... for local SDK work (see this package's
+    // README), which mavenLocal() above then resolves.
+    val treeSdkVersion = (findProperty("treeSdkVersion") as String?) ?: "v0.4.0"
     implementation("com.github.DRUApp.android-tree-sdk:treesdk:$treeSdkVersion")
 
     implementation(platform("androidx.compose:compose-bom:2024.09.03"))
