@@ -1,3 +1,10 @@
+## 0.5.1
+
+* Requires `TreeSDK` 0.4.1 on iOS — the design alignment pass (icons, colours, type
+  sizes and diary chrome ported from `android-tree-sdk`, which is the source of truth
+  for all four). No plugin API change, and no change on Android: `android-tree-sdk`
+  stays at v0.4.0 because nothing in it changed.
+
 ## 0.5.0
 
 * Requires `TreeSDK` 0.4.0 (iOS) and `android-tree-sdk` v0.4.0 — **the Android

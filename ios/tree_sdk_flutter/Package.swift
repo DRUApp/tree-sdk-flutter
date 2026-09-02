@@ -15,7 +15,7 @@ let package = Package(
         .package(name: "FlutterFramework", path: "../FlutterFramework"),
         // Identity is the repo name ("ios-tree-sdk"), which is why the product
         // below says `package: "ios-tree-sdk"` and not `"TreeSDK"`.
-        .package(url: "https://github.com/DRUApp/ios-tree-sdk.git", from: "0.4.0"),
+        .package(url: "https://github.com/DRUApp/ios-tree-sdk.git", from: "0.4.1"),
     ],
     targets: [
         .target(
