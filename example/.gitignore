@@ -6,3 +6,6 @@ build/
 android/local.properties
 android/.gradle/
 android/app/.cxx/
+android/key.properties
+*.jks
+*.keystore
