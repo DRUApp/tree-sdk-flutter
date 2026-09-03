@@ -1,3 +1,10 @@
+## 0.6.5
+
+* Requires `TreeSDK` 0.5.5 on iOS — a discard confirmation on the workout log form, plus
+  header tidying across medication, reminders and the workout tab. No public API change
+  on either side; `TreeEnvironment` and the token store are untouched and
+  `android-tree-sdk` stays at v0.4.0.
+
 ## 0.6.4
 
 * Requires `TreeSDK` 0.5.4 on iOS. Fixes a blood-pressure classification bug: a reading
