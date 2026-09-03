@@ -1,3 +1,10 @@
+## 0.6.3
+
+* Requires `TreeSDK` 0.5.3 on iOS — metric detail chart fixes, workout log form, reminder
+  detail and Arabic copy, plus `TreeLocale` adjustments. No public API change on either
+  side; `TreeEnvironment` and the token store are untouched and `android-tree-sdk` stays
+  at v0.4.0.
+
 ## 0.6.2
 
 * Requires `TreeSDK` 0.5.2 on iOS — Steps chart icons, and medication search/custom-form
