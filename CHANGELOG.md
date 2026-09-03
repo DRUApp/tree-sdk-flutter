@@ -1,3 +1,12 @@
+## 0.6.4
+
+* Requires `TreeSDK` 0.5.4 on iOS. Fixes a blood-pressure classification bug: a reading
+  above every `risk_level` band was unclassified, so 207/80 fell back to diastolic's
+  yellow and read "Elevated" where dru says "Very High". A value above the highest band
+  now takes that band, matching dru's unbounded `systolic >= 140` branch. Not symmetric
+  at the bottom on purpose — clamping downwards would paint a hypoglycaemic reading
+  green. Also medication list/tile controls. No public API change on either side.
+
 ## 0.6.3
 
 * Requires `TreeSDK` 0.5.3 on iOS — metric detail chart fixes, workout log form, reminder
