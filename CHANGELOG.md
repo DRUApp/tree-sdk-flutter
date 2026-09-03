@@ -1,3 +1,10 @@
+## 0.6.1
+
+* Requires `TreeSDK` 0.5.1 on iOS — design matching for the reminder detail screen,
+  the diary/steps charts and Arabic copy, plus tab memory. No public API change on
+  either side, so nothing changes for a host: `TreeEnvironment` and the token store
+  are untouched and the two SDKs still agree. `android-tree-sdk` stays at v0.4.0.
+
 ## 0.6.0
 
 * Requires `TreeSDK` 0.5.0 on iOS. That release adds `MeasurementDefinition.healthyRange`
