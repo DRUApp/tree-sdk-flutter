@@ -1,3 +1,11 @@
+## 0.6.6
+
+* Requires `TreeSDK` 0.5.6 on iOS — the diary performance fix. `DiaryEntry.recordedAt` was
+  a computed property that built an `ISO8601DateFormatter` and re-parsed the wire string on
+  every read, and it backs every sort, grouping and chart comparison; it is parsed once at
+  decode now. Same name and type, so nothing changes for a host. Also fixes entries whose
+  timestamps carry fractional seconds, which the old parser rejected outright.
+
 ## 0.6.5
 
 * Requires `TreeSDK` 0.5.5 on iOS — a discard confirmation on the workout log form, plus
