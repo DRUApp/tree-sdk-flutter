@@ -4,7 +4,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'tree_sdk_flutter'
-  s.version          = '0.6.6'
+  s.version          = '0.7.0'
   s.summary          = 'Flutter bridge to the native Tree SDK.'
   s.description      = <<-DESC
 Presents the native Tree SDK (Nawaf AI chat, health diary, medications,
@@ -16,12 +16,17 @@ reminders) from a Flutter host.
   s.source           = { :path => '.' }
   s.source_files = 'tree_sdk_flutter/Sources/tree_sdk_flutter/**/*'
   s.dependency 'Flutter'
-  s.platform = :ios, '16.0'
+  s.dependency 'TreeSDK', '>= 0.6.0'
+  s.platform = :ios, '15.6'
 
-  # ponytail: CocoaPods CANNOT carry the TreeSDK dependency — TreeSDK is an SPM
-  # package with no podspec. A CocoaPods host has to add it to its own target by
-  # hand. Use a Swift-Package-Manager host (flutter config
-  # --enable-swift-package-manager) and Package.swift resolves it for you.
+  # TreeSDK is not on the CocoaPods trunk, so a CocoaPods host must name the
+  # source itself — this dependency only pins the version:
+  #
+  #   pod 'TreeSDK', :git => 'https://github.com/DRUApp/ios-tree-sdk.git', :tag => 'v0.6.0'
+  #
+  # A Swift-Package-Manager host (flutter config --enable-swift-package-manager)
+  # needs none of that — ../ios/tree_sdk_flutter/Package.swift resolves TreeSDK
+  # from the same tag. Keep this version in lockstep with that Package.swift.
 
   # Flutter.framework does not contain a i386 slice.
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }

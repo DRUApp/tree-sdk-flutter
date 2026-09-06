@@ -16,7 +16,7 @@ dependencies:
   tree_sdk_flutter:
     git:
       url: https://github.com/DRUApp/tree-sdk-flutter.git
-      ref: v0.6.6
+      ref: v0.7.0
 ```
 
 ## Use
@@ -97,12 +97,23 @@ in Dart before anything reaches the platform.
 
 ### iOS
 
-- **iOS 16.0 minimum.** Set `IPHONEOS_DEPLOYMENT_TARGET = 16.0` in your Runner
-  project. Below that, Swift Package resolution fails with an opaque error.
-- **Swift Package Manager**, i.e. `flutter config --enable-swift-package-manager`.
-  CocoaPods cannot carry this plugin: it depends on `TreeSDK`, which ships as an
-  SPM package with no podspec. A CocoaPods host must add `TreeSDK` to its own
-  target manually.
+- **iOS 15.6 minimum.** Set `IPHONEOS_DEPLOYMENT_TARGET = 15.6` (or higher) in
+  your Runner project. Below that, Swift Package resolution fails with an opaque
+  error. On 15.x three things degrade cosmetically and nothing breaks: sheets are
+  full height rather than half (no `presentationDetents`), `List` rows keep the
+  system separator inset, and the chat/notes fields are single-line rather than
+  growing.
+- **Swift Package Manager** (`flutter config --enable-swift-package-manager`) is
+  the preferred route: `Package.swift` resolves `TreeSDK` from its tag for you,
+  and it coexists with CocoaPods, so your other pods keep working.
+- **CocoaPods** works too. `TreeSDK` is not on the CocoaPods trunk, so name its
+  source in your `Podfile` — the plugin's podspec only pins the version:
+
+  ```ruby
+  pod 'TreeSDK', :git => 'https://github.com/DRUApp/ios-tree-sdk.git', :tag => 'v0.6.0'
+  ```
+
+  Keep that tag in step with the plugin version you are on.
 - **Repository access.** Both this repo and `DRUApp/ios-tree-sdk` are private, so
   the host's machine and CI need credentials for each.
 - **HealthKit, photos and notifications are not configured by this plugin.**

@@ -1,3 +1,17 @@
+## 0.7.0
+
+* **The iOS floor drops to 15.6.** Requires `TreeSDK` 0.6.0, which back-deploys off every
+  iOS 16 API it used. A host can now set `IPHONEOS_DEPLOYMENT_TARGET = 15.6`; one already
+  on 16.0 or higher needs no change. On 15.x three things degrade cosmetically and nothing
+  breaks: sheets are full height rather than half, `List` rows keep the system separator
+  inset, and the chat/notes fields are single-line rather than growing.
+* **CocoaPods is supported alongside SPM.** `tree_sdk_flutter.podspec` now declares
+  `s.dependency 'TreeSDK'`, so a host that cannot enable Swift Package Manager names the
+  source in its own `Podfile` and builds. SPM stays the preferred route and is unchanged.
+* `pubspec.yaml`'s Dart constraint widens to `>=3.0.0 <4.0.0`; it pinned `^3.12.2`, which
+  turned away hosts on an older-but-compatible SDK for no reason.
+* No Dart API change. Android still requires `android-tree-sdk` 0.4.0.
+
 ## 0.6.6
 
 * Requires `TreeSDK` 0.5.6 on iOS — the diary performance fix. `DiaryEntry.recordedAt` was
