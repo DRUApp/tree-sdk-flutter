@@ -1,3 +1,13 @@
+## 0.8.3
+
+* Requires `TreeSDK` 0.7.4 on iOS — no Dart API change:
+  * **The medicine alert's three buttons are visible by default now.** iOS only shows a
+    notification's actions in the *expanded* banner, so while the app is in the foreground the
+    SDK suppresses the system banner and draws its own card — *i took it* / *snooze* /
+    *cancel* on screen from the first frame, to the design's spec. A backgrounded or locked
+    app still gets iOS's banner, with the buttons behind a long-press; that is the OS's own
+    presentation and cannot be changed.
+
 ## 0.8.2
 
 * Requires `TreeSDK` 0.7.3 on iOS — no Dart API change:
