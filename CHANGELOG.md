@@ -1,3 +1,17 @@
+## 0.8.1
+
+* Requires `TreeSDK` 0.7.1 on iOS — no Dart API change:
+  * **Interactive medicine notifications.** A medicine reminder carries three buttons —
+    *i took it* / *snooze* / *cancel*. "i took it" logs the dose timestamped at the
+    notification's own fire time, snooze re-fires the same notification (with the same
+    buttons) after 10 minutes, cancel clears the alarm and logs nothing. Only medicines
+    declare the actions; a reminder to go and measure something keeps none. Answering from
+    the notification no longer also opens the app behind it.
+  * HbA1c's reminder row showed no date — `start_date` has no time part, which both ISO8601
+    formatters reject, so it decoded as nil and the detail screen fell back to today.
+  * The Explore carousel only swiped from the far edge of the card, and a summary sparkline
+    with a single reading drew a lone dot in an otherwise empty card.
+
 ## 0.8.0
 
 * Requires `TreeSDK` 0.7.0 on iOS — a QA round, no Dart API change:
