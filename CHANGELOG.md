@@ -1,3 +1,13 @@
+## 0.8.5
+
+* Requires `TreeSDK` 0.7.6 on iOS:
+  * `cancel` is marked destructive, so it draws red in the OS's action list.
+  * `Examples/MedicineNotificationExtension` in the SDK repo is a copy-in notification content
+    extension, ported from the old app: it draws the design's card inside the **expanded**
+    notification. A Flutter host adds the target to its own `ios/Runner` project — a plugin
+    cannot ship one. Note it does **not** put the buttons on a collapsed banner; nothing can.
+    Mind the README's `UserNotificationsUI` linkage trap.
+
 ## 0.8.4
 
 * Requires `TreeSDK` 0.7.5 on iOS: the medicine alert's three actions take equal thirds, as
