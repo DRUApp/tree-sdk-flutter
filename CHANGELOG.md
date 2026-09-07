@@ -1,3 +1,15 @@
+## 0.8.2
+
+* Requires `TreeSDK` 0.7.3 on iOS — no Dart API change:
+  * **The medicine notification's three buttons never appeared, because the notification was
+    never scheduled.** Only opening the Medications screen ever armed a medicine's reminders,
+    so anyone who reinstalled — or whose medicines were added on another device — had the
+    Reminders screen listing times with nothing pending behind them. The Reminders screen
+    arms them now, from the medicine list it already fetches.
+  * **A snooze was cancelled by reopening the app.** Re-arming a medicine swept every pending
+    request that was not in its plan, and a snooze deliberately is not — so the reminder
+    pushed ten minutes out never came back.
+
 ## 0.8.1
 
 * Requires `TreeSDK` 0.7.1 on iOS — no Dart API change:
