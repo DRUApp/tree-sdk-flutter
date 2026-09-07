@@ -1,3 +1,8 @@
+## 0.8.4
+
+* Requires `TreeSDK` 0.7.5 on iOS: the medicine alert's three actions take equal thirds, as
+  the design draws them.
+
 ## 0.8.3
 
 * Requires `TreeSDK` 0.7.4 on iOS — no Dart API change:

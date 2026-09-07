@@ -110,7 +110,7 @@ in Dart before anything reaches the platform.
   source in your `Podfile` — the plugin's podspec only pins the version:
 
   ```ruby
-  pod 'TreeSDK', :git => 'https://github.com/DRUApp/ios-tree-sdk.git', :tag => 'v0.7.4'
+  pod 'TreeSDK', :git => 'https://github.com/DRUApp/ios-tree-sdk.git', :tag => 'v0.7.5'
   ```
 
   Keep that tag in step with the plugin version you are on.
