@@ -16,7 +16,7 @@ dependencies:
   tree_sdk_flutter:
     git:
       url: https://github.com/DRUApp/tree-sdk-flutter.git
-      ref: v0.8.6
+      ref: v0.8.7
 ```
 
 ## Use
@@ -110,7 +110,7 @@ in Dart before anything reaches the platform.
   source in your `Podfile` — the plugin's podspec only pins the version:
 
   ```ruby
-  pod 'TreeSDK', :git => 'https://github.com/DRUApp/ios-tree-sdk.git', :tag => 'v0.7.7'
+  pod 'TreeSDK', :git => 'https://github.com/DRUApp/ios-tree-sdk.git', :tag => 'v0.7.8'
   ```
 
   Keep that tag in step with the plugin version you are on.

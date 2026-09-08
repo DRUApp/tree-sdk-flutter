@@ -1,3 +1,12 @@
+## 0.8.7
+
+* Requires `TreeSDK` 0.7.8 on iOS. No Dart or public Swift API change:
+  * **The Explore Steps card carries its progress ring**, the old app's
+    `confingureStepsCell` — the card already showed the goal on its subtitle line, and this
+    is the ring that was noted as unported beside it.
+  * The message under the metric chart is no longer bold, matching dru.
+* Android still requires `android-tree-sdk` 0.4.0 and is unported.
+
 ## 0.8.6
 
 * Requires `TreeSDK` 0.7.7 on iOS. No Dart API change, and no public Swift API change either —
