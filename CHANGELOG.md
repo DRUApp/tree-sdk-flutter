@@ -1,3 +1,15 @@
+## 0.8.8
+
+* Requires `TreeSDK` 0.7.9 on iOS. No Dart or public Swift API change:
+  * **HbA1c and Blood Pressure get the hero summary card.** Both tabs used to open straight
+    onto the readings list, matching Android and the frames; QA asked for the card, so
+    `showsSummary` is now true for every metric. The default card handles both without extra
+    work — BP joins its measurements and reads `117/80 mmHg`, HbA1c reads `6 %`.
+  * **Neither gets a chart button**, because neither has an insights screen — dru has no chart
+    for either metric, and that button is the only route into it. Kept as a separate rule from
+    the summary gate, since the two now disagree.
+* Android still requires `android-tree-sdk` 0.4.0 and is unported.
+
 ## 0.8.7
 
 * Requires `TreeSDK` 0.7.8 on iOS. No Dart or public Swift API change:
