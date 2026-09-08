@@ -1,3 +1,22 @@
+## 0.8.6
+
+* Requires `TreeSDK` 0.7.7 on iOS. No Dart API change, and no public Swift API change either —
+  a QA round of display fixes:
+  * **Workout type and its icon.** `WorkoutType.from` used to answer "Walking" for a value it
+    did not recognise, so any unknown type was mislabelled; it returns nil now and the metric's
+    own name and glyph stand in. The five figure glyphs are the designed assets at all four
+    sites, and the All tab titles a workout row by its type rather than "Workout".
+  * **"Other" is a workout type**, and the chips are built from the backend's `allowed_values`
+    so no build can offer a value the b2b would reject. The catalogue was updated on dev and
+    staging; **production still rejects it**.
+  * **The orange band reads "Elevated", not "High"** — dru's own vocabulary has no "high" band.
+  * **Blood pressure's diastolic markers are tappable**, and the tooltip no longer truncates
+    `201/80 mmHg`.
+  * The message under the chart is dru's own text, drawn once rather than twice; the Diary's
+    tab icons keep their own colours; Carbs, Steps and All use their delivered glyphs; the new
+    weight log says "Save" rather than "Update".
+* Android still requires `android-tree-sdk` 0.4.0 and is unported for all of it.
+
 ## 0.8.5
 
 * Requires `TreeSDK` 0.7.6 on iOS:
