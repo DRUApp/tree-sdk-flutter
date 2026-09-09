@@ -1,3 +1,19 @@
+## 0.9.0
+
+* Requires `TreeSDK` 0.8.0 on iOS. No Dart API change; two additive Swift members:
+  * **A Nawaf answer is no longer lost when the app leaves mid-generation** (QA `Kpco47`).
+    Backgrounding or killing the app kills the in-flight `POST /ai-companion/ask`, and the
+    client showed Retry for a turn the server had already finished — both messages are
+    inserted before that call returns, so the answer was sitting in the session unasked for.
+    `recoverPendingReply()` fetches it after a failed send, on the chat appearing, and on
+    return to the foreground; it only adopts a transcript that contains the lost question and
+    ends on a model message, so a half-written turn still keeps Retry.
+  * **The "Log new" sheet draws the design's own order** and no longer follows the home
+    arrangement — one property served both, so dragging a row elsewhere re-shuffled which
+    metric got the double-height featured card. `defaultOrderSubcategories` is the unarranged
+    list the sheet reads.
+* Android still requires `android-tree-sdk` 0.4.0 and is unported for both.
+
 ## 0.8.8
 
 * Requires `TreeSDK` 0.7.9 on iOS. No Dart or public Swift API change:
