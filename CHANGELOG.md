@@ -1,3 +1,22 @@
+## 0.10.0
+
+* Requires `TreeSDK` 0.9.0 on iOS. No Dart API change; one additive Swift parameter
+  (`MedicationLogsView.init` gains `isVisible`, defaulted, so existing callers compile
+  unchanged). A QA round:
+  * **The keyboard stayed up** over the chat transcript and behind the history drawer.
+    Tapping the body drops it, and both hamburgers dismiss before animating the drawer.
+  * **The chat's send button vanished past ~3 wrapped lines** — the input pill was a
+    `Capsule`, whose corner radius is half its height, so the growing field's end-caps
+    clipped the 40pt icon off the trailing edge. Now a fixed-radius rounded rectangle:
+    identical while short, stable while tall.
+  * **The Diary's "+" sat under the Nawaf orb**, which draws in its own window over the whole
+    app and took the tap. The button is raised clear (112pt, derived from the orb's own
+    geometry rather than eyeballed).
+  * The target-weight sheet printed a bare `kg` in Arabic — `WeightWheel`'s default was a
+    literal, so the sheet bypassed the translated unit. Now **كجم**.
+  * Plus the toast, medicine-log and chart-line items from the same round.
+* Android still requires `android-tree-sdk` 0.4.0 and is unported for all of it.
+
 ## 0.9.0
 
 * Requires `TreeSDK` 0.8.0 on iOS. No Dart API change; two additive Swift members:
