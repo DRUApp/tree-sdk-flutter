@@ -26,7 +26,9 @@ plugins {
 
 android {
     namespace = "com.dru.tree_sdk_flutter_example"
-    compileSdk = 34
+    // API 36 / minSdk 28, mirroring the partner compatibility matrix so this harness exercises
+    // the same surface their app will.
+    compileSdk = 36
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
@@ -36,9 +38,9 @@ android {
 
     defaultConfig {
         applicationId = "com.dru.tree_sdk_flutter_example"
-        // tree_sdk_flutter's README requires minSdkVersion 26+.
-        minSdk = 26
-        targetSdk = 34
+        // tree_sdk_flutter requires 26+; set to 28 to match the partner matrix.
+        minSdk = 28
+        targetSdk = 36
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
@@ -59,13 +61,15 @@ android {
             signingConfig = signingConfigs.findByName("release")
                 ?: signingConfigs.getByName("debug")
 
-            // R8 OFF on purpose. Flutter shrinks release builds by default, and the Tree
-            // SDK decodes JSON with Moshi's KotlinJsonAdapterFactory — pure reflection.
-            // treesdk's consumer-rules.pro keeps only `modules.**.data.**` plus a
-            // hand-added TokenBundle, while Moshi-shaped types also live in
-            // com.dru.treesdk.session/config. Anything the rules miss gets stripped and
-            // fails at runtime *only in release* — the worst possible thing to hand a
-            // tester. Re-enable once the SDK's keep rules are known-complete.
+            // R8 OFF on purpose for tester builds. Flutter shrinks release builds by
+            // default, and the Tree SDK decodes JSON with Moshi's KotlinJsonAdapterFactory
+            // — pure reflection, invisible to R8. treesdk now ships a proper
+            // consumer-rules.pro (models, @Json fields anywhere, wire enums, @Metadata),
+            // so minification SHOULD hold; but anything the rules still miss fails at
+            // runtime *only in release*, which is the worst thing to hand a tester. Leave
+            // this off for BetaDrop builds. Flip both to true only for a deliberate
+            // shrink-verification pass, and smoke-test login + diary + Nawaf before
+            // shipping that build anywhere.
             isMinifyEnabled = false
             isShrinkResources = false
         }
