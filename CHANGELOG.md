@@ -1,3 +1,34 @@
+## 0.8.1
+
+* Requires `TreeSDK` 0.7.1 on iOS — no Dart API change:
+  * **Interactive medicine notifications.** A medicine reminder carries three buttons —
+    *i took it* / *snooze* / *cancel*. "i took it" logs the dose timestamped at the
+    notification's own fire time, snooze re-fires the same notification (with the same
+    buttons) after 10 minutes, cancel clears the alarm and logs nothing. Only medicines
+    declare the actions; a reminder to go and measure something keeps none. Answering from
+    the notification no longer also opens the app behind it.
+  * HbA1c's reminder row showed no date — `start_date` has no time part, which both ISO8601
+    formatters reject, so it decoded as nil and the detail screen fell back to today.
+  * The Explore carousel only swiped from the far edge of the card, and a summary sparkline
+    with a single reading drew a lone dot in an otherwise empty card.
+
+## 0.8.0
+
+* Requires `TreeSDK` 0.7.0 on iOS — a QA round, no Dart API change:
+  * **Arabic-Indic digits are accepted everywhere.** `Int("٦")` and `Double("٦")` are both
+    nil, so every numeric field silently dropped what the Arabic keyboard typed and kept its
+    previous value. Fixed at all seven numeric-input sites, not just the reported one.
+  * **Blood pressure charts as a pair.** The metric chart plotted systolic alone and dropped
+    every diastolic reading; both lines now draw, and "time in range" requires both halves
+    in range rather than passing 201/80 because 80 is fine.
+  * **Explore cards show the real latest reading.** They read the shared 25-entry first page,
+    so a metric whose last reading was older — typically weight and waist — showed
+    "No readings yet" until you logged again. Swiping the carousel is cheaper too.
+  * Reminder rows show the next time due rather than the earliest; the medication delete
+    prompt no longer freezes in the language the host first started in; HbA1c opens its
+    ring at 0, matching dru.
+* Android still requires `android-tree-sdk` 0.4.0 and is unported for all of the above.
+
 ## 0.7.0
 
 * **The iOS floor drops to 15.6.** Requires `TreeSDK` 0.6.0, which back-deploys off every

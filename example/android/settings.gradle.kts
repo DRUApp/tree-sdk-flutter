@@ -26,12 +26,16 @@ plugins {
     // required for Kotlin support since AGP 9.0." 8.12.3 matches android-tree-sdk's committed
     // root build.gradle.kts, i.e. the newest 8.x known to build this stack.
     //
-    // Kotlin MUST be 2.4.0. tree_sdk_flutter's android/build.gradle.kts applies
-    // "org.jetbrains.kotlin.plugin.compose" version 2.4.0, and the Compose compiler plugin's
-    // version has to equal the Kotlin version actually in use — a mismatch fails at compile
-    // time. (This is the "flutter_application_1 test host" combination its comment refers to.)
+    // Kotlin MUST equal the version tree_sdk_flutter/android/build.gradle.kts declares for
+    // "org.jetbrains.kotlin.plugin.compose" — the Compose compiler plugin's version has to match
+    // the Kotlin version actually in use, and a mismatch fails at compile time. Change the two
+    // together or not at all.
+    //
+    // 2.2.20 rather than the 2.2.0 in the partner compatibility matrix: Flutter 3.38.9's Gradle
+    // plugin hard-fails below 2.2.20, so 2.2.0 is not reachable from a Flutter host at all. This
+    // is the nearest version that satisfies both.
     id("com.android.application") version "8.12.3" apply false
-    id("org.jetbrains.kotlin.android") version "2.4.0" apply false
+    id("org.jetbrains.kotlin.android") version "2.2.20" apply false
 }
 
 include(":app")
