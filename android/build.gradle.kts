@@ -12,18 +12,28 @@ plugins {
     // it. It MUST equal the Kotlin version actually in use for this build — mismatched versions
     // fail at compile time, not silently — so keep this in lockstep with whatever
     // "org.jetbrains.kotlin.android" resolves to for the app you're testing against (check its
-    // android/settings.gradle.kts). Currently matches the flutter_application_1 test host (Kotlin
-    // 2.4.0). If a host project is still on Kotlin 1.9.x, drop this plugin entirely and use
+    // android/settings.gradle.kts). A host on a different Kotlin version MUST change this to
+    // match, or the build fails with "This version of the Compose Compiler requires Kotlin
+    // version X but you appear to be using Y".
+    //
+    // 2.2.20, not the 2.2.0 the partner compatibility matrix names: Flutter 3.38.9's own Gradle
+    // plugin refuses anything below 2.2.20 ("Your project's Kotlin version (2.2.0) is lower than
+    // Flutter's minimum supported version of 2.2.20"), so 2.2.0 and Flutter 3.38.9 cannot coexist.
+    // This is the nearest version that satisfies both.
+    //
+    // If a host project is still on Kotlin 1.9.x, drop this plugin entirely and use
     // composeOptions { kotlinCompilerExtensionVersion = "1.5.14" } instead (matching
     // android-tree-sdk/treesdk's own build.gradle.kts) — K2's plugin didn't exist before 2.0.
-    id("org.jetbrains.kotlin.plugin.compose") version "2.4.0"
+    id("org.jetbrains.kotlin.plugin.compose") version "2.2.20"
 }
 
 group = "com.dru.tree_sdk_flutter"
 
 android {
     namespace = "com.dru.tree_sdk_flutter"
-    compileSdk = 34
+    // API 36, matching the partner compatibility matrix. This module is compiled inside the host
+    // app's build, so its compileSdk must not exceed the host's - 36 is theirs exactly.
+    compileSdk = 36
 
     defaultConfig {
         // Matches android-tree-sdk's treesdk module. Hosts need minSdkVersion >= 26 in their own
