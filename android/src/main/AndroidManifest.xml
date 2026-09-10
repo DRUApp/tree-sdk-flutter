@@ -13,6 +13,7 @@
         <activity
             android:name="com.dru.tree_sdk_flutter.TreeSdkFlutterActivity"
             android:exported="false"
+            android:launchMode="singleTop"
             android:theme="@style/TreeSdkFlutterTheme"
             android:windowSoftInputMode="adjustResize"
             android:configChanges="orientation|screenSize|keyboardHidden|uiMode" />

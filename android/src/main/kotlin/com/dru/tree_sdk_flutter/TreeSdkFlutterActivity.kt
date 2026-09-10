@@ -92,6 +92,10 @@ class TreeSdkFlutterActivity : ComponentActivity() {
             val intent = Intent(context, TreeSdkFlutterActivity::class.java)
                 .putExtra(EXTRA_INITIAL, initial.name)
             deepLinkExtras?.let { intent.putExtras(it) }
+            // singleTop in the manifest plus this flag: a second launch is delivered to the
+            // instance already on screen (onNewIntent, which re-reads the deep link) instead of
+            // stacking another copy of the SDK behind or in front of it.
+            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
             if (context !is ComponentActivity) intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(intent)
         }

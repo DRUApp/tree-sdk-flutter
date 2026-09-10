@@ -51,6 +51,16 @@ class TreeSdkFlutterPlugin : FlutterPlugin, ActivityAware, MethodChannel.MethodC
     @Volatile
     private var presented = false
 
+    /**
+     * A start that has been asked for but has not put anything on screen yet.
+     *
+     * [presented] only turns true once the session is established, so two calls arriving inside
+     * that window both passed the guard below and launched an Activity each. The first consumed
+     * the reminder deep link, leaving the second to open plain Explore on top of it.
+     */
+    @Volatile
+    private var starting = false
+
     /** The `start` call's result, resolved once [TreeSdkFlutterActivity] is actually on screen. */
     private var pendingStartResult: MethodChannel.Result? = null
 
@@ -96,6 +106,12 @@ class TreeSdkFlutterPlugin : FlutterPlugin, ActivityAware, MethodChannel.MethodC
                 start(arguments, result)
             }
             "isPresented" -> result.success(presented)
+            // Asked by Dart as it starts up. `onReminderTapped` is a push, and on a COLD start
+            // this plugin attaches - and fires it - long before the Dart side has subscribed, so
+            // the event is dropped and the user is left staring at the host's connect screen.
+            // Deliberately does not consume the extras: `start` still needs them to build the
+            // deep link that routes to the log screen.
+            "hasPendingReminderTap" -> result.success(pendingReminderExtras != null)
             else -> {
                 Log.e(TAG, "unhandled method ${call.method}")
                 result.notImplemented()
@@ -106,8 +122,8 @@ class TreeSdkFlutterPlugin : FlutterPlugin, ActivityAware, MethodChannel.MethodC
     // MARK: - start
 
     private fun start(arguments: Map<*, *>, result: MethodChannel.Result) {
-        if (presented) {
-            Log.i(TAG, "start ignored — the SDK is already on screen")
+        if (presented || starting) {
+            Log.i(TAG, "start ignored — the SDK is already on screen or on its way")
             result.success(null)
             return
         }
@@ -135,6 +151,7 @@ class TreeSdkFlutterPlugin : FlutterPlugin, ActivityAware, MethodChannel.MethodC
                 "modules=${config.enabledModules.joinToString(",") { it.name }}",
         )
 
+        starting = true
         pendingStartResult = result
         val appContext = activity.applicationContext
         scope.launch {
@@ -143,11 +160,13 @@ class TreeSdkFlutterPlugin : FlutterPlugin, ActivityAware, MethodChannel.MethodC
                 is TreeResult.Err -> {
                     val code = code(initialized.failure)
                     Log.e(TAG, "start FAILED at initialize — code=$code message=${initialized.failure.message}")
+                    starting = false
                     pendingStartResult = null
                     result.error(code, initialized.failure.message, null)
                 }
                 is TreeResult.Ok -> {
                     Log.i(TAG, "initialize ok — session established")
+                    starting = false
                     presented = true
                     val deepLinkExtras = pendingReminderExtras
                     pendingReminderExtras = null
@@ -167,6 +186,7 @@ class TreeSdkFlutterPlugin : FlutterPlugin, ActivityAware, MethodChannel.MethodC
     /** Called by [TreeSdkFlutterActivity] when the user leaves the SDK's UI. */
     internal fun notifyClosed() {
         Log.i(TAG, "closed by the user")
+        starting = false
         presented = false
         channel.invokeMethod("onClose", null)
     }

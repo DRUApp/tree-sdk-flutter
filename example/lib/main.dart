@@ -67,8 +67,14 @@ class _ConnectPageState extends State<ConnectPage> {
   void initState() {
     super.initState();
     // Reopen the SDK straight to the tapped reminder — see the plugin
-    // README's "Tapping a reminder notification" section.
+    // README's "Tapping a reminder notification" section. This covers the warm case, where the
+    // app is already running when the notification is tapped.
     TreeSdk.onReminderTapped.listen((_) => _start());
+    // And the cold one, where the app is launched BY the tap: the native side fires the event
+    // above while this page is still being built, so it is gone before the listener exists.
+    // Asking instead is what stops a tapped reminder from stalling on this connect screen.
+    // Before the first frame where possible, so the form never flashes on the way through.
+    WidgetsBinding.instance.addPostFrameCallback((_) => _startIfLaunchedFromReminder());
     TreeSdk.onClose.listen((_) {
       if (mounted) setState(() => _starting = false);
     });
@@ -80,7 +86,18 @@ class _ConnectPageState extends State<ConnectPage> {
     super.dispose();
   }
 
+  Future<void> _startIfLaunchedFromReminder() async {
+    if (!await TreeSdk.hasPendingReminderTap || !mounted) return;
+    _start();
+  }
+
   Future<void> _start() async {
+    // A cold start from a notification reaches here twice: once from the pending-tap check above,
+    // and once from the onReminderTapped stream, whose event arrives just late enough for the
+    // listener to catch it. Both used to run, and each launched its own SDK activity - the second
+    // with no deep link left to consume, which is why the log screen ended up buried under a
+    // second Explore.
+    if (_starting) return;
     final treeUserId = _treeUserIdController.text.trim();
     if (treeUserId.isEmpty) {
       setState(() => _error = 'Enter a Tree user ID first.');
@@ -118,6 +135,12 @@ class _ConnectPageState extends State<ConnectPage> {
   @override
   Widget build(BuildContext context) {
     const purple = Color(0xFF6750A4);
+    // Launched from a reminder notification: the SDK is already starting, so showing the form -
+    // with its Connect button - would invite a tap that is not needed and cannot help. A spinner
+    // holds the screen until the SDK's own UI takes over.
+    if (_starting) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(

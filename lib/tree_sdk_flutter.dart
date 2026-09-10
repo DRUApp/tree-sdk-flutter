@@ -142,6 +142,25 @@ class TreeSdk {
   static Future<bool> get isPresented async =>
       await _channel.invokeMethod<bool>('isPresented') ?? false;
 
+  /// Whether the app was launched by tapping a reminder notification.
+  ///
+  /// [onReminderTapped] is a push, so it is missed on a cold start: the native side fires it
+  /// while the Dart side is still building its first widget and has nothing subscribed yet. Ask
+  /// this as your app starts and call [start] when it answers true, and a tapped reminder opens
+  /// its log screen without the user having to connect first.
+  ///
+  /// Answering true does not consume anything - the deep link is still delivered by [start].
+  static Future<bool> get hasPendingReminderTap async {
+    try {
+      return await _channel.invokeMethod<bool>('hasPendingReminderTap') ?? false;
+    } on MissingPluginException {
+      // A platform that has not implemented it yet - there is simply no pending tap to report.
+      return false;
+    } on PlatformException {
+      return false;
+    }
+  }
+
   /// Initializes the SDK and presents its UI.
   ///
   /// Calling this while the SDK is already on screen does nothing.
