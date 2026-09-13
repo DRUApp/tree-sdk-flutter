@@ -1,3 +1,20 @@
+## 0.11.2
+
+* Requires `TreeSDK` 0.10.2 on iOS. No API change on either side.
+  * **The Explore carousel's status indicator went missing** against a backend
+    whose catalogue names its risk bands with hex codes rather than colour
+    names. The reading kept its colour and lost the word beside it — Blood
+    Sugar drew an orange `185 mg/dL` with nothing next to the time. `riskColor`
+    always accepted both formats (the API documents hex; the seeded data sends
+    names), but the label and severity lookups took only the names. One rule
+    resolves a band's colour now, by hue rather than a table of hex values, so
+    a shade the backend tweaks later still lands on the right band. A colour
+    with no meaningful hue stays unrecognised — an unclassified reading must
+    never read as "Normal".
+  * Its quieter half: with every band ranking equal, the worst-band summary
+    could describe a `258/80` blood-pressure reading by its diastolic rather
+    than its systolic.
+
 ## 0.11.1
 
 * Requires `TreeSDK` 0.10.1 on iOS. No API change on either side.
