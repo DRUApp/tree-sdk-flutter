@@ -1,3 +1,26 @@
+## 0.11.3
+
+* Requires `TreeSDK` 0.10.3 on iOS. No API change on either side.
+  * **The risk indicator is now entirely the backend's.** The SDK used to decide
+    both the wording and the ranking of a reading's band from its colour — four
+    colour names mapped to three hardcoded words. It renders the band's own
+    `recommendation_message` instead, which the API localizes off the `lang`
+    header, so a band edited in the catalogue changes the app with no release.
+    Ported from the Android SDK rule for rule, so the two stay in step.
+  * Severity — which half of a blood-pressure reading speaks for it, and which
+    way the arrow points — is measured as distance from the *normal* band,
+    found by colour or by wording. Position cannot stand in for it: none of the
+    three vitals defines a band below normal, so their normal band is the first
+    of three or four, and treating the middle one as normal made 120/80 read
+    "low".
+  * A risk band with no `min_value` or no `max_value` now decodes as
+    open-ended rather than 0. The outermost bands are written that way, and
+    reading an absent minimum as zero moved a band's floor — invisible on a
+    metric that cannot go negative, but it put the band in the wrong place in
+    the sort severity depends on.
+  * Nothing is drawn for a value no band covers, or for a band carrying no
+    message: where the backend says nothing, the reading reads plain.
+
 ## 0.11.2
 
 * Requires `TreeSDK` 0.10.2 on iOS. No API change on either side.
