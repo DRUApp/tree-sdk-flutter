@@ -1,3 +1,15 @@
+## 0.11.1
+
+* Requires `TreeSDK` 0.10.1 on iOS. No API change on either side.
+  * **The time wheel read backwards in Arabic.** A system `DatePicker` mirrors
+    every one of its columns under RTL, so Arabic showed `ص | 00 | 8` — minutes
+    before hours — and pinning the picker LTR only traded that for ص/م on the
+    wrong side, there being nothing in between. `TreeTimeWheel` is dru's own
+    hand-rolled three-column picker: the view stays RTL and the hour and minute
+    columns are *swapped* in Arabic, so the mirroring puts them back in reading
+    order. Used by the diary's "Date & time" sheet (with a leading day column),
+    the medication custom form and the reminder detail screen.
+
 ## 0.11.0
 
 * **New: `TreeSdk.hasPendingReminderTap`.** `onReminderTapped` is a push, so a
