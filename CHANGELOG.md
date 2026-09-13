@@ -1,3 +1,42 @@
+## 0.11.0
+
+* **New: `TreeSdk.hasPendingReminderTap`.** `onReminderTapped` is a push, so a
+  **cold** start misses it — the native side fires it while Dart is still building
+  its first widget and nothing is subscribed, leaving a tapped reminder stranded on
+  the host's connect screen. Ask this as your app starts and call `start` when it
+  answers true; it does not consume the deep link, which `start` still delivers.
+  The example host shows the pattern, and guards against the double `start` a cold
+  tap would otherwise cause (the second launch had no deep link left to consume, so
+  the log screen ended up buried under a second Explore).
+* Android: the SDK activity is `singleTop` and re-launched with
+  `FLAG_ACTIVITY_SINGLE_TOP`, so a second launch reaches the instance on screen
+  instead of stacking another copy; `start` now also guards the window *before*
+  the session is established, which two calls could both pass. Kotlin 2.2.20 and
+  `compileSdk` 36 / `minSdk` 28 across the plugin and the example, matching the
+  partner compatibility matrix as closely as Flutter 3.38.9 allows — its Gradle
+  plugin hard-fails below Kotlin 2.2.20, so the matrix's 2.2.0 is unreachable from
+  a Flutter host.
+* Requires `TreeSDK` 0.10.0 on iOS. The Swift additions are defaulted
+  (`MedicationListView.init` gains `onLogged`, `DiaryViewModel` gains
+  `loadSubcategoriesIfNeeded()`), so existing callers compile unchanged. A Diary
+  and Explore QA round:
+  * **A save now returns where the logging started.** A dose or reading logged
+    from Explore ends on Explore, and one logged from a Diary tab ends on that
+    tab — both used to unwind to the medication list or the metric's tab. A host
+    that opens either screen as a destination (Explore's My Health card,
+    Reminders, a notification tap) keeps the old unwind.
+  * **"View all" on the save toast** brings the Diary forward when the save
+    returned to Explore, and lands on All rather than the metric's tab.
+  * **Opening a log form from Explore no longer flashes the Diary first** — the
+    form is pushed as soon as the subcategories are in, without animation,
+    instead of waiting on the entries page and the dose logs.
+  * Weight, Water and Carbs share one period dropdown — today / last week /
+    last month / last year — and "View chart" is gone from Weight's.
+  * HbA1c and blood pressure get a hero card, but still no chart button.
+  * The message under the metric chart shows on an empty window too, unbolded.
+  * The Reminders medication row is an add action: a plus and its label in
+    `accentGreen`, "Add medication".
+
 ## 0.10.0
 
 * Requires `TreeSDK` 0.9.0 on iOS. No Dart API change; one additive Swift parameter
