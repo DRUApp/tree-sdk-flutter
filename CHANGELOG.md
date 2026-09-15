@@ -1,3 +1,29 @@
+## 0.12.0
+
+* Requires `TreeSDK` 0.11.0 on iOS. One additive Swift method
+  (`MedicationReminderScheduling.cancelOrphans(keeping:)`, defaulted, so existing
+  conformances compile unchanged); no Dart API change.
+  * **A reminder fired for a medicine that was no longer on the list.** Nothing
+    swept a medicine's pending notifications when the *medicine* went away —
+    deleted on another device, deleted while the app was closed, a course that
+    ended, or a different user on the same install. Deleting in the app was
+    always fine, which is why it only showed up on a second device. The two
+    screens that fetch the whole list now cancel what is left over.
+  * **The Nawaf orb covered the chat's own send button.** Its window draws above
+    everything, so at its default corner the mascot sat on the button and ate its
+    taps — which is why the welcome screen looked like it had no send button. The
+    orb hides itself while the chat is up.
+  * **Hours and minutes loop on the time wheel** — 12 rolls into 1, 59 into 00,
+    rather than stopping dead. The date and AM/PM columns deliberately do not.
+  * **The Weight / Water / Carbs period picker is a bottom sheet**, not a system
+    menu, with the selection mark at the row's trailing edge.
+  * **The metric empty state names the metric** in English ("You haven't logged
+    any Weight readings yet!") and stays one sentence in Arabic; the "+" hides
+    while a metric tab is empty, since that state already carries its own Log
+    button.
+  * Nawaf's welcome art, avatar and floating orb are the delivered assets now, and
+    the chat card's margins are measured from the safe area rather than the screen.
+
 ## 0.11.3
 
 * Requires `TreeSDK` 0.10.3 on iOS. No API change on either side.
