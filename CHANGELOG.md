@@ -1,3 +1,24 @@
+## 0.13.0
+
+* Requires `TreeSDK` 0.12.0 on iOS. One additive Swift property
+  (`UserMedicine.remindersEnabled`); no Dart API change.
+  * **A reminder switch per medicine.** Its reminder page carries a toggle beside
+    the name: off stops the notifications and keeps the times, the frequency and
+    the course, so turning it back on resumes them. Distinct from deleting the
+    medicine, and distinct from clearing its times — which is the thing the
+    switch exists to avoid.
+  * **Needs a backend that has `reminders_enabled`.** It is on the b2b's `dev`
+    branch. On an environment without it the failure is *silent*: `whitelist:
+    true` strips the field from the PATCH and the GET has nothing to return, so
+    the app saves, reads back nothing, and shows the switch on again with no
+    error. Probe with a PATCH carrying `{"reminders_enabled": true}` and see
+    whether the response echoes it.
+  * A medicine row written before the field existed reads as **on**, matching the
+    backend default — no migration, and no device loses its reminders.
+  * Blood sugar, medication and weight take their own Explore carousel glyphs,
+    and a workout whose type the build doesn't recognise draws the running
+    figure rather than the generic one.
+
 ## 0.12.0
 
 * Requires `TreeSDK` 0.11.0 on iOS. One additive Swift method
