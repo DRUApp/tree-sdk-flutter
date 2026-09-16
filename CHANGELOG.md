@@ -1,3 +1,97 @@
+## 0.13.1
+
+* Requires `TreeSDK` 0.12.1 on iOS. No API change on either side — a design round.
+  * **One empty state everywhere.** The All tab drops its own illustration and its
+    two private sentences for the shared skeleton the metric tabs already had, and
+    the subtitle is the same line on every screen that draws it. The block sits a
+    fixed 32pt under the chip row rather than centring in whatever space the info
+    card leaves, so it no longer moves with the card's height.
+  * **Nawaf's hero panel matches the frame**: the gradient runs top to bottom from
+    `#00B57F` to `#00FFB3`, 24pt corners at the top and 80 at the bottom. Its
+    header controls are 32pt on a 20% white fill, and the send button is 40pt
+    rather than 32.
+  * **The picker wheels lose the grey selection band.** SwiftUI's `.wheel` paints
+    one behind the centre row with no way to turn it off, and the frames have
+    none; the selection is marked by the centre row's own weight and colour
+    instead. The weight drum is drawn by hand for the same reason — a 40pt centre
+    against 24pt neighbours, with kilos, point and grams kept tight together.
+  * **The steps pill drops "AVG" on a single day.** Selecting a bar on the Week
+    chart or a date on the Month calendar collapses the period to that day, so
+    the pill was calling one day's steps an average. It stays an average for a
+    whole week or month.
+  * The reminders hub's medicine rows show On/Off like the Health and Lifestyle
+    rows, reading the medicine's reminder switch rather than its soft-delete flag.
+
+## 0.13.0
+
+* Requires `TreeSDK` 0.12.0 on iOS. One additive Swift property
+  (`UserMedicine.remindersEnabled`); no Dart API change.
+  * **A reminder switch per medicine.** Its reminder page carries a toggle beside
+    the name: off stops the notifications and keeps the times, the frequency and
+    the course, so turning it back on resumes them. Distinct from deleting the
+    medicine, and distinct from clearing its times — which is the thing the
+    switch exists to avoid.
+  * **Needs a backend that has `reminders_enabled`.** It is on the b2b's `dev`
+    branch. On an environment without it the failure is *silent*: `whitelist:
+    true` strips the field from the PATCH and the GET has nothing to return, so
+    the app saves, reads back nothing, and shows the switch on again with no
+    error. Probe with a PATCH carrying `{"reminders_enabled": true}` and see
+    whether the response echoes it.
+  * A medicine row written before the field existed reads as **on**, matching the
+    backend default — no migration, and no device loses its reminders.
+  * Blood sugar, medication and weight take their own Explore carousel glyphs,
+    and a workout whose type the build doesn't recognise draws the running
+    figure rather than the generic one.
+
+## 0.12.0
+
+* Requires `TreeSDK` 0.11.0 on iOS. One additive Swift method
+  (`MedicationReminderScheduling.cancelOrphans(keeping:)`, defaulted, so existing
+  conformances compile unchanged); no Dart API change.
+  * **A reminder fired for a medicine that was no longer on the list.** Nothing
+    swept a medicine's pending notifications when the *medicine* went away —
+    deleted on another device, deleted while the app was closed, a course that
+    ended, or a different user on the same install. Deleting in the app was
+    always fine, which is why it only showed up on a second device. The two
+    screens that fetch the whole list now cancel what is left over.
+  * **The Nawaf orb covered the chat's own send button.** Its window draws above
+    everything, so at its default corner the mascot sat on the button and ate its
+    taps — which is why the welcome screen looked like it had no send button. The
+    orb hides itself while the chat is up.
+  * **Hours and minutes loop on the time wheel** — 12 rolls into 1, 59 into 00,
+    rather than stopping dead. The date and AM/PM columns deliberately do not.
+  * **The Weight / Water / Carbs period picker is a bottom sheet**, not a system
+    menu, with the selection mark at the row's trailing edge.
+  * **The metric empty state names the metric** in English ("You haven't logged
+    any Weight readings yet!") and stays one sentence in Arabic; the "+" hides
+    while a metric tab is empty, since that state already carries its own Log
+    button.
+  * Nawaf's welcome art, avatar and floating orb are the delivered assets now, and
+    the chat card's margins are measured from the safe area rather than the screen.
+
+## 0.11.3
+
+* Requires `TreeSDK` 0.10.3 on iOS. No API change on either side.
+  * **The risk indicator is now entirely the backend's.** The SDK used to decide
+    both the wording and the ranking of a reading's band from its colour — four
+    colour names mapped to three hardcoded words. It renders the band's own
+    `recommendation_message` instead, which the API localizes off the `lang`
+    header, so a band edited in the catalogue changes the app with no release.
+    Ported from the Android SDK rule for rule, so the two stay in step.
+  * Severity — which half of a blood-pressure reading speaks for it, and which
+    way the arrow points — is measured as distance from the *normal* band,
+    found by colour or by wording. Position cannot stand in for it: none of the
+    three vitals defines a band below normal, so their normal band is the first
+    of three or four, and treating the middle one as normal made 120/80 read
+    "low".
+  * A risk band with no `min_value` or no `max_value` now decodes as
+    open-ended rather than 0. The outermost bands are written that way, and
+    reading an absent minimum as zero moved a band's floor — invisible on a
+    metric that cannot go negative, but it put the band in the wrong place in
+    the sort severity depends on.
+  * Nothing is drawn for a value no band covers, or for a band carrying no
+    message: where the backend says nothing, the reading reads plain.
+
 ## 0.11.2
 
 * Requires `TreeSDK` 0.10.2 on iOS. No API change on either side.
