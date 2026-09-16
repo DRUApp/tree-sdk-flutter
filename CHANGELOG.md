@@ -1,3 +1,27 @@
+## 0.13.1
+
+* Requires `TreeSDK` 0.12.1 on iOS. No API change on either side — a design round.
+  * **One empty state everywhere.** The All tab drops its own illustration and its
+    two private sentences for the shared skeleton the metric tabs already had, and
+    the subtitle is the same line on every screen that draws it. The block sits a
+    fixed 32pt under the chip row rather than centring in whatever space the info
+    card leaves, so it no longer moves with the card's height.
+  * **Nawaf's hero panel matches the frame**: the gradient runs top to bottom from
+    `#00B57F` to `#00FFB3`, 24pt corners at the top and 80 at the bottom. Its
+    header controls are 32pt on a 20% white fill, and the send button is 40pt
+    rather than 32.
+  * **The picker wheels lose the grey selection band.** SwiftUI's `.wheel` paints
+    one behind the centre row with no way to turn it off, and the frames have
+    none; the selection is marked by the centre row's own weight and colour
+    instead. The weight drum is drawn by hand for the same reason — a 40pt centre
+    against 24pt neighbours, with kilos, point and grams kept tight together.
+  * **The steps pill drops "AVG" on a single day.** Selecting a bar on the Week
+    chart or a date on the Month calendar collapses the period to that day, so
+    the pill was calling one day's steps an average. It stays an average for a
+    whole week or month.
+  * The reminders hub's medicine rows show On/Off like the Health and Lifestyle
+    rows, reading the medicine's reminder switch rather than its soft-delete flag.
+
 ## 0.13.0
 
 * Requires `TreeSDK` 0.12.0 on iOS. One additive Swift property
