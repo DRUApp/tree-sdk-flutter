@@ -52,6 +52,25 @@ class TreeSdkFlutterPlugin : FlutterPlugin, ActivityAware, MethodChannel.MethodC
     private var presented = false
 
     /**
+     * Which presentation [presented] refers to, or null when nothing is on screen.
+     *
+     * The flag alone was not enough. A reminder notification opens the *host's* launcher activity
+     * with `FLAG_ACTIVITY_CLEAR_TOP`, which finishes [TreeSdkFlutterActivity] without routing
+     * through its own close callback - so `presented` stayed true over an empty screen and every
+     * later `start` was ignored as a duplicate. That is the "tapping a reminder lands on the
+     * connect page and Start does nothing" bug.
+     *
+     * An id rather than a boolean because the teardown is racy: the finished Activity's
+     * `onDestroy` can arrive *after* the deep link has already opened a new presentation, and a
+     * bare flag would let the dying Activity switch the live one off. Each launch takes the next
+     * id and only the Activity holding the current one may clear it.
+     */
+    @Volatile
+    private var presentationID: Int? = null
+
+    private var nextPresentationID = 0
+
+    /**
      * A start that has been asked for but has not put anything on screen yet.
      *
      * [presented] only turns true once the session is established, so two calls arriving inside
@@ -122,12 +141,38 @@ class TreeSdkFlutterPlugin : FlutterPlugin, ActivityAware, MethodChannel.MethodC
     // MARK: - start
 
     private fun start(arguments: Map<*, *>, result: MethodChannel.Result) {
+        val activity = activityBinding?.activity
         if (presented || starting) {
+            // One exception to "already on screen": a reminder tap. The notification opens the
+            // host's launcher activity, which may have just finished the SDK's - and even when it
+            // has not, the deep link still has to be delivered. Re-launching is safe either way:
+            // the Activity is singleTop, so this reaches the live instance through onNewIntent or
+            // creates a fresh one if CLEAR_TOP took it down.
+            // Not while a start is still in flight: that one has not read the extras yet and
+            // will deliver them itself. Taking them here would leave it to open a plain Explore
+            // on top of the screen the deep link had just reached.
+            val extras = pendingReminderExtras?.takeUnless { starting }
+            // And only for the session already running: a start asking for a different Tree user
+            // has to go through initialize, which is also what disarms the previous user's
+            // reminders. Re-using the live session there would open somebody else's diary.
+            val live = TreeSDK.shared?.takeIf { it.config.treeUserID == arguments["treeUserId"] }
+            if (extras != null && activity != null && live != null) {
+                Log.i(TAG, "start while presented — re-delivering the reminder deep link")
+                pendingReminderExtras = null
+                presented = true
+                TreeSdkFlutterActivity.launch(
+                    activity,
+                    screenFrom(arguments),
+                    extras,
+                    takePresentationID(),
+                )
+                result.success(null)
+                return
+            }
             Log.i(TAG, "start ignored — the SDK is already on screen or on its way")
             result.success(null)
             return
         }
-        val activity = activityBinding?.activity
         if (activity == null) {
             Log.e(TAG, "start FAILED — no activity to present from")
             result.error("no_window", "No activity to present from.", null)
@@ -170,7 +215,7 @@ class TreeSdkFlutterPlugin : FlutterPlugin, ActivityAware, MethodChannel.MethodC
                     presented = true
                     val deepLinkExtras = pendingReminderExtras
                     pendingReminderExtras = null
-                    TreeSdkFlutterActivity.launch(activity, initial, deepLinkExtras)
+                    TreeSdkFlutterActivity.launch(activity, initial, deepLinkExtras, takePresentationID())
                 }
             }
         }
@@ -183,12 +228,32 @@ class TreeSdkFlutterPlugin : FlutterPlugin, ActivityAware, MethodChannel.MethodC
         pendingStartResult = null
     }
 
-    /** Called by [TreeSdkFlutterActivity] when the user leaves the SDK's UI. */
-    internal fun notifyClosed() {
-        Log.i(TAG, "closed by the user")
+    /**
+     * Called by [TreeSdkFlutterActivity] when its presentation ends - whether the user closed it
+     * or the system finished it, which is what a reminder notification's CLEAR_TOP does.
+     *
+     * Ignores an id that is not the current presentation: that is a previous Activity being torn
+     * down after a newer one has already taken the screen, and it must not turn the new one off.
+     * Idempotent, so the close callback and the Activity's own teardown can both report.
+     */
+    internal fun notifyClosed(id: Int) {
+        if (presentationID != id) {
+            Log.i(TAG, "ignoring a close from presentation $id; current is ${presentationID ?: "none"}")
+            return
+        }
+        Log.i(TAG, "presentation $id ended")
+        presentationID = null
         starting = false
         presented = false
         channel.invokeMethod("onClose", null)
+    }
+
+    /** Reserves the id for a presentation about to be launched. */
+    @Synchronized
+    private fun takePresentationID(): Int {
+        nextPresentationID += 1
+        presentationID = nextPresentationID
+        return nextPresentationID
     }
 
     /** Tells Dart's `TreeSdk.onReminderTapped` stream to fire — see [notePendingReminderIntent]. */
