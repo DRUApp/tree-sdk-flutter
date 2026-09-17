@@ -1,3 +1,21 @@
+## 0.14.1
+
+* Requires `TreeSDK` 0.13.1 on iOS. No API change on either side.
+  * **The medicine snooze is per occurrence, not per medicine.** Its identifier is
+    the firing request's own plus `.snooze`, so two doses an hour apart can each be
+    snoozed without one replacing the other, and re-snoozing keeps the same id —
+    unlimited, never stacked. A medicine's requests are also keyed by *time*
+    (`…​.0930`) rather than position, which is what makes an edit visible: moving
+    09:30 to 10:45 reused the old key, so nothing could tell a new schedule from a
+    re-arming and the stale snooze survived it.
+  * **"i took it" logs at the press**, not at the reminder's fire time — the
+    acceptance criteria were rewritten. The fire time now only identifies which
+    occurrence was answered.
+  * Nawaf's card wears a `sea600` edge over a mint glow, drawn over the dim so it
+    stays crisp while the history drawer is open.
+  * **Android: crash reporting through the plugin** — the SDK activity and plugin
+    report failures, with a `CrashReport` harness in the example host.
+
 ## 0.14.0
 
 * Requires `TreeSDK` 0.13.0 on iOS. Additive Swift surface only
