@@ -1,6 +1,6 @@
 name: tree_sdk_flutter
 description: "Flutter bridge to the native Tree SDK — Nawaf AI chat, health diary, medications and reminders."
-version: 0.16.0
+version: 0.16.1
 homepage: https://github.com/DRUApp/tree-sdk-flutter
 repository: https://github.com/DRUApp/tree-sdk-flutter
 issue_tracker: https://github.com/DRUApp/tree-sdk-flutter/issues

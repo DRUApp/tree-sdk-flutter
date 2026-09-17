@@ -1,3 +1,26 @@
+## 0.16.1
+
+* Requires `TreeSDK` 0.15.2 on iOS. No Dart API change.
+  * **Steps no longer inherits another account's Health state.** The sync
+    marker, the connected flag and the permission-requested flag were
+    install-wide constants while Health access is device-wide, so signing a
+    second user into the same install skipped the connect card and started the
+    backfill from someone else's last sync — the new user's diary got nothing
+    written and read 0 in every filter, under a "last synced" that was not
+    theirs. All three keys are scoped to the user now, the way the token store
+    is scoped to its backend. An install that connected before this re-connects
+    once; a granted prompt returns immediately.
+  * **The floating orb is the size the design asks for.** Its artwork is 70% of
+    its frame — the rest is the asset's own glow — so a 90pt frame drew a 63pt
+    orb. The frame is 128 now, which puts a 90pt orb on screen, and the Diary's
+    "+" rises with it to stay clear.
+  * **"Add to list" ends on the medication list**, as dru's flow does: adding a
+    medicine and logging a dose of it are two acts, and continuing into "Log
+    details" left the user several backs from the list they had just added to.
+  * **A dose's "View all" keeps the tab it started from.** Logging begun on the
+    Diary returns to that tab; only a flow begun on Explore lands on All, where
+    there is no tab to return to.
+
 ## 0.16.0
 
 * Requires `TreeSDK` 0.15.0 on iOS. No Dart API change.
