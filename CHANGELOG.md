@@ -1,3 +1,29 @@
+## 0.15.0
+
+* Requires `TreeSDK` 0.14.0 on iOS. One additive Swift type
+  (`DiaryTabRouter`); no Dart API change.
+  * **A tracked workout keeps the calories it measured.** The live session hands
+    back what the pedometer earned and the form threw it away, recomputing the
+    estimate from type × intensity × duration — so ten minutes sitting still
+    showed 0 kcal on the session screen and saved ~42 anyway, and reopening the
+    entry did it again, so a saved 0 came back as 11 and an Update wrote that
+    over it. The measured value survives from the session and from the stored
+    entry, and is recomputed only when the type, intensity or duration is
+    changed by hand.
+  * **A logged dose gets "View all"** like every other reading. The medication
+    module posted the same save toast with no action attached, so a dose was the
+    one save with nothing to press — and it had no way to reach a Diary tab,
+    since the Diary's view model is a `StateObject` inside `DiaryListView`.
+    `DiaryTabRouter` carries the request and the Diary consumes it, live or on
+    its own task when the request was made before it existed (the case whenever
+    the dose was logged from Explore).
+  * **One fallback icon for a medicine with no picture.** The four thumbnail
+    sites had four different fallbacks between them — a pill asset and
+    `pills.fill` at three sizes in two colours — so the same medicine looked
+    like a different thing on the list, the search, the log row and the log
+    details. All four draw the Medication icon now, itself a new two-tone
+    delivery.
+
 ## 0.14.1
 
 * Requires `TreeSDK` 0.13.1 on iOS. No API change on either side.
