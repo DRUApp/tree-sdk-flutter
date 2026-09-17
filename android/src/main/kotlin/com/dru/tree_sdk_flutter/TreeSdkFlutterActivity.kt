@@ -34,10 +34,44 @@ class TreeSdkFlutterActivity : ComponentActivity() {
 
     private var reminderDeepLink by mutableStateOf<ReminderDeepLink?>(null)
 
+    /**
+     * Which presentation this Activity is, as handed out by the plugin.
+     *
+     * Reported back when the presentation ends so the plugin can tell a real close from a stale
+     * one - see [TreeSdkFlutterPlugin.notifyClosed]. -1 means "not launched by the plugin", which
+     * only happens if the system recreates this Activity from a saved instance state.
+     */
+    private var presentationID: Int = -1
+
+    /** Set once the close has been reported, so onDestroy does not report it twice. */
+    private var reportedClosed = false
+
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)
+        // A relaunch is a new presentation as far as the plugin is concerned, so take its id -
+        // otherwise this Activity would keep reporting under an id the plugin has retired.
+        intent.takePresentationID()?.let { presentationID = it }
         ReminderDeepLink.from(intent)?.let { reminderDeepLink = it }
+    }
+
+    /**
+     * The presentation is over, however it ended.
+     *
+     * A reminder notification opens the host's launcher activity with `FLAG_ACTIVITY_CLEAR_TOP`,
+     * which finishes this Activity outright: [onClose] never runs, so the plugin went on
+     * believing the SDK was on screen and ignored every later `start` as a duplicate. The user
+     * was left on the host's connect page with a Start button that did nothing.
+     */
+    override fun onDestroy() {
+        super.onDestroy()
+        if (isFinishing) reportClosed()
+    }
+
+    private fun reportClosed() {
+        if (reportedClosed) return
+        reportedClosed = true
+        TreeSdkFlutterPlugin.activePlugin?.notifyClosed(presentationID)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,6 +92,7 @@ class TreeSdkFlutterActivity : ComponentActivity() {
         }
 
         val plugin = TreeSdkFlutterPlugin.activePlugin
+        presentationID = intent.takePresentationID() ?: -1
         val initial = intent.getStringExtra(EXTRA_INITIAL)
             ?.let { runCatching { TreeScreen.valueOf(it) }.getOrNull() }
             ?: TreeScreen.EXPLORE
@@ -78,19 +113,36 @@ class TreeSdkFlutterActivity : ComponentActivity() {
                     ReminderDeepLink.clear(intent)
                 },
                 onClose = {
-                    plugin?.notifyClosed()
+                    reportClosed()
                     finish()
                 },
             )
         }
     }
 
+    /**
+     * The launch id this Intent carries, if it came from the plugin.
+     *
+     * Deliberately left on the Intent rather than consumed: a configuration change recreates this
+     * Activity and re-reads the same Intent, and it has to come back as the same presentation or
+     * its eventual close would be dismissed as stale.
+     */
+    private fun Intent.takePresentationID(): Int? =
+        getIntExtra(EXTRA_PRESENTATION_ID, -1).takeIf { it >= 0 }
+
     companion object {
         private const val EXTRA_INITIAL = "initial"
+        private const val EXTRA_PRESENTATION_ID = "presentation_id"
 
-        internal fun launch(context: Context, initial: TreeScreen, deepLinkExtras: Bundle? = null) {
+        internal fun launch(
+            context: Context,
+            initial: TreeScreen,
+            deepLinkExtras: Bundle? = null,
+            presentationID: Int = -1,
+        ) {
             val intent = Intent(context, TreeSdkFlutterActivity::class.java)
                 .putExtra(EXTRA_INITIAL, initial.name)
+                .putExtra(EXTRA_PRESENTATION_ID, presentationID)
             deepLinkExtras?.let { intent.putExtras(it) }
             // singleTop in the manifest plus this flag: a second launch is delivered to the
             // instance already on screen (onNewIntent, which re-reads the deep link) instead of
