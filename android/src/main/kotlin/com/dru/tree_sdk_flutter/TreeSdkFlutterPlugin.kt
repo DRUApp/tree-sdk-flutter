@@ -201,7 +201,19 @@ class TreeSdkFlutterPlugin : FlutterPlugin, ActivityAware, MethodChannel.MethodC
         val appContext = activity.applicationContext
         scope.launch {
             Log.d(TAG, "initialize: establishing the session")
-            when (val initialized = TreeSDK.initialize(appContext, config)) {
+            // Every failure has to come back as a Dart error. An exception escaping this
+            // coroutine reaches the Main dispatcher's handler and takes the whole host app down
+            // with it - the SDK failing to start is never a reason for the app to die.
+            val initialized = try {
+                TreeSDK.initialize(appContext, config)
+            } catch (e: Exception) {
+                Log.e(TAG, "start FAILED at initialize — threw ${e.javaClass.simpleName}", e)
+                starting = false
+                pendingStartResult = null
+                result.error("unknown", e.message ?: "The SDK failed to start.", null)
+                return@launch
+            }
+            when (initialized) {
                 is TreeResult.Err -> {
                     val code = code(initialized.failure)
                     Log.e(TAG, "start FAILED at initialize — code=$code message=${initialized.failure.message}")
