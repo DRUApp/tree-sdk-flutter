@@ -1,3 +1,24 @@
+## 0.14.0
+
+* Requires `TreeSDK` 0.13.0 on iOS. Additive Swift surface only
+  (`ExploreView.init` gains a defaulted `focusMetricID`, plus the
+  `ExploreView.medicineFocus` constant); no Dart API change.
+  * **The carousel lands on the metric you just logged.** Saving from Explore
+    returns to Explore, but the view is torn down while the Diary carries the
+    form, so the pager came back on card 0 and the new reading was several
+    swipes away. A logged dose does the same through the same field — the
+    medications screen has no subcategory id, so the host names the Medicine
+    card and Explore resolves it from the catalogue.
+  * **Nawaf's card is one height across both states** and eases between them,
+    rather than jumping when the conversation starts.
+  * Air above the card on a Dynamic Island device, and its top corners go square
+    on *both* sides while the history drawer is open — the trailing one used to
+    read as a stray rounded fragment against the green behind it.
+  * **The weight drum keeps its columns left-to-right in Arabic.** SwiftUI hands
+    a representable an RTL host, so the components came out mirrored and the
+    grams sat where the kilos belong.
+  * The empty state's Arabic button is the imperative form.
+
 ## 0.13.1
 
 * Requires `TreeSDK` 0.12.1 on iOS. No API change on either side — a design round.
