@@ -1,3 +1,30 @@
+## 0.16.0
+
+* Requires `TreeSDK` 0.15.0 on iOS. No Dart API change.
+  * **Revoked Apple Health access reaches the connection screen again.** HealthKit
+    reports nothing useful here — `authorizationStatus` answers for writes, and
+    the request status only says the prompt has been shown — so the revoke is
+    inferred from the days this app wrote from Health now reading zero. That rule
+    took its comparison window from the query's own results, and a revoked read
+    returns no samples at all: the window came out empty, the rule bailed, and
+    the dashboard stayed up showing zeros. The window is the caller's now, and it
+    is re-checked when the app becomes active, since access is revoked in
+    Settings while the app is away.
+  * **Arabic copy follows the approved wording, not the backend's.** Explore is
+    اكتشف, every Log button is سجل, and the My Diary card reads تابع رحلتك الصحية.
+    Metric names come from our own table where we have the word: the catalogue's
+    `name_ar` differs per environment — dev says الرياضة for Workout, staging
+    تمرين — so the approved copy lost to whichever backend a build pointed at.
+  * **The My Diary card puts its copy at the top** with the illustration under
+    it, the style the Reminders card beside it already used.
+  * **The chart's axis never goes below zero.** The 15% padding drew a negative
+    tick under metrics that cannot be negative; a range that starts high keeps
+    its headroom.
+  * **The empty state's skeleton bars no longer mirror in Arabic** — short
+    leading, long trailing, per the frame. The Workout tab's own copy of those
+    capsules is deleted in favour of the shared one, which is why that screen was
+    the last drawing them flipped.
+
 ## 0.15.0
 
 * Requires `TreeSDK` 0.14.0 on iOS. One additive Swift type
