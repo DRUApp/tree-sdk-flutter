@@ -13,10 +13,15 @@ import io.flutter.embedding.android.FlutterActivity
  */
 class MainActivity : FlutterActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Tester builds only — see CrashReport. A tester cannot run logcat on their own phone,
+        // so a crash there is otherwise just "it closed itself"; this keeps the stack trace and
+        // offers it on the next launch. Remove both calls, and CrashReport.kt, before release.
+        CrashReport.install(this)
         // Before super.onCreate() — that's what creates the Flutter engine
         // and attaches the plugin.
         TreeSdkFlutterPlugin.notePendingReminderIntent(intent)
         super.onCreate(savedInstanceState)
+        CrashReport.showIfPresent(this)
     }
 
     override fun onNewIntent(intent: Intent) {
