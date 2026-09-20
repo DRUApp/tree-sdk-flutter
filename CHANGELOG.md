@@ -1,3 +1,24 @@
+## 0.16.3
+
+* Requires `TreeSDK` 0.17.0 on iOS. No Dart API change.
+  * **A live workout keeps the real time.** The clock counted its own ticks, and
+    that timer stops with the app — leave the workout for two minutes and the
+    session came back two minutes short. It reads the elapsed time off the clock
+    now, on every tick and again on returning to the app, and a pause is
+    excluded by moving the start rather than by skipping ticks.
+  * **A metric's info card uses the approved word.** It looked the bare English
+    name up in the table, where several of those keys are something else — the
+    Carbohydrates card read النشويات while the tab beside it read الكربوهيدرات.
+    It asks for the metric's own key now, the same one the tab does.
+  * **A medicine reached through Reminders keeps the flow's name.** Its list and
+    its reminder page are headed Reminders and Reminder rather than Medication
+    and Edit medication, the way a pushed screen keeps the name of the flow it
+    was opened from. The medication list's own edit route is unchanged.
+  * **My Diary is the tall card again**, illustration above and copy at its
+    foot, which is what the frames show in both languages; a note in the other
+    direction had flipped it.
+  * Arabic wording: التذكيرات, أضف دواء جديد, أضف إلى القائمة, سجلاتك.
+
 ## 0.16.2
 
 * Requires `TreeSDK` 0.16.0 on iOS. No Dart API change.
