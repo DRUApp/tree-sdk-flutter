@@ -1,3 +1,30 @@
+## 0.17.0
+
+* Requires `TreeSDK` 0.18.0 on iOS. No Dart API change.
+  * **Logged readings are written to Apple Health.** Blood sugar, blood
+    pressure, carbohydrates, water, weight and waist go in as they are saved,
+    so other apps on the phone can see them; a blood pressure goes in as one
+    correlation rather than two loose numbers, which is what the Health app
+    reads. Best-effort and silent — the diary entry is already stored by then,
+    and a Health failure must never read as a failed save.
+
+    **Writing is opt-in per host**, on `NSHealthUpdateUsageDescription`. Without
+    that key nothing is written and nothing is asked for: HealthKit kills the
+    app for requesting a share it has no string for, and a host that has not
+    agreed to the sentence its users will read should not have one shown.
+  * **The Steps screen knows where it stands.** HealthKit discloses
+    authorization only for types an app can write — reads come back
+    "not determined" whether they were allowed or denied — so a host that
+    writes now gets the real answer immediately, where the old probe meant no
+    more than "the sheet has been shown" and needed a relaunch to catch up.
+  * **Signing in as someone else no longer inherits their reminders.**
+    Notifications belong to the app, not the account, and every sweep ran from a
+    screen — so a second user who never opened Reminders or Medications kept
+    getting the first one's: a medicine this account does not have, water at a
+    time it never set. The pending set is cleared at `initialize` when the user
+    or the backend changes. Re-arming still happens on those two screens, so a
+    user who opens neither now gets silence rather than someone else's.
+
 ## 0.16.3
 
 * Requires `TreeSDK` 0.17.0 on iOS. No Dart API change.
