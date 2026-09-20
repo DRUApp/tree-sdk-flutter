@@ -1,3 +1,26 @@
+## 0.16.2
+
+* Requires `TreeSDK` 0.16.0 on iOS. No Dart API change.
+  * **The alarm tone is the medicine reminder's alone.** Every reminder played
+    the 29-second alarm; dru sets it on the medicine notification and its
+    snoozes only, and leaves the system default everywhere else. Same tell as
+    the buttons: a dose is the thing worth waking someone for. One flag drives
+    both, so the sound and the buttons cannot disagree.
+  * **Steps notices a grant, not just a revoke.** The re-check on returning to
+    the app was guarded on being connected already, so a user who followed our
+    own "enable it in Settings" alert came back to the connect card and had to
+    relaunch. Access is decided in Settings — while the app is away — so the
+    screen re-decides on every return, both directions.
+  * **A dose's "View all" knows where the flow began.** The Diary is retained
+    behind Explore rather than torn down, so its own visibility could not
+    answer it; the screen that opens the medication list records the origin
+    instead. From the Diary it returns to that tab, from Explore, Reminders or
+    a notification it lands on All.
+  * **The add-medicine screen draws the same capsule as the list.** It kept art
+    of its own, so a catalogue medicine with no picture changed shape between
+    the list and the form that adds it. Typing a custom name now shows that
+    capsule in a mint disc over the field, per the frame.
+
 ## 0.16.1
 
 * Requires `TreeSDK` 0.15.2 on iOS. No Dart API change.
