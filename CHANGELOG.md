@@ -1,3 +1,30 @@
+## 0.17.4
+
+* Requires `TreeSDK` 0.18.4 on iOS. No Dart API change.
+  * **Every log dial sweeps from 0.** Blood sugar and HbA1c swept the backend's
+    *entry* range instead (50–400, 4–14), so the knob sat mid-scale at rest and
+    the bottom of the scale could not be reached by dragging at all. Their tops
+    are clinical now — 400 mg/dL and 14 % — and HbA1c steps by 0.1, being a
+    one-decimal percentage. This is Android's rule, which the two platforms
+    share. Out-of-range messages are centred, as Android's already were.
+  * **"Total Carbs" is a total.** It showed the latest reading, so three meals
+    of 40 g read as 40 g and changing the period moved the sparkline while the
+    figure above it stayed put.
+  * **A medicine row shows its name alone**, on the list and on its log page,
+    the way Android's does. The dose and form appended to it are the medicine's
+    own configuration rather than anything about that row — the catalogue name
+    already carries the strength, so it read "Laxal 12 mg tablet 12 مجم, قرص"
+    in Arabic. The dose still shows where it is entered.
+  * **A new dose opens on 1** rather than on the last dose logged: a medicine
+    prescribed three at a time opened on 3 with nothing on screen saying why.
+  * **The reminder-duration field refuses empty and 0.** An empty one kept
+    whatever the field held before (7 by default) and a 0 was quietly clamped
+    up to 1, so both saved a course the user never asked for. Each now says
+    which of the two is wrong and blocks Save.
+  * The floating orb is smaller (it read heavy at the previous size), and the
+    Diary's "+" is centred on the orb's resting spot instead of on its own
+    margin.
+
 ## 0.17.3
 
 * Requires `TreeSDK` 0.18.3 on iOS. No Dart API change.
