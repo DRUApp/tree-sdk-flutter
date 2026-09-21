@@ -1,3 +1,16 @@
+## 0.17.3
+
+* Requires `TreeSDK` 0.18.3 on iOS. No Dart API change.
+  * **A write grant is not a read grant.** Since the SDK started writing
+    readings back, the permission check reads the *share* status — the only one
+    HealthKit discloses — and revoking **read** access in Settings leaves that
+    untouched. A revoked user therefore still looked connected on the Steps
+    screen and a sync quietly wrote nothing. The read side can only be
+    inferred, so that inference now runs on the sync tap as well as on
+    returning to the app: days previously taken from Health reading zero is the
+    evidence, and the tap ends on the "enable it in Settings" alert rather than
+    on a sync that does nothing.
+
 ## 0.17.2
 
 * Requires `TreeSDK` 0.18.2 on iOS. No Dart API change.
