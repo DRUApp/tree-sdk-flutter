@@ -1,3 +1,23 @@
+## 0.17.1
+
+* Requires `TreeSDK` 0.18.1 on iOS. No Dart API change.
+  * **A pull to refresh can no longer cost you the list.** Every list turned any
+    failure into the error screen, so a refresh that came back cancelled
+    replaced a full Diary with "Request cancelled" and a Retry button. Two
+    things were wrong: a cancellation is not a failure — SwiftUI tears that task
+    down as the refresh control retracts, and a pushed screen cancels whatever
+    its predecessor had in flight — and a reload that fails is a reason to keep
+    the content already on screen, not to clear it. The error state is now for
+    when there is nothing to fall back to.
+  * **The steps permission card is the frame's**, with the delivered ⓘ glyph,
+    and it sits under the totals rather than above the range tabs — over the
+    tabs it pushed the whole dashboard down and read as chrome for the screen.
+    Its copy follows the design too.
+  * **The sync pill is the frame's**, white inside a thin orange ring, carrying
+    Apple's own Health icon where it drew a red heart — which is the contents of
+    that icon without its tile. It sizes to its label rather than to a fixed
+    width, since the Arabic word is wider than the English one.
+
 ## 0.17.0
 
 * Requires `TreeSDK` 0.18.0 on iOS. No Dart API change.

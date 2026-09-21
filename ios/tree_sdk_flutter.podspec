@@ -4,7 +4,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'tree_sdk_flutter'
-  s.version          = '0.17.0'
+  s.version          = '0.17.1'
   s.summary          = 'Flutter bridge to the native Tree SDK.'
   s.description      = <<-DESC
 Presents the native Tree SDK (Nawaf AI chat, health diary, medications,
@@ -16,13 +16,13 @@ reminders) from a Flutter host.
   s.source           = { :path => '.' }
   s.source_files = 'tree_sdk_flutter/Sources/tree_sdk_flutter/**/*'
   s.dependency 'Flutter'
-  s.dependency 'TreeSDK', '>= 0.18.0'
+  s.dependency 'TreeSDK', '>= 0.18.1'
   s.platform = :ios, '15.6'
 
   # TreeSDK is not on the CocoaPods trunk, so a CocoaPods host must name the
   # source itself — this dependency only pins the version:
   #
-  #   pod 'TreeSDK', :git => 'https://github.com/DRUApp/ios-tree-sdk.git', :tag => 'v0.18.0'
+  #   pod 'TreeSDK', :git => 'https://github.com/DRUApp/ios-tree-sdk.git', :tag => 'v0.18.1'
   #
   # A Swift-Package-Manager host (flutter config --enable-swift-package-manager)
   # needs none of that — ../ios/tree_sdk_flutter/Package.swift resolves TreeSDK
