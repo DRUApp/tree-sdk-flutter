@@ -1,3 +1,18 @@
+## 0.17.2
+
+* Requires `TreeSDK` 0.18.2 on iOS. No Dart API change.
+  * **Tapping sync while Health access is gone asks for it back.** It used to
+    run the sync regardless and come back with nothing. Now the tap always
+    answers: iOS's own sheet where anything is still undetermined, our "enable
+    it in Settings" alert where it isn't — which is the revoked case, since a
+    permission switched off in Settings is decided and iOS will never re-ask.
+    If access does come back, the sync it was asked for carries on rather than
+    waiting for a second tap.
+  * **A successful sync clears the permission banner.** "Some data may be
+    missing" is an inference — HealthKit will not say whether a read is allowed
+    — and steps actually arriving is the strongest evidence against it, so the
+    banner goes then rather than at the next foreground.
+
 ## 0.17.1
 
 * Requires `TreeSDK` 0.18.1 on iOS. No Dart API change.
