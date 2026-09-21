@@ -1,3 +1,10 @@
+## 0.17.5
+
+* Requires `TreeSDK` 0.18.5 on iOS. No Dart API change.
+  * Arabic wording: the medication list is قائمة الأدوية, the three health
+    reminders read تسجيل rather than سجل, and the medicine notification's
+    snooze button is تأجيل.
+
 ## 0.17.4
 
 * Requires `TreeSDK` 0.18.4 on iOS. No Dart API change.
