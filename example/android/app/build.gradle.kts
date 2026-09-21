@@ -61,17 +61,22 @@ android {
             signingConfig = signingConfigs.findByName("release")
                 ?: signingConfigs.getByName("debug")
 
-            // R8 OFF on purpose for tester builds. Flutter shrinks release builds by
-            // default, and the Tree SDK decodes JSON with Moshi's KotlinJsonAdapterFactory
-            // — pure reflection, invisible to R8. treesdk now ships a proper
-            // consumer-rules.pro (models, @Json fields anywhere, wire enums, @Metadata),
-            // so minification SHOULD hold; but anything the rules still miss fails at
-            // runtime *only in release*, which is the worst thing to hand a tester. Leave
-            // this off for BetaDrop builds. Flip both to true only for a deliberate
-            // shrink-verification pass, and smoke-test login + diary + Nawaf before
-            // shipping that build anywhere.
-            isMinifyEnabled = false
-            isShrinkResources = false
+            // R8 ON. Unshrunk, the four dex files came to 55 MB of the tester APK's 109 MB -
+            // every class of Compose, Moshi, OkHttp and Health Connect, none of them reachable.
+            //
+            // What made this safe to turn on: the Tree SDK decodes JSON with Moshi's
+            // KotlinJsonAdapterFactory - pure reflection, invisible to R8 - and treesdk now ships
+            // a consumer-rules.pro covering exactly that surface (wire models, @Json fields
+            // anywhere, wire enums, kotlin.Metadata, Continuation). Resource shrinking is safe
+            // for the same documented reason: nothing in the SDK looks a resource up by name
+            // with getIdentifier(), so aapt2 can see every reference.
+            //
+            // Still the one change here that can fail at runtime and ONLY in release, so smoke-
+            // test login + diary save + Nawaf on a release build before handing it to anyone. If
+            // something does break, set both back to false, ship, and send the stack trace: the
+            // fix is a line in treesdk/consumer-rules.pro, not staying unminified.
+            isMinifyEnabled = true
+            isShrinkResources = true
         }
     }
 }

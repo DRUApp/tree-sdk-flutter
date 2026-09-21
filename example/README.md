@@ -49,23 +49,30 @@ flutter run            # needs a device/emulator (API 26+)
 
 ```bash
 ./tools/publish_local_sdk.sh     # only if the native SDK changed since last time
-flutter build apk --release --no-shrink
+flutter build apk --release --target-platform android-arm,android-arm64
 ```
 
-Output: `build/app/outputs/flutter-apk/app-release.apk` — a single universal APK
-(arm64-v8a + armeabi-v7a + x86_64), so it installs on any Android 8.0+ (API 26)
-device, including emulators. Don't use `--split-per-abi` for BetaDrop; that
-produces several per-architecture APKs and testers would have to pick.
+Output: `build/app/outputs/flutter-apk/app-release.apk` — one APK carrying both
+ABIs real phones use, so testers still get a single file to install. Don't use
+`--split-per-abi` for BetaDrop; that produces several per-architecture APKs and
+testers would have to pick.
 
 Notes:
 
-- **`--no-shrink` is deliberate.** Flutter runs R8 on release builds, and the
-  Tree SDK decodes JSON reflectively (Moshi `KotlinJsonAdapterFactory`). Its
-  `consumer-rules.pro` keeps `modules.**.data.**` and `TokenBundle`, but
-  Moshi-shaped types also live in `com.dru.treesdk.session`/`config`. Anything
-  the keep rules miss is stripped and blows up at runtime *only in release*.
-  `android/app/build.gradle.kts` also sets `isMinifyEnabled = false` for the
-  same reason.
+- **Why the `--target-platform` flag.** Without it Flutter also packs
+  `x86_64`, which only an emulator can load: 17 MB of the APK that no tester
+  will ever execute. Add `,android-x64` back when you need to hand the same
+  file to somebody running an emulator.
+- **Shrinking is ON** (no `--no-shrink`, and `isMinifyEnabled = true` in
+  `android/app/build.gradle.kts`). Unshrunk, the dex came to 55 MB of a 109 MB
+  APK. The Tree SDK decodes JSON reflectively (Moshi
+  `KotlinJsonAdapterFactory`) and its `consumer-rules.pro` now covers that
+  surface — wire models, `@Json` fields anywhere, wire enums, `kotlin.Metadata`,
+  `Continuation`. Anything those rules still miss is stripped and blows up at
+  runtime *only in release*, so **smoke-test login, a diary save and Nawaf on
+  the release build before uploading it**. If something breaks, add
+  `--no-shrink` and set both flags back to `false` to unblock the upload, then
+  fix the keep rule.
 - **Signing.** With no `android/key.properties`, the APK is signed with your
   local debug key. It installs fine, but debug keys differ per machine, so a
   build from another laptop can't update it. For a stable distribution track,
