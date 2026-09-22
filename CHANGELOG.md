@@ -1,3 +1,20 @@
+## 0.18.1
+
+* Requires `android-tree-sdk` 0.5.1. No Dart API change; iOS untouched.
+  * **A host is no longer pinned to our Kotlin version.** The Activity presents the SDK as
+    a plain `View` — `TreeRootHost.create(...)` — instead of calling the `@Composable`
+    `TreeRootView` itself, so this module drops the Compose compiler plugin,
+    `buildFeatures { compose = true }` and its Compose dependencies. That plugin's version
+    must equal the *host app's* Kotlin version exactly, which pinned every partner to
+    2.2.20; the failure named the Compose compiler rather than this SDK.
+  * `androidx.activity:activity-ktx` is declared explicitly — `ComponentActivity` and
+    `enableEdgeToEdge` used to arrive with `activity-compose`.
+
+  Verified in a stock `flutter create` app against a partner compatibility matrix:
+  Gradle 9.1.0, AGP 8.9.1, Kotlin 2.2.0, jvmTarget 1.8 with `desugar_jdk_libs` 2.1.4,
+  minSdk 28 — debug and a `--release` build with R8 minify and resource shrinking, the
+  latter run on the emulator to confirm the keep rules hold.
+
 ## 0.18.0
 
 * Requires `TreeSDK` 0.19.0 on iOS, **vendored as a binary**. No Dart API change.
