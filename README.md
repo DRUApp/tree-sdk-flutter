@@ -129,18 +129,20 @@ in Dart before anything reaches the platform.
 
 - **`minSdkVersion 26` minimum** in your app's `android/app/build.gradle` (the
   `treesdk` library itself declares `minSdk = 26`).
-- **JitPack, with credentials.** `android/build.gradle.kts` pulls
-  `com.github.DRUApp.android-tree-sdk:treesdk:$treeSdkVersion` from
-  `https://jitpack.io` — the Android equivalent of the iOS side resolving
-  `TreeSDK` from a git tag via SPM, since `android-tree-sdk` has no Maven
-  publishing step of its own. `DRUApp/android-tree-sdk` is private, so set a
-  JitPack token in the consuming app's `~/.gradle/gradle.properties` as
-  `jitpackToken=...`, or export `JITPACK_TOKEN` — the same "host's machine and
-  CI need credentials" requirement as the iOS side, for the other repo.
-- **Pin `treeSdkVersion`.** It defaults to `main-SNAPSHOT` (JitPack's
-  build-the-tip-of-a-branch mode), which is not reproducible across builds. Set
-  a real tag or commit SHA once one exists on GitHub, e.g. in your app's
-  `android/gradle.properties`: `treeSdkVersion=1.2.3`.
+- **The SDK is vendored, like the iOS one.** `android/maven` is a Maven repository
+  that is just a directory in this package, holding
+  `com.github.DRUApp.android-tree-sdk:treesdk` as an AAR plus its POM. A host
+  needs no `jitpackToken`, no `treeSdkVersion` pin and no access to
+  `DRUApp/android-tree-sdk`, where the sources stay. Rebuild it with that repo's
+  `tools/build-aar.sh`, which publishes into this directory and clears the
+  previous version.
+- **The repository is injected into the host, not declared here.** A plugin's own
+  `repositories {}` block is not consulted for the dependency that matters — the
+  *app* resolves the runtime classpath against the *app's* repositories — so
+  `rootProject.allprojects { repositories { … } }` adds it everywhere. Capture the
+  path outside that closure: inside it, `projectDir` is each project's own.
+- **Local SDK work still wins.** `mavenLocal()` plus `-PtreeSdkVersion=…` overrides
+  the vendored copy after `./gradlew :treesdk:publishToMavenLocal`.
 - **Notifications are not configured by this plugin.** Reminder notifications
   need the SDK's own permission prompt, requested on its own schedule, same as
   iOS.

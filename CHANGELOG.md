@@ -12,6 +12,15 @@
     but it is why the SDK is 0.19.0: a type sharing its module's name makes the
     emitted `.swiftinterface` invalid, and without a valid one the framework imports
     only from the exact Xcode that built it.
+  * **Android does the same**, and JitPack is gone. `android-tree-sdk` 0.5.0 is vendored
+    at `android/maven` as an AAR plus its POM — a Maven repository that is just a
+    directory in this package — so a host needs no `jitpackToken`, no
+    `treeSdkVersion` pin, and no access to the Android SDK's repository either.
+  * **The repository is injected into the host build.** A plugin's own `repositories {}`
+    is not consulted for the dependency that matters: the *app* resolves the runtime
+    classpath against the *app's* repositories. This is also why the JitPack setup this
+    replaces could not have worked for a host that did not add the repository itself.
+    Verified on AGP 8.7.3 and 9.0.1.
 
 ## 0.17.7
 

@@ -62,36 +62,36 @@ kotlin {
 }
 
 repositories {
-    // Wins over JitPack for a locally published build — run
-    // `./gradlew :treesdk:publishToMavenLocal` in android-tree-sdk while working on the SDK.
-    // Harmless for a partner: once treeSdkVersion names a real tag, mavenLocal has no such
-    // version and Gradle falls through to JitPack below.
+    // For a locally published SDK build — `./gradlew :treesdk:publishToMavenLocal` in
+    // android-tree-sdk, with -PtreeSdkVersion naming it. Harmless otherwise: mavenLocal
+    // has no such version, so the vendored copy below answers.
     mavenLocal()
-    maven {
-        // android-tree-sdk (github.com/DRUApp/android-tree-sdk) has no publishing step of its
-        // own — JitPack builds an artifact straight from the GitHub repo, the closest Android
-        // equivalent to how ../ios/tree_sdk_flutter/Package.swift resolves TreeSDK from a git tag
-        // via Swift Package Manager. It's a multi-module repo, so the coordinate is JitPack's
-        // "<groupId>.<repoName>:<moduleName>" form — see the dependency below.
-        url = uri("https://jitpack.io")
-        // The repo is private, so JitPack needs a token with access to it — the Android
-        // counterpart to "the host's machine and CI need credentials for each" in this package's
-        // README. Set it in the consuming project's ~/.gradle/gradle.properties as
-        // `jitpackToken=...`, or export JITPACK_TOKEN. Never commit it.
-        val token = (findProperty("jitpackToken") as String?) ?: System.getenv("JITPACK_TOKEN")
-        if (!token.isNullOrBlank()) {
-            credentials { username = token }
-        }
+}
+
+// The SDK is vendored at android/maven as an AAR plus its POM — the Android
+// counterpart of ios/tree_sdk_flutter/TreeSDK.xcframework — so a host resolves a
+// compiled artifact with no JitPack, no token and no access to the SDK's repository.
+//
+// It has to be injected into every project rather than declared above, because a
+// plugin's own repositories are not consulted for the dependency that matters: the
+// *app* resolves the runtime classpath, against the *app's* repositories. Declaring
+// it on this project alone fails with "Could not find … treesdk" on every AGP, which
+// is also why the JitPack setup this replaces never worked for a host without its own
+// repository line. The path is this plugin's own directory, wherever pub put it.
+val treeSdkMaven = file("maven")   // captured here: inside allprojects, projectDir is each project's own
+rootProject.allprojects {
+    repositories {
+        maven { url = treeSdkMaven.toURI() }
     }
 }
 
+
 dependencies {
-    // A real tag, so the build is reproducible — "main-SNAPSHOT" tracks the tip of main, which
-    // JitPack rebuilds on demand and is not. Bump in lockstep with ../ios/tree_sdk_flutter/
-    // Package.swift: the two native SDKs must agree, most concretely on TreeEnvironment's
-    // hostnames. Override with -PtreeSdkVersion=... for local SDK work (see this package's
-    // README), which mavenLocal() above then resolves.
-    val treeSdkVersion = (findProperty("treeSdkVersion") as String?) ?: "v0.4.0"
+    // The version vendored in android/maven. Bump it with the AAR, never alone:
+    // android-tree-sdk/tools/build-aar.sh publishes exactly one version and clears the
+    // previous, so a mismatch fails to resolve rather than building something stale.
+    // Override with -PtreeSdkVersion=… plus mavenLocal() for local SDK work.
+    val treeSdkVersion = (findProperty("treeSdkVersion") as String?) ?: "0.5.0"
     implementation("com.github.DRUApp.android-tree-sdk:treesdk:$treeSdkVersion")
 
     implementation(platform("androidx.compose:compose-bom:2024.09.03"))
