@@ -1,3 +1,24 @@
+## 0.17.6
+
+* Requires `TreeSDK` 0.18.6 on iOS. No Dart API change.
+  * **An older reading opened on a blank screen.** The edit form looked its
+    entry up in the diary's loaded page, which is replaced by page 1 on every
+    load and refresh — so anything past the newest 25 vanished out from under
+    the open form and the screen rendered nothing at all, under a bare back
+    button. The row and its metric are carried into the pushed screen now, with
+    the lookup still preferred while it succeeds.
+  * **A dose reads in units.** It printed the *medicine's* own unit, which says
+    nothing about the dose taken and left one row reading "100 ug" beside
+    another reading "3 units" — the strength is already in the medicine's name.
+    Every dose site now reads unit / units, وحدة / وحدات, pluralised by the
+    dose, which is what the old app prints.
+  * **The Medication card shows the latest dose**, like every other metric's
+    summary. It counted *today's* doses, so it read "0 doses" on any day one
+    had not been logged yet — above a time that came from the last dose,
+    whenever that was. The two never agreed. The newest dose is picked by when
+    it was taken, so one added late for an earlier time does not become the
+    latest.
+
 ## 0.17.5
 
 * Requires `TreeSDK` 0.18.5 on iOS. No Dart API change.
