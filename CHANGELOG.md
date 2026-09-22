@@ -1,3 +1,10 @@
+## 0.17.7
+
+* Requires `TreeSDK` 0.18.7 on iOS. No Dart API change.
+  * The edit route carries the reading it was opened for, rather than the
+    screen holding it aside — same fix as 0.17.6 for an older reading opening
+    blank, expressed on the route itself so no push site can forget it.
+
 ## 0.17.6
 
 * Requires `TreeSDK` 0.18.6 on iOS. No Dart API change.
