@@ -1,3 +1,18 @@
+## 0.18.0
+
+* Requires `TreeSDK` 0.19.0 on iOS, **vendored as a binary**. No Dart API change.
+  * **The iOS SDK ships inside this plugin as `TreeSDK.xcframework`**, instead of being
+    resolved from `DRUApp/ios-tree-sdk` by tag. A host therefore builds against a
+    compiled framework and is never given the SDK's source; SPM takes it as a
+    `.binaryTarget` and CocoaPods as a `vendored_frameworks`, so a Podfile no longer
+    names a `pod 'TreeSDK', :git => …` line at all. One repository, one tag: the SDK
+    version is whatever `Tools/build-xcframework.sh` last copied in.
+  * The SDK's entry class is `Tree`, not `TreeSDK` (`Tree.initialize(_:)`,
+    `Tree.shared`). Only the bridge's own Swift calls it — Dart hosts see nothing —
+    but it is why the SDK is 0.19.0: a type sharing its module's name makes the
+    emitted `.swiftinterface` invalid, and without a valid one the framework imports
+    only from the exact Xcode that built it.
+
 ## 0.17.7
 
 * Requires `TreeSDK` 0.18.7 on iOS. No Dart API change.

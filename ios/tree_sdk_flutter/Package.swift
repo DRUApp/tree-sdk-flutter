@@ -13,17 +13,20 @@ let package = Package(
     ],
     dependencies: [
         .package(name: "FlutterFramework", path: "../FlutterFramework"),
-        // Identity is the repo name ("ios-tree-sdk"), which is why the product
-        // below says `package: "ios-tree-sdk"` and not `"TreeSDK"`.
-        .package(url: "https://github.com/DRUApp/ios-tree-sdk.git", from: "0.18.7"),
     ],
     targets: [
         .target(
             name: "tree_sdk_flutter",
             dependencies: [
                 .product(name: "FlutterFramework", package: "FlutterFramework"),
-                .product(name: "TreeSDK", package: "ios-tree-sdk"),
+                "TreeSDK",
             ]
-        )
+        ),
+        // The SDK ships as a compiled framework that lives in this package, so a
+        // host resolves one repository and never sees the SDK's source. Rebuild
+        // it from the source repo with Tools/build-xcframework.sh, which copies
+        // it here. The path is inside the package, so it survives the symlink
+        // Flutter makes into the host's ios/Flutter/ephemeral/.
+        .binaryTarget(name: "TreeSDK", path: "TreeSDK.xcframework"),
     ]
 )

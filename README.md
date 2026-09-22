@@ -16,7 +16,7 @@ dependencies:
   tree_sdk_flutter:
     git:
       url: https://github.com/DRUApp/tree-sdk-flutter.git
-      ref: v0.17.7
+      ref: v0.18.0
 ```
 
 ## Use
@@ -106,16 +106,12 @@ in Dart before anything reaches the platform.
 - **Swift Package Manager** (`flutter config --enable-swift-package-manager`) is
   the preferred route: `Package.swift` resolves `TreeSDK` from its tag for you,
   and it coexists with CocoaPods, so your other pods keep working.
-- **CocoaPods** works too. `TreeSDK` is not on the CocoaPods trunk, so name its
-  source in your `Podfile` — the plugin's podspec only pins the version:
-
-  ```ruby
-  pod 'TreeSDK', :git => 'https://github.com/DRUApp/ios-tree-sdk.git', :tag => 'v0.18.7'
-  ```
-
-  Keep that tag in step with the plugin version you are on.
-- **Repository access.** Both this repo and `DRUApp/ios-tree-sdk` are private, so
-  the host's machine and CI need credentials for each.
+- **CocoaPods** works too, and needs nothing added to the `Podfile`: the native
+  SDK is vendored inside this plugin's pod.
+- **Repository access.** Only this repo. `TreeSDK.xcframework` is committed at
+  `ios/tree_sdk_flutter/`, so an iOS host resolves one repository and never sees
+  the SDK's source, which stays in the private `DRUApp/ios-tree-sdk`. Rebuild it
+  there with `Tools/build-xcframework.sh`, which copies it here.
 - **HealthKit, photos and notifications are not configured by this plugin.**
   Steps sync needs the HealthKit entitlement and `NSHealthShareUsageDescription`;
   reminder notifications need the SDK's permission prompt, which it currently

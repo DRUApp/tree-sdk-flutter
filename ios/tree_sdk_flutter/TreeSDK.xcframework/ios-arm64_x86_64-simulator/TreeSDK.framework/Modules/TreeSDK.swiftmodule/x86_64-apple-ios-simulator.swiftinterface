@@ -1,0 +1,1467 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 6.2.3 effective-5.10 (swiftlang-6.2.3.3.21 clang-1700.6.3.2)
+// swift-module-flags: -target x86_64-apple-ios15.6-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -enable-experimental-feature DebugDescriptionMacro -enable-bare-slash-regex -module-name TreeSDK
+// swift-module-flags-ignorable: -no-verify-emitted-module-interface -formal-cxx-interoperability-mode=off -interface-compiler-version 6.2.3
+import AVFoundation
+import Combine
+import CoreMotion
+import CoreText
+import DeveloperToolsSupport
+import Foundation
+import HealthKit
+import Photos
+import PhotosUI
+import Security
+import Swift
+import SwiftUI
+import UIKit
+import UniformTypeIdentifiers
+import UserNotifications
+import _Concurrency
+import _PhotosUI_SwiftUI
+import _StringProcessing
+import _SwiftConcurrencyShims
+public protocol AccessTokenSource : AnyObject, Swift.Sendable {
+  #if compiler(>=5.3) && $NonescapableTypes
+  func currentAccessToken() async -> Swift.String?
+  #endif
+  func tryRefresh() async -> Swift.Bool
+  var languageCode: Swift.String { get }
+}
+final public class APIClient {
+  public init(baseURL: Swift.String, tokenSource: any TreeSDK.AccessTokenSource, connectTimeout: Foundation.TimeInterval = 30, receiveTimeout: Foundation.TimeInterval = 30)
+  #if compiler(>=5.3) && $NonescapableTypes
+  final public func get<T>(_ path: Swift.String, query: [Swift.String : Swift.String] = [:], timeout: Foundation.TimeInterval? = nil) async -> TreeSDK.TreeResult<T> where T : Swift.Decodable
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  final public func post<T>(_ path: Swift.String, body: [Swift.String : Any]? = nil, timeout: Foundation.TimeInterval? = nil) async -> TreeSDK.TreeResult<T> where T : Swift.Decodable
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  final public func patch<T>(_ path: Swift.String, body: [Swift.String : Any]? = nil) async -> TreeSDK.TreeResult<T> where T : Swift.Decodable
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  final public func delete<T>(_ path: Swift.String, body: [Swift.String : Any]? = nil) async -> TreeSDK.TreeResult<T> where T : Swift.Decodable
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @discardableResult
+  final public func send(_ method: Swift.String, _ path: Swift.String, body: [Swift.String : Any]? = nil) async -> TreeSDK.TreeResult<Swift.Void>
+  #endif
+  final public func upload<T>(_ path: Swift.String, fileData: Foundation.Data, filename: Swift.String, mimeType: Swift.String, field: Swift.String = "file") async -> TreeSDK.TreeResult<T> where T : Swift.Decodable
+  final public func healthCheck() async -> TreeSDK.TreeResult<Swift.Void>
+  @objc deinit
+}
+public struct ChatMessage : Swift.Identifiable, Swift.Decodable {
+  public let id: Foundation.UUID
+  public let role: Swift.String
+  public let text: Swift.String
+  public let createdAt: Foundation.Date?
+  public var isUser: Swift.Bool {
+    get
+  }
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init(role: Swift.String, text: Swift.String, createdAt: Foundation.Date? = nil)
+  #endif
+  public init(from decoder: any Swift.Decoder) throws
+  public typealias ID = Foundation.UUID
+}
+public struct ChatSession : Swift.Identifiable, Swift.Decodable {
+  public var id: Swift.String {
+    get
+  }
+  public let sessionID: Swift.String
+  public let title: Swift.String
+  public let preview: Swift.String
+  public let summary: Swift.String
+  public let expired: Swift.Bool
+  public let messageCount: Swift.Int
+  public let lastMessageAt: Foundation.Date?
+  public let createdAt: Foundation.Date?
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init(sessionID: Swift.String, title: Swift.String = "", preview: Swift.String = "", summary: Swift.String, expired: Swift.Bool, messageCount: Swift.Int, lastMessageAt: Foundation.Date? = nil, createdAt: Foundation.Date? = nil)
+  #endif
+  public init(from decoder: any Swift.Decoder) throws
+  public typealias ID = Swift.String
+}
+public enum TreeEnvironment {
+  case production
+  case staging
+  case development
+  case custom(Swift.String)
+  public var baseURL: Swift.String {
+    get
+  }
+  public var name: Swift.String {
+    get
+  }
+}
+public typealias TreeTokenProvider = @Sendable () async throws -> Swift.String
+public enum TreeAuth {
+  case clientCredentials(clientID: Swift.String, clientSecret: Swift.String)
+  case tokenProvider(TreeSDK.TreeTokenProvider)
+}
+public enum TreeModule : Swift.String, Swift.CaseIterable, Swift.Sendable {
+  case nawafAI
+  case diary
+  case medications
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init?(rawValue: Swift.String)
+  #endif
+  public typealias AllCases = [TreeSDK.TreeModule]
+  public typealias RawValue = Swift.String
+  nonisolated public static var allCases: [TreeSDK.TreeModule] {
+    get
+  }
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum TreeGender : Swift.String, Swift.Sendable {
+  case male
+  case female
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init?(rawValue: Swift.String)
+  #endif
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public struct TreeSDKConfig {
+  public let auth: TreeSDK.TreeAuth
+  public let treeUserID: Swift.String
+  public let environment: TreeSDK.TreeEnvironment
+  public let enabledModules: Swift.Set<TreeSDK.TreeModule>
+  public let languageCode: Swift.String
+  public let userName: Swift.String?
+  public let gender: TreeSDK.TreeGender?
+  public let connectTimeout: Foundation.TimeInterval
+  public let receiveTimeout: Foundation.TimeInterval
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init(auth: TreeSDK.TreeAuth, treeUserID: Swift.String, environment: TreeSDK.TreeEnvironment = .production, enabledModules: Swift.Set<TreeSDK.TreeModule> = [.nawafAI, .diary, .medications], languageCode: Swift.String = "en", userName: Swift.String? = nil, gender: TreeSDK.TreeGender? = nil, connectTimeout: Foundation.TimeInterval = 30, receiveTimeout: Foundation.TimeInterval = 30)
+  #endif
+  public var baseURL: Swift.String {
+    get
+  }
+  public func validate() -> [Swift.String]
+}
+@_Concurrency.MainActor @preconcurrency public struct DiaryListView : SwiftUICore.View {
+  #if compiler(>=5.3) && $NonescapableTypes
+  @_Concurrency.MainActor @preconcurrency public init(viewModel: TreeSDK.DiaryViewModel, onBack: (() -> Swift.Void)? = nil, onOpenMedications: (() -> Swift.Void)? = nil, initialLogFormID: Swift.String? = nil, initialLogFormMetric: Swift.String? = nil, isVisible: Swift.Bool = true, onInitialLogSaved: (() -> Swift.Void)? = nil, onRequestFocus: (() -> Swift.Void)? = nil)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @_Concurrency.MainActor @preconcurrency public init(sdk: TreeSDK.Tree, onBack: (() -> Swift.Void)? = nil, onOpenMedications: (() -> Swift.Void)? = nil, initialLogFormID: Swift.String? = nil, initialLogFormMetric: Swift.String? = nil, isVisible: Swift.Bool = true, onInitialLogSaved: (() -> Swift.Void)? = nil, onRequestFocus: (() -> Swift.Void)? = nil)
+  #endif
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s7TreeSDK13DiaryListViewV4bodyQrvp", 0) __
+}
+public struct NumRange : Swift.Decodable, Swift.Equatable {
+  public let min: Swift.Double
+  public let max: Swift.Double
+  #if compiler(>=5.3) && $NonescapableTypes
+  public func union(_ other: TreeSDK.NumRange?) -> TreeSDK.NumRange
+  #endif
+  public static func == (a: TreeSDK.NumRange, b: TreeSDK.NumRange) -> Swift.Bool
+  public init(from decoder: any Swift.Decoder) throws
+}
+public enum DiaryValue : Swift.Equatable {
+  case number(Swift.Double)
+  case string(Swift.String)
+  case bool(Swift.Bool)
+  public var anyValue: Any {
+    get
+  }
+  #if compiler(>=5.3) && $NonescapableTypes
+  public var asDouble: Swift.Double? {
+    get
+  }
+  #endif
+  public var display: Swift.String {
+    get
+  }
+  public var displayLocalized: Swift.String {
+    get
+  }
+  public static func == (a: TreeSDK.DiaryValue, b: TreeSDK.DiaryValue) -> Swift.Bool
+}
+public struct RiskLevel : Swift.Decodable, Swift.Equatable {
+  public let min: Swift.Double
+  public let max: Swift.Double
+  public let color: Swift.String?
+  public let recommendation: Swift.String?
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init(min: Swift.Double, max: Swift.Double, color: Swift.String? = nil, recommendation: Swift.String? = nil)
+  #endif
+  public init(from decoder: any Swift.Decoder) throws
+  public func contains(_ value: Swift.Double) -> Swift.Bool
+  public static func == (a: TreeSDK.RiskLevel, b: TreeSDK.RiskLevel) -> Swift.Bool
+}
+public struct MeasurementDefinition : Swift.Decodable, Swift.Identifiable {
+  public var id: Swift.String {
+    get
+  }
+  public let name: Swift.String
+  public let isRequired: Swift.Bool
+  public let valueType: Swift.String
+  public let allowedValues: [Swift.String]?
+  public let allowedRange: TreeSDK.NumRange?
+  public let unitName: Swift.String?
+  public let riskLevels: [TreeSDK.RiskLevel]
+  #if compiler(>=5.3) && $NonescapableTypes
+  public func riskLevel(for value: Swift.Double) -> TreeSDK.RiskLevel?
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  public var healthyRange: TreeSDK.NumRange? {
+    get
+  }
+  #endif
+  public init(from decoder: any Swift.Decoder) throws
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init(name: Swift.String, isRequired: Swift.Bool, valueType: Swift.String, allowedValues: [Swift.String]? = nil, allowedRange: TreeSDK.NumRange? = nil, unitName: Swift.String? = nil, riskLevels: [TreeSDK.RiskLevel] = [])
+  #endif
+  public typealias ID = Swift.String
+}
+public struct HealthSubcategory : Swift.Decodable, Swift.Identifiable {
+  public let id: Swift.String
+  public let nameEn: Swift.String
+  public let nameAr: Swift.String
+  public let name: Swift.String
+  public let measurements: [TreeSDK.MeasurementDefinition]
+  public let isActive: Swift.Bool
+  public init(from decoder: any Swift.Decoder) throws
+  public var displayedMeasurements: [TreeSDK.MeasurementDefinition] {
+    get
+  }
+  public init(id: Swift.String, nameEn: Swift.String, nameAr: Swift.String, name: Swift.String, measurements: [TreeSDK.MeasurementDefinition], isActive: Swift.Bool = true)
+  public var displayName: Swift.String {
+    get
+  }
+  public var englishName: Swift.String {
+    get
+  }
+  public typealias ID = Swift.String
+}
+public struct MeasurementValue : Swift.Decodable {
+  public let key: Swift.String
+  public let value: TreeSDK.DiaryValue?
+  public let unit: Swift.String?
+  public let values: [Swift.String]?
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init(key: Swift.String, value: TreeSDK.DiaryValue?, unit: Swift.String? = nil, values: [Swift.String]? = nil)
+  #endif
+  public init(from decoder: any Swift.Decoder) throws
+}
+public struct DiaryEntry : Swift.Decodable, Swift.Identifiable {
+  public let id: Swift.String
+  public let subCategoryID: Swift.String
+  public let measurements: [TreeSDK.MeasurementValue]
+  public let isActive: Swift.Bool
+  public let isAuto: Swift.Bool
+  public let createdAt: Foundation.Date?
+  public let additionalInfo: [TreeSDK.MeasurementValue]
+  public let recordedAt: Foundation.Date?
+  public init(from decoder: any Swift.Decoder) throws
+  public var tags: [Swift.String] {
+    get
+  }
+  #if compiler(>=5.3) && $NonescapableTypes
+  public var container: Swift.String? {
+    get
+  }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  public var date: Foundation.Date? {
+    get
+  }
+  #endif
+  public func summarize() -> Swift.String
+  public typealias ID = Swift.String
+}
+public struct InsightPoint : Swift.Equatable {
+  public let date: Foundation.Date
+  public let value: Swift.Double
+  public static func == (a: TreeSDK.InsightPoint, b: TreeSDK.InsightPoint) -> Swift.Bool
+}
+public struct DiaryInsights : Swift.Equatable {
+  public let series: [TreeSDK.InsightPoint]
+  public let min: Swift.Double?
+  public let max: Swift.Double?
+  public let avg: Swift.Double?
+  public static let empty: TreeSDK.DiaryInsights
+  public static func == (a: TreeSDK.DiaryInsights, b: TreeSDK.DiaryInsights) -> Swift.Bool
+}
+public struct Paginated<Item> {
+  public let items: [Item]
+  public let page: Swift.Int
+  public let limit: Swift.Int
+  public let total: Swift.Int
+  public let totalPages: Swift.Int
+  public var hasMore: Swift.Bool {
+    get
+  }
+}
+public protocol DiaryProviding : AnyObject {
+  #if compiler(>=5.3) && $NonescapableTypes
+  func getEntries(page: Swift.Int, limit: Swift.Int, subCategoryID: Swift.String?) async -> TreeSDK.TreeResult<TreeSDK.Paginated<TreeSDK.DiaryEntry>>
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  func createEntry(subCategoryID: Swift.String, measurements: [TreeSDK.MeasurementValue], notes: Swift.String?, tags: [Swift.String], recordedAt: Foundation.Date?, attachmentURL: Swift.String?, isAuto: Swift.Bool, container: Swift.String?) async -> TreeSDK.TreeResult<TreeSDK.DiaryEntry>
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  func updateEntry(id: Swift.String, subCategoryID: Swift.String, measurements: [TreeSDK.MeasurementValue], notes: Swift.String?, tags: [Swift.String], recordedAt: Foundation.Date?, attachmentURL: Swift.String?, container: Swift.String?) async -> TreeSDK.TreeResult<TreeSDK.DiaryEntry>
+  #endif
+  func deleteEntry(id: Swift.String) async -> TreeSDK.TreeResult<Swift.Void>
+  func uploadAttachment(_ data: Foundation.Data, filename: Swift.String, mimeType: Swift.String) async -> TreeSDK.TreeResult<Swift.String>
+  func getSubcategories() async -> TreeSDK.TreeResult<[TreeSDK.HealthSubcategory]>
+  func insights(for entries: [TreeSDK.DiaryEntry], measurementKey: Swift.String) -> TreeSDK.DiaryInsights
+}
+final public class DiaryRepository : TreeSDK.DiaryProviding {
+  public init(client: TreeSDK.APIClient, userID: Swift.String)
+  convenience public init(sdk: TreeSDK.Tree)
+  #if compiler(>=5.3) && $NonescapableTypes
+  final public func getEntries(page: Swift.Int = 1, limit: Swift.Int = 25, subCategoryID: Swift.String? = nil) async -> TreeSDK.TreeResult<TreeSDK.Paginated<TreeSDK.DiaryEntry>>
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  final public func createEntry(subCategoryID: Swift.String, measurements: [TreeSDK.MeasurementValue], notes: Swift.String? = nil, tags: [Swift.String] = [], recordedAt: Foundation.Date? = nil, attachmentURL: Swift.String? = nil, isAuto: Swift.Bool = false, container: Swift.String? = nil) async -> TreeSDK.TreeResult<TreeSDK.DiaryEntry>
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  final public func updateEntry(id: Swift.String, subCategoryID: Swift.String, measurements: [TreeSDK.MeasurementValue], notes: Swift.String? = nil, tags: [Swift.String] = [], recordedAt: Foundation.Date? = nil, attachmentURL: Swift.String? = nil, container: Swift.String? = nil) async -> TreeSDK.TreeResult<TreeSDK.DiaryEntry>
+  #endif
+  final public func deleteEntry(id: Swift.String) async -> TreeSDK.TreeResult<Swift.Void>
+  final public func uploadAttachment(_ data: Foundation.Data, filename: Swift.String, mimeType: Swift.String) async -> TreeSDK.TreeResult<Swift.String>
+  final public func getSubcategories() async -> TreeSDK.TreeResult<[TreeSDK.HealthSubcategory]>
+  final public func insights(for entries: [TreeSDK.DiaryEntry], measurementKey: Swift.String) -> TreeSDK.DiaryInsights
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers @_Concurrency.MainActor final public class DiaryTabRouter : Foundation.ObservableObject {
+  @_Concurrency.MainActor public static let shared: TreeSDK.DiaryTabRouter
+  @Combine.Published @_projectedValueProperty($requested) @_Concurrency.MainActor final public var requested: Swift.Bool {
+    get
+  }
+  @_Concurrency.MainActor final public var $requested: Combine.Published<Swift.Bool>.Publisher {
+    get
+  }
+  @_Concurrency.MainActor final public var openedFromDiary: Swift.Bool {
+    get
+  }
+  @_Concurrency.MainActor final public func medicationFlowStarted(fromDiary: Swift.Bool)
+  @_Concurrency.MainActor final public func requestAllTab()
+  @_Concurrency.MainActor final public func consume()
+  public typealias ObjectWillChangePublisher = Combine.ObservableObjectPublisher
+  @objc deinit
+}
+@_Concurrency.MainActor final public class DiaryViewModel : Foundation.ObservableObject {
+  public enum Phase {
+    case initial
+    case loading
+    case loaded
+    case empty
+    case error
+    public static func == (a: TreeSDK.DiaryViewModel.Phase, b: TreeSDK.DiaryViewModel.Phase) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  @Combine.Published @_projectedValueProperty($phase) @_Concurrency.MainActor final public var phase: TreeSDK.DiaryViewModel.Phase {
+    get
+  }
+  @_Concurrency.MainActor final public var $phase: Combine.Published<TreeSDK.DiaryViewModel.Phase>.Publisher {
+    get
+  }
+  @Combine.Published @_projectedValueProperty($entries) @_Concurrency.MainActor final public var entries: [TreeSDK.DiaryEntry] {
+    get
+  }
+  @_Concurrency.MainActor final public var $entries: Combine.Published<[TreeSDK.DiaryEntry]>.Publisher {
+    get
+  }
+  @Combine.Published @_projectedValueProperty($isLoadingMore) @_Concurrency.MainActor final public var isLoadingMore: Swift.Bool {
+    get
+  }
+  @_Concurrency.MainActor final public var $isLoadingMore: Combine.Published<Swift.Bool>.Publisher {
+    get
+  }
+  #if compiler(>=5.3) && $NonescapableTypes
+  @Combine.Published @_projectedValueProperty($failure) @_Concurrency.MainActor final public var failure: TreeSDK.TreeFailure? {
+    get
+  }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @_Concurrency.MainActor final public var $failure: Combine.Published<TreeSDK.TreeFailure?>.Publisher {
+    get
+  }
+  #endif
+  @Combine.Published @_projectedValueProperty($subcategoriesByID) @_Concurrency.MainActor final public var subcategoriesByID: [Swift.String : TreeSDK.HealthSubcategory] {
+    get
+  }
+  @_Concurrency.MainActor final public var $subcategoriesByID: Combine.Published<[Swift.String : TreeSDK.HealthSubcategory]>.Publisher {
+    get
+  }
+  @_Concurrency.MainActor final public var subcategories: [TreeSDK.HealthSubcategory] {
+    get
+  }
+  @_Concurrency.MainActor final public var defaultOrderSubcategories: [TreeSDK.HealthSubcategory] {
+    get
+  }
+  #if compiler(>=5.3) && $NonescapableTypes
+  @_Concurrency.MainActor final public func subcategory(for entry: TreeSDK.DiaryEntry) -> TreeSDK.HealthSubcategory?
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @_Concurrency.MainActor public init(diary: any TreeSDK.DiaryProviding, hidesMedications: Swift.Bool = false, insights: (any TreeSDK.NawafInsightRequesting)? = nil, modules: Swift.Set<TreeSDK.TreeModule> = [])
+  #endif
+  @_Concurrency.MainActor convenience public init(sdk: TreeSDK.Tree)
+  @_Concurrency.MainActor final public var hasMore: Swift.Bool {
+    get
+  }
+  @_Concurrency.MainActor final public func loadSubcategoriesIfNeeded() async
+  @_Concurrency.MainActor final public func load() async
+  @Combine.Published @_projectedValueProperty($latestBySubcategory) @_Concurrency.MainActor final public var latestBySubcategory: [Swift.String : TreeSDK.DiaryEntry] {
+    get
+  }
+  @_Concurrency.MainActor final public var $latestBySubcategory: Combine.Published<[Swift.String : TreeSDK.DiaryEntry]>.Publisher {
+    get
+  }
+  @_Concurrency.MainActor final public func loadLatestPerMetric() async
+  @_Concurrency.MainActor final public func refresh() async
+  @_Concurrency.MainActor final public func loadMore() async
+  #if compiler(>=5.3) && $NonescapableTypes
+  @discardableResult
+  @_Concurrency.MainActor final public func addEntry(subCategoryID: Swift.String, measurements: [TreeSDK.MeasurementValue], notes: Swift.String? = nil, tags: [Swift.String] = [], recordedAt: Foundation.Date? = nil, attachmentURL: Swift.String? = nil, isAuto: Swift.Bool = false, container: Swift.String? = nil) async -> TreeSDK.TreeResult<TreeSDK.DiaryEntry>
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @discardableResult
+  @_Concurrency.MainActor final public func updateEntry(id: Swift.String, subCategoryID: Swift.String, measurements: [TreeSDK.MeasurementValue], notes: Swift.String? = nil, tags: [Swift.String] = [], recordedAt: Foundation.Date? = nil, attachmentURL: Swift.String? = nil, container: Swift.String? = nil) async -> TreeSDK.TreeResult<TreeSDK.DiaryEntry>
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @Combine.Published @_projectedValueProperty($requestedTabID) @_Concurrency.MainActor final public var requestedTabID: Swift.String? {
+    get
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    set
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    _modify
+  }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @_Concurrency.MainActor final public var $requestedTabID: Combine.Published<Swift.String?>.Publisher {
+    get
+    @available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, *)
+    set
+  }
+  #endif
+  @_Concurrency.MainActor final public func clearRequestedTab()
+  @discardableResult
+  @_Concurrency.MainActor final public func deleteEntry(id: Swift.String) async -> TreeSDK.TreeResult<Swift.Void>
+  @_Concurrency.MainActor final public func getSubcategories() async -> TreeSDK.TreeResult<[TreeSDK.HealthSubcategory]>
+  @_Concurrency.MainActor final public func uploadAttachment(_ data: Foundation.Data, filename: Swift.String, mimeType: Swift.String) async -> TreeSDK.TreeResult<Swift.String>
+  @_Concurrency.MainActor final public func history(forSubcategoryID id: Swift.String) async -> [TreeSDK.DiaryEntry]
+  @_Concurrency.MainActor final public func insights(forSubcategoryID id: Swift.String, measurementKey: Swift.String) -> TreeSDK.DiaryInsights
+  public typealias ObjectWillChangePublisher = Combine.ObservableObjectPublisher
+  @objc deinit
+}
+@_Concurrency.MainActor @preconcurrency public struct ExploreView : SwiftUICore.View {
+  @_Concurrency.MainActor @preconcurrency public static let medicineFocus: Swift.String
+  #if compiler(>=5.3) && $NonescapableTypes
+  @_Concurrency.MainActor @preconcurrency public init(sdk: TreeSDK.Tree, onOpenDiary: @escaping () -> Swift.Void, onOpenMedications: @escaping () -> Swift.Void, onOpenReminders: @escaping () -> Swift.Void = {}, onLogMetric: @escaping (Swift.String) -> Swift.Void = { _ in }, onLogMedication: (() -> Swift.Void)? = nil, onBack: (() -> Swift.Void)? = nil, focusMetricID: Swift.String? = nil)
+  #endif
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s7TreeSDK11ExploreViewV4bodyQrvp", 0) __
+}
+public struct TreeHealthSample : Swift.Equatable {
+  public let identifier: Swift.String
+  public let unit: Swift.String
+  public let value: Swift.Double
+  public init(identifier: Swift.String, unit: Swift.String, value: Swift.Double)
+  public static func == (a: TreeSDK.TreeHealthSample, b: TreeSDK.TreeHealthSample) -> Swift.Bool
+}
+public enum HealthWriteMap {
+}
+public struct TreeReminderTap {
+  public let kind: TreeSDK.ReminderKind?
+  public let reminderID: Swift.String?
+  public let userMedicineID: Swift.String?
+  public let dose: TreeSDK.DoseInfo?
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init?(userInfo: [Swift.AnyHashable : Any])
+  #endif
+}
+public protocol TreeNotificationScheduling : AnyObject {
+  @discardableResult
+  func requestAuthorization() async -> Swift.Bool
+  func sync(reminders: [TreeSDK.Reminder], medicines: [TreeSDK.UserMedicine]) async
+}
+final public class LocalNotificationScheduler : TreeSDK.TreeNotificationScheduling, TreeSDK.MedicationReminderScheduling {
+  public static let shared: TreeSDK.LocalNotificationScheduler
+  #if compiler(>=5.3) && $NonescapableTypes
+  final public var onReminderTap: ((TreeSDK.TreeReminderTap) -> Swift.Void)? {
+    get
+    set
+  }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  final public func perform(_ action: TreeSDK.MedicineNotificationAction, tap: TreeSDK.TreeReminderTap, firedAt: Foundation.Date, requestID: Swift.String, content: UserNotifications.UNNotificationContent?) async
+  #endif
+  public init()
+  @discardableResult
+  final public func requestAuthorization() async -> Swift.Bool
+  final public func sync(reminders: [TreeSDK.Reminder], medicines: [TreeSDK.UserMedicine]) async
+  final public func schedule(_ medicine: TreeSDK.UserMedicine) async
+  final public func cancelOrphans(keeping ids: Swift.Set<Swift.String>) async
+  final public func cancel(_ userMedicineID: Swift.String) async
+  final public func cancelAll() async
+  final public func fireTestNotification(after seconds: Foundation.TimeInterval = 20) async
+  final public func fireTestMedicineNotification(_ medicine: TreeSDK.UserMedicine, after seconds: Foundation.TimeInterval = 20) async
+  final public func simulateMedicineAction(_ action: TreeSDK.MedicineNotificationAction, medicine: TreeSDK.UserMedicine, firedAt: Foundation.Date = Date().addingTimeInterval(-300)) async
+  final public func dumpCategories() async
+  final public func dumpDelivered() async
+  final public func dumpPending() async
+  @objc deinit
+}
+final public class NoopNotificationScheduler : TreeSDK.TreeNotificationScheduling {
+  public init()
+  @discardableResult
+  final public func requestAuthorization() async -> Swift.Bool
+  final public func sync(reminders: [TreeSDK.Reminder], medicines: [TreeSDK.UserMedicine]) async
+  @objc deinit
+}
+@_Concurrency.MainActor @preconcurrency public struct MedicationListView : SwiftUICore.View {
+  #if compiler(>=5.3) && $NonescapableTypes
+  @_Concurrency.MainActor @preconcurrency public init(viewModel: TreeSDK.MedicationViewModel, onClose: (() -> Swift.Void)? = nil, initialLogMedicineID: Swift.String? = nil, onLogged: (() -> Swift.Void)? = nil, fromReminders: Swift.Bool = false)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @_Concurrency.MainActor @preconcurrency public init(sdk: TreeSDK.Tree, onClose: (() -> Swift.Void)? = nil, initialLogMedicineID: Swift.String? = nil, onLogged: (() -> Swift.Void)? = nil, fromReminders: Swift.Bool = false)
+  #endif
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s7TreeSDK18MedicationListViewV4bodyQrvp", 0) __
+}
+@_Concurrency.MainActor @preconcurrency public struct MedicationLogsView : SwiftUICore.View {
+  @_Concurrency.MainActor @preconcurrency public init(sdk: TreeSDK.Tree, onManage: @escaping () -> Swift.Void = {}, isVisible: Swift.Bool = true)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s7TreeSDK18MedicationLogsViewV4bodyQrvp", 0) __
+}
+public struct DoseInfo : Swift.Decodable, Swift.Equatable {
+  public let label: Swift.String
+  public let value: Swift.Double
+  public let unit: Swift.String
+  public init(label: Swift.String, value: Swift.Double, unit: Swift.String)
+  public var unitDisplay: Swift.String {
+    get
+  }
+  public init(from decoder: any Swift.Decoder) throws
+  public var body: [Swift.String : Any] {
+    get
+  }
+  public static func == (a: TreeSDK.DoseInfo, b: TreeSDK.DoseInfo) -> Swift.Bool
+}
+public struct AvailableDose : Swift.Decodable {
+  public let id: Swift.String
+  public let labelEn: Swift.String
+  public let labelAr: Swift.String
+  public let defaultValue: Swift.Double
+  public let unit: Swift.String
+  public init(from decoder: any Swift.Decoder) throws
+  public func label(arabic: Swift.Bool) -> Swift.String
+}
+public struct Medicine : Swift.Decodable, Swift.Identifiable {
+  public let id: Swift.String
+  public let medicineID: Swift.Int?
+  public let nameEn: Swift.String
+  public let nameAr: Swift.String
+  public let type: [Swift.String]
+  public let typeCode: Swift.Int?
+  public let imageURL: Swift.String?
+  public let region: Swift.String?
+  public let isActive: Swift.Bool
+  public let availableDoses: [TreeSDK.AvailableDose]
+  public init(from decoder: any Swift.Decoder) throws
+  public func formLabel(arabic: Swift.Bool) -> Swift.String
+  public func name(arabic: Swift.Bool) -> Swift.String
+  public static let formCodesEn: [Swift.Int : Swift.String]
+  public static let formCodesAr: [Swift.Int : Swift.String]
+  public typealias ID = Swift.String
+}
+public struct UserMedicine : Swift.Decodable, Swift.Identifiable {
+  public let id: Swift.String
+  public let medicineID: Swift.String?
+  public let name: Swift.String
+  public let type: Swift.String
+  public let dose: TreeSDK.DoseInfo
+  public let imageURL: Swift.String?
+  public let isCustom: Swift.Bool
+  public let isActive: Swift.Bool
+  public let reminderTimes: [Swift.String]
+  public let reminderDays: [Swift.Int]
+  public let lastTakenAt: Foundation.Date?
+  public let reminderExpiryDate: Foundation.Date?
+  public let remindersEnabled: Swift.Bool
+  #if compiler(>=5.3) && $NonescapableTypes
+  public var remainingDays: Swift.Int? {
+    get
+  }
+  #endif
+  public init(from decoder: any Swift.Decoder) throws
+  public typealias ID = Swift.String
+}
+public struct MedicineLog : Swift.Decodable, Swift.Identifiable {
+  public let id: Swift.String
+  public let userMedicineID: Swift.String
+  public let dose: TreeSDK.DoseInfo?
+  public let tags: [Swift.String]
+  public let notes: Swift.String?
+  public let takenAt: Foundation.Date?
+  public let medicineName: Swift.String
+  public let medicineImageURL: Swift.String?
+  public let medicineType: Swift.String
+  public init(from decoder: any Swift.Decoder) throws
+  public typealias ID = Swift.String
+}
+public protocol MedicationReminderScheduling : AnyObject {
+  func schedule(_ medicine: TreeSDK.UserMedicine) async
+  func cancel(_ userMedicineID: Swift.String) async
+  func cancelOrphans(keeping ids: Swift.Set<Swift.String>) async
+}
+final public class NoopMedicationReminderScheduler : TreeSDK.MedicationReminderScheduling {
+  public init()
+  final public func schedule(_ medicine: TreeSDK.UserMedicine) async
+  final public func cancel(_ userMedicineID: Swift.String) async
+  final public func cancelOrphans(keeping ids: Swift.Set<Swift.String>) async
+  @objc deinit
+}
+public enum MedicationDuration : Swift.Equatable {
+  case unchanged
+  case always
+  case days(Swift.Int)
+  public static func == (a: TreeSDK.MedicationDuration, b: TreeSDK.MedicationDuration) -> Swift.Bool
+}
+public protocol MedicationProviding : AnyObject {
+  func getUserMedicines() async -> TreeSDK.TreeResult<[TreeSDK.UserMedicine]>
+  #if compiler(>=5.3) && $NonescapableTypes
+  func addCustom(name: Swift.String, type: Swift.String, dose: TreeSDK.DoseInfo, reminderTimes: [Swift.String], reminderDays: [Swift.Int], durationDays: Swift.Int?, imageURL: Swift.String?, catalogueID: Swift.String?) async -> TreeSDK.TreeResult<TreeSDK.UserMedicine>
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  func updateMedicine(id: Swift.String, dose: TreeSDK.DoseInfo?, reminderTimes: [Swift.String]?, reminderDays: [Swift.Int]?, isActive: Swift.Bool?, remindersEnabled: Swift.Bool?, duration: TreeSDK.MedicationDuration) async -> TreeSDK.TreeResult<TreeSDK.UserMedicine>
+  #endif
+  func deleteMedicine(id: Swift.String) async -> TreeSDK.TreeResult<Swift.Void>
+  #if compiler(>=5.3) && $NonescapableTypes
+  func logDose(userMedicineID: Swift.String, dose: TreeSDK.DoseInfo?, tags: [Swift.String], takenAt: Foundation.Date?, notes: Swift.String?) async -> TreeSDK.TreeResult<Swift.Void>
+  #endif
+  func getLogs() async -> TreeSDK.TreeResult<[TreeSDK.MedicineLog]>
+  #if compiler(>=5.3) && $NonescapableTypes
+  func updateLog(id: Swift.String, dose: TreeSDK.DoseInfo?, tags: [Swift.String]?, takenAt: Foundation.Date?, notes: Swift.String?) async -> TreeSDK.TreeResult<Swift.Void>
+  #endif
+  func deleteLog(id: Swift.String) async -> TreeSDK.TreeResult<Swift.Void>
+  #if compiler(>=5.3) && $NonescapableTypes
+  func searchCatalogue(name: Swift.String?, page: Swift.Int, limit: Swift.Int) async -> TreeSDK.TreeResult<[TreeSDK.Medicine]>
+  #endif
+}
+final public class MedicationRepository : TreeSDK.MedicationProviding {
+  public init(client: TreeSDK.APIClient, userID: Swift.String)
+  convenience public init(sdk: TreeSDK.Tree)
+  final public func getUserMedicines() async -> TreeSDK.TreeResult<[TreeSDK.UserMedicine]>
+  #if compiler(>=5.3) && $NonescapableTypes
+  final public func addCustom(name: Swift.String, type: Swift.String, dose: TreeSDK.DoseInfo, reminderTimes: [Swift.String], reminderDays: [Swift.Int], durationDays: Swift.Int?, imageURL: Swift.String? = nil, catalogueID: Swift.String? = nil) async -> TreeSDK.TreeResult<TreeSDK.UserMedicine>
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  final public func updateMedicine(id: Swift.String, dose: TreeSDK.DoseInfo?, reminderTimes: [Swift.String]?, reminderDays: [Swift.Int]?, isActive: Swift.Bool?, remindersEnabled: Swift.Bool? = nil, duration: TreeSDK.MedicationDuration = .unchanged) async -> TreeSDK.TreeResult<TreeSDK.UserMedicine>
+  #endif
+  final public func deleteMedicine(id: Swift.String) async -> TreeSDK.TreeResult<Swift.Void>
+  #if compiler(>=5.3) && $NonescapableTypes
+  final public func logDose(userMedicineID: Swift.String, dose: TreeSDK.DoseInfo? = nil, tags: [Swift.String] = [], takenAt: Foundation.Date?, notes: Swift.String?) async -> TreeSDK.TreeResult<Swift.Void>
+  #endif
+  final public func getLogs() async -> TreeSDK.TreeResult<[TreeSDK.MedicineLog]>
+  #if compiler(>=5.3) && $NonescapableTypes
+  final public func updateLog(id: Swift.String, dose: TreeSDK.DoseInfo?, tags: [Swift.String]?, takenAt: Foundation.Date?, notes: Swift.String?) async -> TreeSDK.TreeResult<Swift.Void>
+  #endif
+  final public func deleteLog(id: Swift.String) async -> TreeSDK.TreeResult<Swift.Void>
+  #if compiler(>=5.3) && $NonescapableTypes
+  final public func searchCatalogue(name: Swift.String?, page: Swift.Int = 1, limit: Swift.Int = 20) async -> TreeSDK.TreeResult<[TreeSDK.Medicine]>
+  #endif
+  @objc deinit
+}
+@_Concurrency.MainActor final public class MedicationViewModel : Foundation.ObservableObject {
+  public enum Phase {
+    case initial
+    case loading
+    case loaded
+    case empty
+    case error
+    public static func == (a: TreeSDK.MedicationViewModel.Phase, b: TreeSDK.MedicationViewModel.Phase) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  @Combine.Published @_projectedValueProperty($phase) @_Concurrency.MainActor final public var phase: TreeSDK.MedicationViewModel.Phase {
+    get
+  }
+  @_Concurrency.MainActor final public var $phase: Combine.Published<TreeSDK.MedicationViewModel.Phase>.Publisher {
+    get
+  }
+  @Combine.Published @_projectedValueProperty($medicines) @_Concurrency.MainActor final public var medicines: [TreeSDK.UserMedicine] {
+    get
+  }
+  @_Concurrency.MainActor final public var $medicines: Combine.Published<[TreeSDK.UserMedicine]>.Publisher {
+    get
+  }
+  #if compiler(>=5.3) && $NonescapableTypes
+  @Combine.Published @_projectedValueProperty($failure) @_Concurrency.MainActor final public var failure: TreeSDK.TreeFailure? {
+    get
+  }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @_Concurrency.MainActor final public var $failure: Combine.Published<TreeSDK.TreeFailure?>.Publisher {
+    get
+  }
+  #endif
+  @Combine.Published @_projectedValueProperty($logsPhase) @_Concurrency.MainActor final public var logsPhase: TreeSDK.MedicationViewModel.Phase {
+    get
+  }
+  @_Concurrency.MainActor final public var $logsPhase: Combine.Published<TreeSDK.MedicationViewModel.Phase>.Publisher {
+    get
+  }
+  @Combine.Published @_projectedValueProperty($logs) @_Concurrency.MainActor final public var logs: [TreeSDK.MedicineLog] {
+    get
+  }
+  @_Concurrency.MainActor final public var $logs: Combine.Published<[TreeSDK.MedicineLog]>.Publisher {
+    get
+  }
+  @_Concurrency.MainActor public init(medication: any TreeSDK.MedicationProviding, scheduler: any TreeSDK.MedicationReminderScheduling = NoopMedicationReminderScheduler())
+  #if compiler(>=5.3) && $NonescapableTypes
+  @_Concurrency.MainActor convenience public init(sdk: TreeSDK.Tree, scheduler: (any TreeSDK.MedicationReminderScheduling)? = nil)
+  #endif
+  @_Concurrency.MainActor final public func load() async
+  @_Concurrency.MainActor final public func refresh() async
+  @_Concurrency.MainActor final public func rescheduleAll() async
+  @_Concurrency.MainActor final public func searchCatalogue(name: Swift.String) async -> TreeSDK.TreeResult<[TreeSDK.Medicine]>
+  #if compiler(>=5.3) && $NonescapableTypes
+  @discardableResult
+  @_Concurrency.MainActor final public func addCustom(name: Swift.String, type: Swift.String, dose: TreeSDK.DoseInfo, reminderTimes: [Swift.String], reminderDays: [Swift.Int], durationDays: Swift.Int? = nil, imageURL: Swift.String? = nil, catalogueID: Swift.String? = nil) async -> TreeSDK.TreeResult<TreeSDK.UserMedicine>
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @discardableResult
+  @_Concurrency.MainActor final public func markTaken(_ medicine: TreeSDK.UserMedicine, notes: Swift.String? = nil) async -> TreeSDK.TreeResult<Swift.Void>
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @discardableResult
+  @_Concurrency.MainActor final public func logDose(_ medicine: TreeSDK.UserMedicine, dose: TreeSDK.DoseInfo, tags: [Swift.String] = [], takenAt: Foundation.Date? = nil, notes: Swift.String? = nil) async -> TreeSDK.TreeResult<Swift.Void>
+  #endif
+  @_Concurrency.MainActor final public func loadLogs() async
+  #if compiler(>=5.3) && $NonescapableTypes
+  @_Concurrency.MainActor final public func lastLog(for medicineID: Swift.String) -> TreeSDK.MedicineLog?
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @discardableResult
+  @_Concurrency.MainActor final public func updateLog(id: Swift.String, dose: TreeSDK.DoseInfo?, tags: [Swift.String]? = nil, takenAt: Foundation.Date? = nil, notes: Swift.String? = nil) async -> TreeSDK.TreeResult<Swift.Void>
+  #endif
+  @discardableResult
+  @_Concurrency.MainActor final public func deleteLog(id: Swift.String) async -> TreeSDK.TreeResult<Swift.Void>
+  #if compiler(>=5.3) && $NonescapableTypes
+  @discardableResult
+  @_Concurrency.MainActor final public func update(_ medicine: TreeSDK.UserMedicine, dose: TreeSDK.DoseInfo?, reminderTimes: [Swift.String]?, reminderDays: [Swift.Int]?, remindersEnabled: Swift.Bool? = nil, duration: TreeSDK.MedicationDuration = .unchanged) async -> TreeSDK.TreeResult<TreeSDK.UserMedicine>
+  #endif
+  @discardableResult
+  @_Concurrency.MainActor final public func delete(_ medicine: TreeSDK.UserMedicine) async -> TreeSDK.TreeResult<Swift.Void>
+  public typealias ObjectWillChangePublisher = Combine.ObservableObjectPublisher
+  @objc deinit
+}
+public enum MedicineNotificationAction : Swift.String, Swift.CaseIterable {
+  case took
+  case snooze
+  case cancel
+  public static let categoryID: Swift.String
+  public static let snoozeInterval: Swift.Double
+  public var title: Swift.String {
+    get
+  }
+  public var options: UserNotifications.UNNotificationActionOptions {
+    get
+  }
+  #if compiler(>=5.3) && $NonescapableTypes
+  public static func action(for identifier: Swift.String) -> TreeSDK.MedicineNotificationAction?
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init?(rawValue: Swift.String)
+  #endif
+  public typealias AllCases = [TreeSDK.MedicineNotificationAction]
+  public typealias RawValue = Swift.String
+  nonisolated public static var allCases: [TreeSDK.MedicineNotificationAction] {
+    get
+  }
+  public var rawValue: Swift.String {
+    get
+  }
+}
+@_Concurrency.MainActor @preconcurrency public struct NawafAIChatView : SwiftUICore.View {
+  #if compiler(>=5.3) && $NonescapableTypes
+  @_Concurrency.MainActor @preconcurrency public init(viewModel: TreeSDK.NawafAIViewModel, initialSessionID: Swift.String? = nil)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @_Concurrency.MainActor @preconcurrency public init(sdk: TreeSDK.Tree, initialSessionID: Swift.String? = nil)
+  #endif
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s7TreeSDK15NawafAIChatViewV4bodyQrvp", 0) __
+}
+@_Concurrency.MainActor @preconcurrency public struct NawafAIFloatingButton : SwiftUICore.View {
+  #if compiler(>=5.3) && $NonescapableTypes
+  @_Concurrency.MainActor @preconcurrency public init(sdk: TreeSDK.Tree?, size: CoreFoundation.CGFloat = 112)
+  #endif
+  @_Concurrency.MainActor @preconcurrency public init(size: CoreFoundation.CGFloat = 112, makeViewModel: @escaping () -> TreeSDK.NawafAIViewModel)
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s7TreeSDK21NawafAIFloatingButtonV4bodyQrvp", 0) __
+}
+public protocol NawafAIChatProviding : AnyObject {
+  #if compiler(>=5.3) && $NonescapableTypes
+  var sessionID: Swift.String? { get }
+  #endif
+  func sendMessage(_ question: Swift.String) async -> TreeSDK.TreeResult<Swift.String>
+  #if compiler(>=5.3) && $NonescapableTypes
+  func getSessions(page: Swift.Int, limit: Swift.Int, search: Swift.String?) async -> TreeSDK.TreeResult<[TreeSDK.ChatSession]>
+  #endif
+  func getMessages(sessionID: Swift.String, page: Swift.Int, limit: Swift.Int) async -> TreeSDK.TreeResult<[TreeSDK.ChatMessage]>
+  func resume(_ sessionID: Swift.String)
+  func reset()
+}
+public protocol NawafInsightRequesting : AnyObject {
+  func insight(diaryEntryID: Swift.String) async -> TreeSDK.TreeResult<TreeSDK.ChatInsight>
+}
+final public class NawafAIRepository : TreeSDK.NawafAIChatProviding, TreeSDK.NawafInsightRequesting {
+  final public var sessionID: Swift.String? {
+    get
+  }
+  public init(client: TreeSDK.APIClient, userID: Swift.String)
+  convenience public init(sdk: TreeSDK.Tree)
+  final public func sendMessage(_ question: Swift.String) async -> TreeSDK.TreeResult<Swift.String>
+  #if compiler(>=5.3) && $NonescapableTypes
+  final public func getSessions(page: Swift.Int = 1, limit: Swift.Int = 20, search: Swift.String? = nil) async -> TreeSDK.TreeResult<[TreeSDK.ChatSession]>
+  #endif
+  final public func getMessages(sessionID: Swift.String, page: Swift.Int = 1, limit: Swift.Int = 50) async -> TreeSDK.TreeResult<[TreeSDK.ChatMessage]>
+  final public func insight(diaryEntryID: Swift.String) async -> TreeSDK.TreeResult<TreeSDK.ChatInsight>
+  final public func resume(_ sessionID: Swift.String)
+  final public func reset()
+  @objc deinit
+}
+public struct ChatInsight : Swift.Decodable, Swift.Sendable {
+  public let text: Swift.String
+  public let sessionID: Swift.String
+  public init(from decoder: any Swift.Decoder) throws
+}
+@_Concurrency.MainActor final public class NawafAIViewModel : Foundation.ObservableObject {
+  public enum Status {
+    case idle
+    case sending
+    case loading
+    case error
+    public static func == (a: TreeSDK.NawafAIViewModel.Status, b: TreeSDK.NawafAIViewModel.Status) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  @Combine.Published @_projectedValueProperty($messages) @_Concurrency.MainActor final public var messages: [TreeSDK.ChatMessage] {
+    get
+  }
+  @_Concurrency.MainActor final public var $messages: Combine.Published<[TreeSDK.ChatMessage]>.Publisher {
+    get
+  }
+  @Combine.Published @_projectedValueProperty($status) @_Concurrency.MainActor final public var status: TreeSDK.NawafAIViewModel.Status {
+    get
+  }
+  @_Concurrency.MainActor final public var $status: Combine.Published<TreeSDK.NawafAIViewModel.Status>.Publisher {
+    get
+  }
+  #if compiler(>=5.3) && $NonescapableTypes
+  @Combine.Published @_projectedValueProperty($failure) @_Concurrency.MainActor final public var failure: TreeSDK.TreeFailure? {
+    get
+  }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @_Concurrency.MainActor final public var $failure: Combine.Published<TreeSDK.TreeFailure?>.Publisher {
+    get
+  }
+  #endif
+  @_Concurrency.MainActor public init(chat: any TreeSDK.NawafAIChatProviding)
+  @_Concurrency.MainActor convenience public init(sdk: TreeSDK.Tree)
+  @_Concurrency.MainActor final public var isEmpty: Swift.Bool {
+    get
+  }
+  @_Concurrency.MainActor final public func viewAppeared()
+  @_Concurrency.MainActor final public func viewDisappeared()
+  @_Concurrency.MainActor final public func send(_ text: Swift.String) async
+  #if compiler(>=5.3) && $NonescapableTypes
+  @discardableResult
+  @_Concurrency.MainActor final public func recoverPendingReply() async -> Swift.String?
+  #endif
+  @_Concurrency.MainActor final public func retryLast() async
+  @_Concurrency.MainActor final public func startNewChat()
+  #if compiler(>=5.3) && $NonescapableTypes
+  @_Concurrency.MainActor final public func loadSessions(page: Swift.Int = 1, search: Swift.String? = nil) async -> TreeSDK.TreeResult<[TreeSDK.ChatSession]>
+  #endif
+  @discardableResult
+  @_Concurrency.MainActor final public func resumeRecentSession(now: Foundation.Date = Date()) async -> Swift.Bool
+  @_Concurrency.MainActor final public func openSession(id sessionID: Swift.String) async
+  @_Concurrency.MainActor final public func openSession(_ session: TreeSDK.ChatSession) async
+  public typealias ObjectWillChangePublisher = Combine.ObservableObjectPublisher
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers @_Concurrency.MainActor final public class NawafProactiveMessage : Foundation.ObservableObject {
+  @_Concurrency.MainActor public static let shared: TreeSDK.NawafProactiveMessage
+  #if compiler(>=5.3) && $NonescapableTypes
+  @Combine.Published @_projectedValueProperty($text) @_Concurrency.MainActor final public var text: Swift.String? {
+    get
+  }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @_Concurrency.MainActor final public var $text: Combine.Published<Swift.String?>.Publisher {
+    get
+  }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @Combine.Published @_projectedValueProperty($sessionID) @_Concurrency.MainActor final public var sessionID: Swift.String? {
+    get
+  }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @_Concurrency.MainActor final public var $sessionID: Combine.Published<Swift.String?>.Publisher {
+    get
+  }
+  #endif
+  @_Concurrency.MainActor final public var autoHideAfter: Swift.Double
+  #if compiler(>=5.3) && $NonescapableTypes
+  @_Concurrency.MainActor final public func show(_ text: Swift.String, sessionID: Swift.String? = nil)
+  #endif
+  @_Concurrency.MainActor final public func dismiss()
+  public typealias ObjectWillChangePublisher = Combine.ObservableObjectPublisher
+  @objc deinit
+}
+public enum ReminderKind : Swift.Int, Swift.CaseIterable, Swift.Identifiable {
+  case workout
+  case medicine
+  case hba1c
+  case bloodSugar
+  case bloodPressure
+  case other
+  public var id: Swift.Int {
+    get
+  }
+  public enum Section : Swift.String, Swift.CaseIterable, Swift.Identifiable {
+    case health
+    case medication
+    case lifestyle
+    public var id: Swift.String {
+      get
+    }
+    public var title: Swift.String {
+      get
+    }
+    #if compiler(>=5.3) && $NonescapableTypes
+    public init?(rawValue: Swift.String)
+    #endif
+    public typealias AllCases = [TreeSDK.ReminderKind.Section]
+    public typealias ID = Swift.String
+    public typealias RawValue = Swift.String
+    nonisolated public static var allCases: [TreeSDK.ReminderKind.Section] {
+      get
+    }
+    public var rawValue: Swift.String {
+      get
+    }
+  }
+  public var section: TreeSDK.ReminderKind.Section {
+    get
+  }
+  public var title: Swift.String {
+    get
+  }
+  public var metricName: Swift.String {
+    get
+  }
+  public var allowsMultipleTimes: Swift.Bool {
+    get
+  }
+  public var isPeriodic: Swift.Bool {
+    get
+  }
+  #if compiler(>=5.3) && $NonescapableTypes
+  public func subtitle(times: [Swift.String], startDate: Foundation.Date? = nil, now: Foundation.Date = Date()) -> Swift.String
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init?(rawValue: Swift.Int)
+  #endif
+  public typealias AllCases = [TreeSDK.ReminderKind]
+  public typealias ID = Swift.Int
+  public typealias RawValue = Swift.Int
+  nonisolated public static var allCases: [TreeSDK.ReminderKind] {
+    get
+  }
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public struct Reminder : Swift.Decodable, Swift.Identifiable {
+  public let id: Swift.String
+  public let kind: TreeSDK.ReminderKind
+  public let title: Swift.String
+  public let description: Swift.String?
+  public let times: [Swift.String]
+  public let startDate: Foundation.Date?
+  public let isActive: Swift.Bool
+  public let forever: Swift.Bool
+  public let numberOfDays: Swift.Int?
+  public let updatedAt: Foundation.Date?
+  public init(from decoder: any Swift.Decoder) throws
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init(id: Swift.String, kind: TreeSDK.ReminderKind, title: Swift.String? = nil, description: Swift.String? = nil, times: [Swift.String] = [], startDate: Foundation.Date? = nil, isActive: Swift.Bool = false, forever: Swift.Bool = true, numberOfDays: Swift.Int? = nil, updatedAt: Foundation.Date? = nil)
+  #endif
+  public typealias ID = Swift.String
+}
+public enum ReminderTime {
+  public static let `default`: Swift.String
+  public static func display(_ wire: Swift.String) -> Swift.String
+  #if compiler(>=5.3) && $NonescapableTypes
+  public static func date(from wire: Swift.String) -> Foundation.Date?
+  #endif
+  public static func wire(from date: Foundation.Date) -> Swift.String
+  #if compiler(>=5.3) && $NonescapableTypes
+  public static func next(in times: [Swift.String], now: Foundation.Date = Date(), calendar: Foundation.Calendar = .current) -> Swift.String?
+  #endif
+}
+public struct PlannedNotification : Swift.Equatable {
+  public enum Trigger : Swift.Equatable {
+    case daily(hour: Swift.Int, minute: Swift.Int)
+    case weekly(weekday: Swift.Int, hour: Swift.Int, minute: Swift.Int)
+    case oneShot(Foundation.Date)
+    public static func == (a: TreeSDK.PlannedNotification.Trigger, b: TreeSDK.PlannedNotification.Trigger) -> Swift.Bool
+  }
+  public let id: Swift.String
+  public let title: Swift.String
+  public let body: Swift.String
+  public let trigger: TreeSDK.PlannedNotification.Trigger
+  public let userInfo: [Swift.String : Swift.String]
+  public let nextFire: Foundation.Date
+  public static func == (a: TreeSDK.PlannedNotification, b: TreeSDK.PlannedNotification) -> Swift.Bool
+}
+public enum ReminderNotificationPlan {
+  public static let limit: Swift.Int
+  public static let hba1cIntervalDays: Swift.Int
+  public static func plan(reminders: [TreeSDK.Reminder], medicines: [TreeSDK.UserMedicine], now: Foundation.Date = Date(), calendar: Foundation.Calendar = .current) -> [TreeSDK.PlannedNotification]
+  public static func owner(userID: Swift.String, baseURL: Swift.String) -> Swift.String
+}
+public protocol RemindersProviding : AnyObject {
+  func getReminders() async -> TreeSDK.TreeResult<[TreeSDK.Reminder]>
+  #if compiler(>=5.3) && $NonescapableTypes
+  func create(kind: TreeSDK.ReminderKind, title: Swift.String, times: [Swift.String], startDate: Foundation.Date?, isActive: Swift.Bool) async -> TreeSDK.TreeResult<TreeSDK.Reminder>
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  func update(id: Swift.String, times: [Swift.String]?, startDate: Foundation.Date?, isActive: Swift.Bool?) async -> TreeSDK.TreeResult<TreeSDK.Reminder>
+  #endif
+  func delete(id: Swift.String) async -> TreeSDK.TreeResult<Swift.Void>
+}
+final public class RemindersRepository : TreeSDK.RemindersProviding {
+  public init(client: TreeSDK.APIClient, userID: Swift.String)
+  convenience public init(sdk: TreeSDK.Tree)
+  final public func getReminders() async -> TreeSDK.TreeResult<[TreeSDK.Reminder]>
+  #if compiler(>=5.3) && $NonescapableTypes
+  final public func create(kind: TreeSDK.ReminderKind, title: Swift.String, times: [Swift.String], startDate: Foundation.Date?, isActive: Swift.Bool) async -> TreeSDK.TreeResult<TreeSDK.Reminder>
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  final public func update(id: Swift.String, times: [Swift.String]? = nil, startDate: Foundation.Date? = nil, isActive: Swift.Bool? = nil) async -> TreeSDK.TreeResult<TreeSDK.Reminder>
+  #endif
+  final public func delete(id: Swift.String) async -> TreeSDK.TreeResult<Swift.Void>
+  @objc deinit
+}
+@_Concurrency.MainActor @preconcurrency public struct RemindersView : SwiftUICore.View {
+  #if compiler(>=5.3) && $NonescapableTypes
+  @_Concurrency.MainActor @preconcurrency public init(sdk: TreeSDK.Tree, onBack: (() -> Swift.Void)? = nil, onOpenMedications: (() -> Swift.Void)? = nil)
+  #endif
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s7TreeSDK13RemindersViewV4bodyQrvp", 0) __
+}
+extension TreeSDK.Reminder : Swift.Hashable {
+  public static func == (lhs: TreeSDK.Reminder, rhs: TreeSDK.Reminder) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+@_Concurrency.MainActor final public class RemindersViewModel : Foundation.ObservableObject {
+  public enum Phase {
+    case initial, loading, loaded, error
+    public static func == (a: TreeSDK.RemindersViewModel.Phase, b: TreeSDK.RemindersViewModel.Phase) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  @Combine.Published @_projectedValueProperty($phase) @_Concurrency.MainActor final public var phase: TreeSDK.RemindersViewModel.Phase {
+    get
+  }
+  @_Concurrency.MainActor final public var $phase: Combine.Published<TreeSDK.RemindersViewModel.Phase>.Publisher {
+    get
+  }
+  @Combine.Published @_projectedValueProperty($reminders) @_Concurrency.MainActor final public var reminders: [TreeSDK.Reminder] {
+    get
+  }
+  @_Concurrency.MainActor final public var $reminders: Combine.Published<[TreeSDK.Reminder]>.Publisher {
+    get
+  }
+  #if compiler(>=5.3) && $NonescapableTypes
+  @Combine.Published @_projectedValueProperty($failure) @_Concurrency.MainActor final public var failure: TreeSDK.TreeFailure? {
+    get
+  }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @_Concurrency.MainActor final public var $failure: Combine.Published<TreeSDK.TreeFailure?>.Publisher {
+    get
+  }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @Combine.Published @_projectedValueProperty($saveError) @_Concurrency.MainActor final public var saveError: Swift.String? {
+    get
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    set
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    _modify
+  }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @_Concurrency.MainActor final public var $saveError: Combine.Published<Swift.String?>.Publisher {
+    get
+    @available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, *)
+    set
+  }
+  #endif
+  @_Concurrency.MainActor public init(repository: any TreeSDK.RemindersProviding, scheduler: any TreeSDK.TreeNotificationScheduling = NoopNotificationScheduler())
+  @_Concurrency.MainActor convenience public init(sdk: TreeSDK.Tree)
+  @_Concurrency.MainActor final public func load() async
+  @_Concurrency.MainActor final public func reminders(in section: TreeSDK.ReminderKind.Section) -> [TreeSDK.Reminder]
+  #if compiler(>=5.3) && $NonescapableTypes
+  @discardableResult
+  @_Concurrency.MainActor final public func save(_ reminder: TreeSDK.Reminder, times: [Swift.String], startDate: Foundation.Date?, isActive: Swift.Bool) async -> Swift.Bool
+  #endif
+  @discardableResult
+  @_Concurrency.MainActor final public func requestNotificationPermission() async -> Swift.Bool
+  @discardableResult
+  @_Concurrency.MainActor final public func setActive(_ reminder: TreeSDK.Reminder, _ isActive: Swift.Bool) async -> Swift.Bool
+  public typealias ObjectWillChangePublisher = Combine.ObservableObjectPublisher
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public actor SessionManager : TreeSDK.AccessTokenSource {
+  nonisolated final public let languageCode: Swift.String
+  public var onStateChange: (@Sendable (TreeSDK.TreeSessionState) -> Swift.Void)?
+  public func setStateObserver(_ observer: @escaping @Sendable (TreeSDK.TreeSessionState) -> Swift.Void)
+  #if compiler(>=5.3) && $NonescapableTypes
+  public func currentAccessToken() async -> Swift.String?
+  #endif
+  public func tryRefresh() async -> Swift.Bool
+  public func currentState() -> TreeSDK.TreeSessionState
+  @objc deinit
+  @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+  @_semantics("defaultActor") nonisolated final public var unownedExecutor: _Concurrency.UnownedSerialExecutor {
+    get
+  }
+}
+public struct StepsDay : Swift.Identifiable, Swift.Equatable {
+  public let date: Foundation.Date
+  public let steps: Swift.Int
+  public let calories: Swift.Double
+  public let distanceMeters: Swift.Double
+  public var id: Foundation.Date {
+    get
+  }
+  public var distanceKm: Swift.Double {
+    get
+  }
+  public init(date: Foundation.Date, steps: Swift.Int, calories: Swift.Double = 0, distanceMeters: Swift.Double = 0)
+  public static func == (a: TreeSDK.StepsDay, b: TreeSDK.StepsDay) -> Swift.Bool
+  public typealias ID = Foundation.Date
+}
+@_hasMissingDesignatedInitializers final public class StepsHealthProvider {
+  public static let shared: TreeSDK.StepsHealthProvider
+  final public var isAvailable: Swift.Bool {
+    get
+  }
+  final public func hasPermission() async -> Swift.Bool
+  @discardableResult
+  final public func requestPermission() async -> Swift.Bool
+  final public func save(_ samples: [TreeSDK.TreeHealthSample], at date: Foundation.Date) async
+  final public func dumpHealthWrites() async
+  final public func dailyTotals(from start: Foundation.Date, to end: Foundation.Date) async -> [TreeSDK.StepsDay]
+  @objc deinit
+}
+public struct TokenBundle : Swift.Equatable, Swift.Codable, Swift.Sendable {
+  public let accessToken: Swift.String
+  public let refreshToken: Swift.String
+  public let expiresAt: Foundation.Date
+  public init(accessToken: Swift.String, refreshToken: Swift.String, expiresAt: Foundation.Date)
+  public func isExpired(skew: Foundation.TimeInterval = 60) -> Swift.Bool
+  public static func == (a: TreeSDK.TokenBundle, b: TreeSDK.TokenBundle) -> Swift.Bool
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public protocol TokenStore : Swift.Sendable {
+  #if compiler(>=5.3) && $NonescapableTypes
+  func read() async -> TreeSDK.TokenBundle?
+  #endif
+  func write(_ bundle: TreeSDK.TokenBundle) async
+  func clear() async
+}
+final public class KeychainTokenStore : TreeSDK.TokenStore {
+  public init(service: Swift.String)
+  #if compiler(>=5.3) && $NonescapableTypes
+  public static func scope(baseURL: Swift.String, clientID: Swift.String?) -> Swift.String
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  final public func read() async -> TreeSDK.TokenBundle?
+  #endif
+  final public func write(_ bundle: TreeSDK.TokenBundle) async
+  final public func clear() async
+  @objc deinit
+}
+public actor InMemoryTokenStore : TreeSDK.TokenStore {
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init(_ bundle: TreeSDK.TokenBundle? = nil)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  public func read() async -> TreeSDK.TokenBundle?
+  #endif
+  public func write(_ bundle: TreeSDK.TokenBundle) async
+  public func clear() async
+  @objc deinit
+  @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+  @_semantics("defaultActor") nonisolated final public var unownedExecutor: _Concurrency.UnownedSerialExecutor {
+    get
+  }
+}
+public enum TreeFailure : Swift.Error, Swift.Equatable {
+  case network(Swift.String)
+  case timeout
+  case unauthorized
+  case forbidden(Swift.String)
+  case notFound(Swift.String)
+  case validation(Swift.String)
+  case server(status: Swift.Int, message: Swift.String)
+  case cancelled
+  case configuration([Swift.String])
+  case unknown(Swift.String)
+  public var message: Swift.String {
+    get
+  }
+  public static func == (a: TreeSDK.TreeFailure, b: TreeSDK.TreeFailure) -> Swift.Bool
+}
+extension Swift.String {
+  public var treeASCIIDigits: Swift.String {
+    get
+  }
+}
+@_hasMissingDesignatedInitializers @_Concurrency.MainActor final public class TreeReminderRouter : Foundation.ObservableObject {
+  @_Concurrency.MainActor public static let shared: TreeSDK.TreeReminderRouter
+  #if compiler(>=5.3) && $NonescapableTypes
+  @Combine.Published @_projectedValueProperty($pending) @_Concurrency.MainActor final public var pending: TreeSDK.TreeReminderTap? {
+    get
+  }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @_Concurrency.MainActor final public var $pending: Combine.Published<TreeSDK.TreeReminderTap?>.Publisher {
+    get
+  }
+  #endif
+  @_Concurrency.MainActor final public func receive(_ tap: TreeSDK.TreeReminderTap)
+  @_Concurrency.MainActor final public func consume()
+  #if compiler(>=5.3) && $NonescapableTypes
+  @_Concurrency.MainActor public static func destination(for tap: TreeSDK.TreeReminderTap) -> TreeSDK.TreeReminderRouter.Destination?
+  #endif
+  public enum Destination : Swift.Equatable {
+    case logForm(metric: Swift.String)
+    case medications(logMedicineID: Swift.String?)
+    public static func == (a: TreeSDK.TreeReminderRouter.Destination, b: TreeSDK.TreeReminderRouter.Destination) -> Swift.Bool
+  }
+  public typealias ObjectWillChangePublisher = Combine.ObservableObjectPublisher
+  @objc deinit
+}
+public enum TreeResult<Value> {
+  case ok(Value)
+  case err(TreeSDK.TreeFailure)
+  public var isOk: Swift.Bool {
+    get
+  }
+  public var isErr: Swift.Bool {
+    get
+  }
+  #if compiler(>=5.3) && $NonescapableTypes
+  public var value: Value? {
+    get
+  }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  public var failure: TreeSDK.TreeFailure? {
+    get
+  }
+  #endif
+  public func map<T>(_ transform: (Value) -> T) -> TreeSDK.TreeResult<T>
+  public func fold<T>(onOk: (Value) -> T, onErr: (TreeSDK.TreeFailure) -> T) -> T
+}
+public enum TreeScreen : Swift.String, Swift.CaseIterable, Swift.Sendable {
+  case explore
+  case diary
+  case medications
+  case reminders
+  case chat
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init?(rawValue: Swift.String)
+  #endif
+  public typealias AllCases = [TreeSDK.TreeScreen]
+  public typealias RawValue = Swift.String
+  nonisolated public static var allCases: [TreeSDK.TreeScreen] {
+    get
+  }
+  public var rawValue: Swift.String {
+    get
+  }
+}
+@_Concurrency.MainActor @preconcurrency public struct TreeRootView : SwiftUICore.View {
+  #if compiler(>=5.3) && $NonescapableTypes
+  @_Concurrency.MainActor @preconcurrency public init(sdk: TreeSDK.Tree, initial: TreeSDK.TreeScreen = .explore, showsNawafButton: Swift.Bool = true, onClose: (() -> Swift.Void)? = nil)
+  #endif
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s7TreeSDK0A8RootViewV4bodyQrvp", 0) __
+}
+@_hasMissingDesignatedInitializers final public class Tree {
+  public static var shared: TreeSDK.Tree? {
+    get
+  }
+  final public let config: TreeSDK.TreeSDKConfig
+  final public let api: TreeSDK.APIClient
+  final public let session: TreeSDK.SessionManager
+  final public var profile: TreeSDK.UserProfile? {
+    get
+  }
+  #if compiler(>=5.3) && $NonescapableTypes
+  @discardableResult
+  final public func loadProfile() async -> TreeSDK.UserProfile?
+  #endif
+  @discardableResult
+  final public func setTargetSteps(_ steps: Swift.Int) async -> TreeSDK.TreeResult<Swift.Int>
+  @discardableResult
+  final public func setTargetWeight(_ kg: Swift.Double) async -> TreeSDK.TreeResult<Swift.Double>
+  public static var isInitialized: Swift.Bool {
+    get
+  }
+  @discardableResult
+  public static func initialize(_ config: TreeSDK.TreeSDKConfig) async -> TreeSDK.TreeResult<TreeSDK.Tree>
+  public static func reset() async
+  @objc deinit
+}
+public enum TreeSessionState : Swift.Equatable, Swift.Sendable {
+  case uninitialized
+  case authenticating
+  case active(expiresAt: Foundation.Date?)
+  case expired
+  case error(TreeSDK.TreeFailure)
+  public static func == (a: TreeSDK.TreeSessionState, b: TreeSDK.TreeSessionState) -> Swift.Bool
+}
+@_hasMissingDesignatedInitializers @_Concurrency.MainActor final public class TreeToast : Combine.ObservableObject {
+  @_Concurrency.MainActor public static let shared: TreeSDK.TreeToast
+  #if compiler(>=5.3) && $NonescapableTypes
+  @Combine.Published @_projectedValueProperty($message) @_Concurrency.MainActor final public var message: Swift.String? {
+    get
+  }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @_Concurrency.MainActor final public var $message: Combine.Published<Swift.String?>.Publisher {
+    get
+  }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @Combine.Published @_projectedValueProperty($action) @_Concurrency.MainActor final public var action: TreeSDK.TreeToast.Action? {
+    get
+  }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @_Concurrency.MainActor final public var $action: Combine.Published<TreeSDK.TreeToast.Action?>.Publisher {
+    get
+  }
+  #endif
+  public struct Action {
+    public let title: Swift.String
+    public let handler: () -> Swift.Void
+    public init(title: Swift.String, handler: @escaping () -> Swift.Void)
+  }
+  #if compiler(>=5.3) && $NonescapableTypes
+  @_Concurrency.MainActor final public func show(_ text: Swift.String, hold: Swift.Bool = false, action: TreeSDK.TreeToast.Action? = nil)
+  #endif
+  @_Concurrency.MainActor final public func dismiss()
+  public typealias ObjectWillChangePublisher = Combine.ObservableObjectPublisher
+  @objc deinit
+}
+extension SwiftUICore.View {
+  @_Concurrency.MainActor @preconcurrency public func treeToast() -> some SwiftUICore.View
+  
+}
+public struct UserProfile : Swift.Decodable {
+  public let firstName: Swift.String
+  public let lastName: Swift.String
+  public let gender: TreeSDK.TreeGender?
+  public let targetSteps: Swift.Int?
+  public let targetWeightKg: Swift.Double?
+  public let weightKg: Swift.Double?
+  public var fullName: Swift.String {
+    get
+  }
+  public init(from decoder: any Swift.Decoder) throws
+}
+extension TreeSDK.TreeModule : Swift.Equatable {}
+extension TreeSDK.TreeModule : Swift.Hashable {}
+extension TreeSDK.TreeModule : Swift.RawRepresentable {}
+extension TreeSDK.TreeGender : Swift.Equatable {}
+extension TreeSDK.TreeGender : Swift.Hashable {}
+extension TreeSDK.TreeGender : Swift.RawRepresentable {}
+extension TreeSDK.DiaryListView : Swift.Sendable {}
+extension TreeSDK.DiaryTabRouter : Swift.Sendable {}
+extension TreeSDK.DiaryViewModel : Swift.Sendable {}
+extension TreeSDK.DiaryViewModel.Phase : Swift.Equatable {}
+extension TreeSDK.DiaryViewModel.Phase : Swift.Hashable {}
+extension TreeSDK.ExploreView : Swift.Sendable {}
+extension TreeSDK.MedicationListView : Swift.Sendable {}
+extension TreeSDK.MedicationLogsView : Swift.Sendable {}
+extension TreeSDK.MedicationViewModel : Swift.Sendable {}
+extension TreeSDK.MedicationViewModel.Phase : Swift.Equatable {}
+extension TreeSDK.MedicationViewModel.Phase : Swift.Hashable {}
+extension TreeSDK.MedicineNotificationAction : Swift.Equatable {}
+extension TreeSDK.MedicineNotificationAction : Swift.Hashable {}
+extension TreeSDK.MedicineNotificationAction : Swift.RawRepresentable {}
+extension TreeSDK.NawafAIChatView : Swift.Sendable {}
+extension TreeSDK.NawafAIFloatingButton : Swift.Sendable {}
+extension TreeSDK.NawafAIViewModel : Swift.Sendable {}
+extension TreeSDK.NawafAIViewModel.Status : Swift.Equatable {}
+extension TreeSDK.NawafAIViewModel.Status : Swift.Hashable {}
+extension TreeSDK.NawafProactiveMessage : Swift.Sendable {}
+extension TreeSDK.ReminderKind : Swift.Equatable {}
+extension TreeSDK.ReminderKind : Swift.Hashable {}
+extension TreeSDK.ReminderKind : Swift.RawRepresentable {}
+extension TreeSDK.ReminderKind.Section : Swift.Equatable {}
+extension TreeSDK.ReminderKind.Section : Swift.Hashable {}
+extension TreeSDK.ReminderKind.Section : Swift.RawRepresentable {}
+extension TreeSDK.RemindersView : Swift.Sendable {}
+extension TreeSDK.RemindersViewModel : Swift.Sendable {}
+extension TreeSDK.RemindersViewModel.Phase : Swift.Equatable {}
+extension TreeSDK.RemindersViewModel.Phase : Swift.Hashable {}
+extension TreeSDK.TreeReminderRouter : Swift.Sendable {}
+extension TreeSDK.TreeScreen : Swift.Equatable {}
+extension TreeSDK.TreeScreen : Swift.Hashable {}
+extension TreeSDK.TreeScreen : Swift.RawRepresentable {}
+extension TreeSDK.TreeRootView : Swift.Sendable {}
+extension TreeSDK.TreeToast : Swift.Sendable {}

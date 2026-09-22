@@ -86,7 +86,7 @@ public class TreeSdkFlutterPlugin: NSObject, FlutterPlugin {
 
         Task { @MainActor in
             log.debug("initialize: establishing the session")
-            switch await TreeSDK.initialize(config) {
+            switch await Tree.initialize(config) {
             case let .err(failure):
                 let code = Self.code(for: failure)
                 log.error("start FAILED at initialize — code=\(code, privacy: .public) message=\(failure.message, privacy: .public)")
@@ -99,7 +99,7 @@ public class TreeSdkFlutterPlugin: NSObject, FlutterPlugin {
     }
 
     @MainActor
-    private func present(_ sdk: TreeSDK, initial: TreeScreen, result: @escaping FlutterResult) {
+    private func present(_ sdk: Tree, initial: TreeScreen, result: @escaping FlutterResult) {
         guard let host = Self.topViewController() else {
             log.error("start FAILED at present — no view controller to present from")
             result(Self.error("no_window", "No view controller to present from."))
