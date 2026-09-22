@@ -6,15 +6,11 @@ import android.graphics.Color as AndroidColor
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
-import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import com.dru.treesdk.TreeSDK
 import com.dru.treesdk.modules.reminders.ReminderDeepLink
-import com.dru.treesdk.ui.TreeRootView
+import com.dru.treesdk.ui.TreeRootHost
+import com.dru.treesdk.ui.TreeRootPresentation
 import com.dru.treesdk.ui.TreeScreen
 
 /**
@@ -32,7 +28,13 @@ import com.dru.treesdk.ui.TreeScreen
  */
 class TreeSdkFlutterActivity : ComponentActivity() {
 
-    private var reminderDeepLink by mutableStateOf<ReminderDeepLink?>(null)
+    /**
+     * The live presentation, once created — the SDK's screen as a plain View.
+     *
+     * Deliberately not a Compose state here: this module compiles no Compose at all, so that a
+     * host is free to use any Kotlin version. See `TreeRootHost` for why that matters.
+     */
+    private var presentation: TreeRootPresentation? = null
 
     /**
      * Which presentation this Activity is, as handed out by the plugin.
@@ -52,7 +54,7 @@ class TreeSdkFlutterActivity : ComponentActivity() {
         // A relaunch is a new presentation as far as the plugin is concerned, so take its id -
         // otherwise this Activity would keep reporting under an id the plugin has retired.
         intent.takePresentationID()?.let { presentationID = it }
-        ReminderDeepLink.from(intent)?.let { reminderDeepLink = it }
+        ReminderDeepLink.from(intent)?.let { presentation?.setReminderDeepLink(it) }
     }
 
     /**
@@ -96,28 +98,23 @@ class TreeSdkFlutterActivity : ComponentActivity() {
         val initial = intent.getStringExtra(EXTRA_INITIAL)
             ?.let { runCatching { TreeScreen.valueOf(it) }.getOrNull() }
             ?: TreeScreen.EXPLORE
-        reminderDeepLink = ReminderDeepLink.from(intent)
-
-        setContent {
-            // Fires once, on the first composition — the closest Compose equivalent to the Swift
-            // side's `host.present(hosting, animated: true) { result(nil) }` completion, which is
-            // what resolves the Dart `start()` call.
-            LaunchedEffect(Unit) { plugin?.notifyPresented(initial) }
-
-            TreeRootView(
-                sdk = sdk,
-                initial = initial,
-                reminderDeepLink = reminderDeepLink,
-                onReminderDeepLinkHandled = {
-                    reminderDeepLink = null
-                    ReminderDeepLink.clear(intent)
-                },
-                onClose = {
-                    reportClosed()
-                    finish()
-                },
-            )
-        }
+        val presentation = TreeRootHost.create(
+            activity = this,
+            sdk = sdk,
+            initial = initial,
+            reminderDeepLink = ReminderDeepLink.from(intent),
+            // Fires on the first composition — the Android counterpart of the Swift side's
+            // `host.present(hosting, animated: true) { result(nil) }` completion, which is what
+            // resolves the Dart `start()` call.
+            onPresented = { plugin?.notifyPresented(initial) },
+            onReminderDeepLinkHandled = { ReminderDeepLink.clear(intent) },
+            onClose = {
+                reportClosed()
+                finish()
+            },
+        )
+        this.presentation = presentation
+        setContentView(presentation.view)
     }
 
     /**

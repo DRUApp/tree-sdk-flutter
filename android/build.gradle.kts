@@ -1,30 +1,12 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    // Kotlin 2.0+'s Compose compiler is a separate Gradle plugin instead of the old
-    // composeOptions.kotlinCompilerExtensionVersion mechanism (which K2 ignores).
-    //
-    // Unlike "com.android.application"/"org.jetbrains.kotlin.android" above, this one needs an
-    // explicit version: those two are versionless because the *host* Flutter app's
-    // android/settings.gradle.kts already declares a version for them (Gradle resolves an
-    // unversioned plugin ID from whatever else in the build pins one) — but no Flutter host
-    // declares "org.jetbrains.kotlin.plugin.compose" itself, so nothing provides a version for
-    // it. It MUST equal the Kotlin version actually in use for this build — mismatched versions
-    // fail at compile time, not silently — so keep this in lockstep with whatever
-    // "org.jetbrains.kotlin.android" resolves to for the app you're testing against (check its
-    // android/settings.gradle.kts). A host on a different Kotlin version MUST change this to
-    // match, or the build fails with "This version of the Compose Compiler requires Kotlin
-    // version X but you appear to be using Y".
-    //
-    // 2.2.20, not the 2.2.0 the partner compatibility matrix names: Flutter 3.38.9's own Gradle
-    // plugin refuses anything below 2.2.20 ("Your project's Kotlin version (2.2.0) is lower than
-    // Flutter's minimum supported version of 2.2.20"), so 2.2.0 and Flutter 3.38.9 cannot coexist.
-    // This is the nearest version that satisfies both.
-    //
-    // If a host project is still on Kotlin 1.9.x, drop this plugin entirely and use
-    // composeOptions { kotlinCompilerExtensionVersion = "1.5.14" } instead (matching
-    // android-tree-sdk/treesdk's own build.gradle.kts) — K2's plugin didn't exist before 2.0.
-    id("org.jetbrains.kotlin.plugin.compose") version "2.2.20"
+    // No Compose compiler plugin, deliberately. Its version has to equal the *host app's* Kotlin
+    // version exactly, so declaring it here pinned every partner to ours — a host on any other
+    // Kotlin failed with "This version of the Compose Compiler requires Kotlin version X but you
+    // appear to be using Y". Nothing in this module is @Composable now: the SDK's screen arrives
+    // as a plain View from TreeRootHost.create, and the Compose requirement lives inside the
+    // prebuilt AAR where no host has to match it.
 }
 
 group = "com.dru.tree_sdk_flutter"
@@ -47,9 +29,8 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    buildFeatures {
-        compose = true
-    }
+    // No `buildFeatures { compose = true }` either — AGP then demands the Compose compiler
+    // plugin, which is the host-Kotlin pin this module exists to avoid.
 }
 
 // `android { kotlinOptions { jvmTarget = "17" } }` is a hard (compile-error-level) deprecation
@@ -91,13 +72,12 @@ dependencies {
     // android-tree-sdk/tools/build-aar.sh publishes exactly one version and clears the
     // previous, so a mismatch fails to resolve rather than building something stale.
     // Override with -PtreeSdkVersion=… plus mavenLocal() for local SDK work.
-    val treeSdkVersion = (findProperty("treeSdkVersion") as String?) ?: "0.5.0"
+    val treeSdkVersion = (findProperty("treeSdkVersion") as String?) ?: "0.5.1"
     implementation("com.github.DRUApp.android-tree-sdk:treesdk:$treeSdkVersion")
 
-    implementation(platform("androidx.compose:compose-bom:2024.09.03"))
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.material3:material3")
-    implementation("androidx.activity:activity-compose:1.9.0")
+    // ComponentActivity + enableEdgeToEdge. Named explicitly: it used to arrive with
+    // activity-compose, and the SDK's own dependencies are runtime-scope to a consumer.
+    implementation("androidx.activity:activity-ktx:1.9.0")
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")

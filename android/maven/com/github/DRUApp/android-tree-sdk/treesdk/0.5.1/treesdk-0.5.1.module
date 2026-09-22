@@ -3,7 +3,7 @@
   "component": {
     "group": "com.github.DRUApp.android-tree-sdk",
     "module": "treesdk",
-    "version": "0.5.0",
+    "version": "0.5.1",
     "attributes": {
       "org.gradle.status": "release"
     }
@@ -33,13 +33,13 @@
       ],
       "files": [
         {
-          "name": "treesdk-0.5.0.aar",
-          "url": "treesdk-0.5.0.aar",
-          "size": 10965989,
-          "sha512": "3691f92874beda8d62941ec9aac287000314fec948a4cc1294ea423abd9c4a2497f8d19dc6480390411d463c2f77455e990cf7ac094dee647614c069fbcce4da",
-          "sha256": "e0c177f8f81bf830a160de60351452cc511d286559c05e5698abae29eb2ec644",
-          "sha1": "a43e50c88d661309363ac893097e7e74e34a8532",
-          "md5": "a317f8d20392c560e4b55b149e101135"
+          "name": "treesdk-0.5.1.aar",
+          "url": "treesdk-0.5.1.aar",
+          "size": 10975274,
+          "sha512": "b0ed2214d87d497ac263c3750bee69939853cb97c30f28152d294f98dc4c535f4c9feb47febef981224d43333791a14029a2cff0e5d17d76a0f819374d1b9e64",
+          "sha256": "80f498ead7258c7e6609bbc9a1d7c24c12613aeaeb7ddbae82eec2c5fcf18f1d",
+          "sha1": "39687b050b5b04053157536c24b897d70a119296",
+          "md5": "4bc4a551f2a03ae0db5237f1475f2c5f"
         }
       ]
     },
@@ -226,13 +226,13 @@
       ],
       "files": [
         {
-          "name": "treesdk-0.5.0.aar",
-          "url": "treesdk-0.5.0.aar",
-          "size": 10965989,
-          "sha512": "3691f92874beda8d62941ec9aac287000314fec948a4cc1294ea423abd9c4a2497f8d19dc6480390411d463c2f77455e990cf7ac094dee647614c069fbcce4da",
-          "sha256": "e0c177f8f81bf830a160de60351452cc511d286559c05e5698abae29eb2ec644",
-          "sha1": "a43e50c88d661309363ac893097e7e74e34a8532",
-          "md5": "a317f8d20392c560e4b55b149e101135"
+          "name": "treesdk-0.5.1.aar",
+          "url": "treesdk-0.5.1.aar",
+          "size": 10975274,
+          "sha512": "b0ed2214d87d497ac263c3750bee69939853cb97c30f28152d294f98dc4c535f4c9feb47febef981224d43333791a14029a2cff0e5d17d76a0f819374d1b9e64",
+          "sha256": "80f498ead7258c7e6609bbc9a1d7c24c12613aeaeb7ddbae82eec2c5fcf18f1d",
+          "sha1": "39687b050b5b04053157536c24b897d70a119296",
+          "md5": "4bc4a551f2a03ae0db5237f1475f2c5f"
         }
       ]
     }

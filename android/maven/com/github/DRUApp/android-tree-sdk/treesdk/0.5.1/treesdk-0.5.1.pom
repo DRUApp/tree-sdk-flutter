@@ -9,7 +9,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.github.DRUApp.android-tree-sdk</groupId>
   <artifactId>treesdk</artifactId>
-  <version>0.5.0</version>
+  <version>0.5.1</version>
   <packaging>aar</packaging>
   <dependencyManagement>
     <dependencies>
