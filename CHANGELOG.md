@@ -1,3 +1,9 @@
+## 0.20.1
+
+* Bundles `TreeSDK` 0.21.1.
+  * Arabic wording: a workout's **Start time** is وقت البداية rather than the
+    date-and-time label it shared, and a dose's plural unit reads وحدة.
+
 ## 0.20.0
 
 * Bundles `TreeSDK` 0.21.0.
