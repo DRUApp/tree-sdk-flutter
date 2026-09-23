@@ -70,16 +70,18 @@ you build the set dynamically.
 
 ## Auth
 
-Two options; pick at the call site.
+One option. Your server mints the token; no secret is in the app binary.
 
 ```dart
-// Production. Your server mints the token; no secret is in the app binary.
 TreeTokenProvider(() => myBackend.fetchTreeToken())
-
-// Development only. Puts the partner secret in the binary, where anyone who
-// unzips the build can read it.
-TreeClientCredentials(clientId: '…', clientSecret: '…')
 ```
+
+`TreeClientCredentials` still exists in the Dart API but **both platforms reject
+it**: `start` fails with a `configuration` error saying so. Neither SDK ships the
+case a host could pass a secret to - it is compiled out of the iOS binary under
+`#if DEBUG`, and on Android its constructor is `internal` with the only public
+factory in the library's unpublished `debug` variant. An app binary is
+extractable; the secret belongs on your server.
 
 `getToken` is called on **every backend request**, so return a cached token and
 refresh only when it's near expiry. Throwing from it fails that request.

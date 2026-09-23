@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tree_sdk_flutter/tree_sdk_flutter.dart';
 
+import 'dev_token_service.dart';
+
 // --- Dev B2B credentials (see example/README.md). ---
-// TreeClientCredentials puts the secret in the app binary — fine for this
-// local/dev harness, but ship TreeTokenProvider in a real app.
+// The SDK no longer takes these: TreeClientCredentials is rejected on both
+// platforms so a partner secret cannot be embedded in an app the SDK links.
+// They are used here to mint a token the way a partner's server would - see
+// DevTokenService - which is what TreeTokenProvider below hands to the SDK.
+// They still ship inside this harness APK; a real host keeps them server-side.
 const _kBaseUrl = 'https://dev-b2b-api.dru-app.org';
 const _kClientId = '65768202';
 const _kClientSecret =
@@ -63,6 +68,14 @@ class _ConnectPageState extends State<ConnectPage> {
   bool _starting = false;
   String? _error;
 
+  /// Stands in for a partner's token endpoint. One instance, so the token it mints is cached
+  /// across every start and every request the SDK makes - see DevTokenService.
+  final _tokens = DevTokenService(
+    baseUrl: _kBaseUrl,
+    clientId: _kClientId,
+    clientSecret: _kClientSecret,
+  );
+
   @override
   void initState() {
     super.initState();
@@ -109,10 +122,7 @@ class _ConnectPageState extends State<ConnectPage> {
     });
     try {
       await TreeSdk.start(
-        auth: const TreeClientCredentials(
-          clientId: _kClientId,
-          clientSecret: _kClientSecret,
-        ),
+        auth: TreeTokenProvider(_tokens.token),
         treeUserId: treeUserId,
         environment: TreeEnvironment.custom,
         baseUrl: _kBaseUrl,

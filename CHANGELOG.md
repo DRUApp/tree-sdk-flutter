@@ -1,3 +1,19 @@
+## 0.21.0
+
+* **Android catches up with iOS: `TreeClientCredentials` is refused there too.**
+  Since 0.20.0 the same Dart call worked on Android and failed on iOS, which is
+  exactly the split the two SDKs are meant never to have. Now the Android plugin
+  answers with the same message, and the Kotlin SDK ships without a case a host
+  can build: `TreeAuth.ClientCredentials` has an `internal` constructor and its
+  only public factory lives in the library's `debug` source set, which is not
+  published (`singleVariant("release")`). The Kotlin equivalent of the `#if DEBUG`
+  the iOS side uses.
+
+  Migrating is unchanged: `auth: TreeTokenProvider(myServer.fetchTreeToken)`, and
+  **cache the token in your provider** - the SDK asks per request.
+* The example app now authenticates that way, with `lib/dev_token_service.dart`
+  standing in for a partner's token endpoint.
+
 ## 0.20.1
 
 * Bundles `TreeSDK` 0.21.1.

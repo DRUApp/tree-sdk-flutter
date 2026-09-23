@@ -87,11 +87,18 @@ class TreeTokenProvider extends TreeAuth {
   final Future<String> Function() getToken;
 }
 
-/// The SDK exchanges partner credentials itself.
+/// **No longer accepted by either platform.** [TreeSdk.start] fails with a
+/// `configuration` error naming it.
 ///
-/// This puts the partner secret in the app binary, where anyone who unzips the
-/// build can read it. Use it for local development only; ship
-/// [TreeTokenProvider].
+/// It put the partner secret in the app binary, where anyone who unzips the
+/// build can read it, so both SDKs now ship without the case: compiled out of
+/// the iOS binary under `#if DEBUG`, and on Android an `internal` constructor
+/// whose only public factory lives in the library's unpublished `debug`
+/// variant. Use [TreeTokenProvider] and mint the token on your server.
+///
+/// Kept in the API, and not annotated `@Deprecated`, so that an app built
+/// against an older plugin fails with that message rather than a
+/// missing-class crash - and so the wire mapping stays under test.
 class TreeClientCredentials extends TreeAuth {
   const TreeClientCredentials({
     required this.clientId,
