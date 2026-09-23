@@ -1,3 +1,17 @@
+## 0.19.0
+
+* Requires `TreeSDK` 0.20.0 on iOS. No Dart API change; Android unchanged.
+  * **Nawaf greets from the backend.** `GET /ai-companion/welcome` supplies the chat
+    front page's greeting — dru's `get-welcome-message`, worded by the `welcome` prompt
+    in `chatbot_prompts`, so the Control Center owns the copy. It is fetched once and
+    never awaited: the static lines render immediately and the greeting swaps in when it
+    lands. A backend without the route 404s and the static copy simply stays, which is
+    what staging does today.
+  * **The workout duration's unit labels stop mirroring in Arabic.** The clock is one
+    string, so its digits stayed minutes-then-seconds while `Minutes`/`Seconds` mirrored
+    — putting دقائق under the seconds. The duration dialog is pinned too: its two number
+    boxes had mirrored to read minutes : hours.
+
 ## 0.18.1
 
 * Requires `android-tree-sdk` 0.5.1. No Dart API change; iOS untouched.
