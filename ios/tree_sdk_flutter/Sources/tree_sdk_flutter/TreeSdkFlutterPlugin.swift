@@ -182,13 +182,16 @@ public class TreeSdkFlutterPlugin: NSObject, FlutterPlugin {
         case "tokenProvider":
             auth = .tokenProvider { [self] in try await hostToken() }
         case "clientCredentials":
-            guard
-                let clientID = arguments["clientId"] as? String,
-                let clientSecret = arguments["clientSecret"] as? String
-            else {
-                return .failure("clientCredentials auth requires clientId and clientSecret.")
-            }
-            auth = .clientCredentials(clientID: clientID, clientSecret: clientSecret)
+            // The SDK ships as a **release-built** binary, where
+            // `TreeAuth.clientCredentials` is compiled out — so this branch
+            // cannot reference it in any host configuration: a debug host
+            // linking against that binary fails with "Undefined symbol: enum
+            // case for TreeSDK.TreeAuth.clientCredentials". A host embeds its
+            // own token exchange instead.
+            return .failure(
+                "clientCredentials auth is not available: the SDK ships without it "
+                + "so a partner secret cannot be embedded. Use tokenProvider."
+            )
         default:
             return .failure("auth must be 'tokenProvider' or 'clientCredentials'.")
         }

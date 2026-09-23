@@ -4,7 +4,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'tree_sdk_flutter'
-  s.version          = '0.19.0'
+  s.version          = '0.20.0'
   s.summary          = 'Flutter bridge to the native Tree SDK.'
   s.description      = <<-DESC
 Presents the native Tree SDK (Nawaf AI chat, health diary, medications,

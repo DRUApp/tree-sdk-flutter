@@ -1991,72 +1991,6 @@
         "children": [
           {
             "kind": "Var",
-            "name": "clientCredentials",
-            "printedName": "clientCredentials",
-            "children": [
-              {
-                "kind": "TypeFunc",
-                "name": "Function",
-                "printedName": "(TreeSDK.TreeAuth.Type) -> (Swift.String, Swift.String) -> TreeSDK.TreeAuth",
-                "children": [
-                  {
-                    "kind": "TypeFunc",
-                    "name": "Function",
-                    "printedName": "(Swift.String, Swift.String) -> TreeSDK.TreeAuth",
-                    "children": [
-                      {
-                        "kind": "TypeNominal",
-                        "name": "TreeAuth",
-                        "printedName": "TreeSDK.TreeAuth",
-                        "usr": "s:7TreeSDK0A4AuthO"
-                      },
-                      {
-                        "kind": "TypeNominal",
-                        "name": "Tuple",
-                        "printedName": "(clientID: Swift.String, clientSecret: Swift.String)",
-                        "children": [
-                          {
-                            "kind": "TypeNominal",
-                            "name": "String",
-                            "printedName": "Swift.String",
-                            "usr": "s:SS"
-                          },
-                          {
-                            "kind": "TypeNominal",
-                            "name": "String",
-                            "printedName": "Swift.String",
-                            "usr": "s:SS"
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "kind": "TypeNominal",
-                    "name": "Metatype",
-                    "printedName": "TreeSDK.TreeAuth.Type",
-                    "children": [
-                      {
-                        "kind": "TypeNominal",
-                        "name": "TreeAuth",
-                        "printedName": "TreeSDK.TreeAuth",
-                        "usr": "s:7TreeSDK0A4AuthO"
-                      }
-                    ]
-                  }
-                ]
-              }
-            ],
-            "declKind": "EnumElement",
-            "usr": "s:7TreeSDK0A4AuthO17clientCredentialsyACSS_SStcACmF",
-            "mangledName": "$s7TreeSDK0A4AuthO17clientCredentialsyACSS_SStcACmF",
-            "moduleName": "TreeSDK",
-            "declAttributes": [
-              "RawDocComment"
-            ]
-          },
-          {
-            "kind": "Var",
             "name": "tokenProvider",
             "printedName": "tokenProvider",
             "children": [
@@ -23794,6 +23728,102 @@
             ]
           },
           {
+            "kind": "Var",
+            "name": "welcomeLoading",
+            "printedName": "welcomeLoading",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Bool",
+                "printedName": "Swift.Bool",
+                "usr": "s:Sb"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:7TreeSDK16NawafAIViewModelC14welcomeLoadingSbvp",
+            "mangledName": "$s7TreeSDK16NawafAIViewModelC14welcomeLoadingSbvp",
+            "moduleName": "TreeSDK",
+            "declAttributes": [
+              "Final",
+              "Custom",
+              "ProjectedValueProperty",
+              "SetterAccess",
+              "AccessControl",
+              "Custom",
+              "RawDocComment"
+            ],
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Bool",
+                    "printedName": "Swift.Bool",
+                    "usr": "s:Sb"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:7TreeSDK16NawafAIViewModelC14welcomeLoadingSbvg",
+                "mangledName": "$s7TreeSDK16NawafAIViewModelC14welcomeLoadingSbvg",
+                "moduleName": "TreeSDK",
+                "implicit": true,
+                "declAttributes": [
+                  "Final"
+                ],
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "$welcomeLoading",
+            "printedName": "$welcomeLoading",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Publisher",
+                "printedName": "Combine.Published<Swift.Bool>.Publisher",
+                "usr": "s:7Combine9PublishedV9PublisherV"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:7TreeSDK16NawafAIViewModelC15$welcomeLoading7Combine9PublishedV9PublisherVySb_Gvp",
+            "mangledName": "$s7TreeSDK16NawafAIViewModelC15$welcomeLoading7Combine9PublishedV9PublisherVySb_Gvp",
+            "moduleName": "TreeSDK",
+            "implicit": true,
+            "declAttributes": [
+              "Final",
+              "Custom"
+            ],
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Publisher",
+                    "printedName": "Combine.Published<Swift.Bool>.Publisher",
+                    "usr": "s:7Combine9PublishedV9PublisherV"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:7TreeSDK16NawafAIViewModelC15$welcomeLoading7Combine9PublishedV9PublisherVySb_Gvg",
+                "mangledName": "$s7TreeSDK16NawafAIViewModelC15$welcomeLoading7Combine9PublishedV9PublisherVySb_Gvg",
+                "moduleName": "TreeSDK",
+                "implicit": true,
+                "declAttributes": [
+                  "Final"
+                ],
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
             "kind": "Constructor",
             "name": "init",
             "printedName": "init(chat:)",
@@ -37508,21 +37538,21 @@
     {
       "filePath": "\/Users\/ali\/Desktop\/tree sdk\/tree_sdk_ios\/Sources\/TreeSDK\/Config\/Configuration.swift",
       "kind": "StringLiteral",
-      "offset": 3440,
+      "offset": 3550,
       "length": 4,
       "value": "\"en\""
     },
     {
       "filePath": "\/Users\/ali\/Desktop\/tree sdk\/tree_sdk_ios\/Sources\/TreeSDK\/Config\/Configuration.swift",
       "kind": "IntegerLiteral",
-      "offset": 3553,
+      "offset": 3663,
       "length": 2,
       "value": "30"
     },
     {
       "filePath": "\/Users\/ali\/Desktop\/tree sdk\/tree_sdk_ios\/Sources\/TreeSDK\/Config\/Configuration.swift",
       "kind": "IntegerLiteral",
-      "offset": 3596,
+      "offset": 3706,
       "length": 2,
       "value": "30"
     },
@@ -39650,7 +39680,7 @@
     {
       "filePath": "\/Users\/ali\/Desktop\/tree sdk\/tree_sdk_ios\/Sources\/TreeSDK\/Modules\/NawafAI\/UI\/NawafAIChatView.swift",
       "kind": "BooleanLiteral",
-      "offset": 21091,
+      "offset": 21953,
       "length": 4,
       "value": "true"
     },
@@ -39790,21 +39820,28 @@
     {
       "filePath": "\/Users\/ali\/Desktop\/tree sdk\/tree_sdk_ios\/Sources\/TreeSDK\/Modules\/NawafAI\/Logic\/NawafAIViewModel.swift",
       "kind": "BooleanLiteral",
-      "offset": 2014,
+      "offset": 2273,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/ali\/Desktop\/tree sdk\/tree_sdk_ios\/Sources\/TreeSDK\/Modules\/NawafAI\/Logic\/NawafAIViewModel.swift",
       "kind": "BooleanLiteral",
-      "offset": 2287,
+      "offset": 2314,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/ali\/Desktop\/tree sdk\/tree_sdk_ios\/Sources\/TreeSDK\/Modules\/NawafAI\/Logic\/NawafAIViewModel.swift",
+      "kind": "BooleanLiteral",
+      "offset": 2587,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/ali\/Desktop\/tree sdk\/tree_sdk_ios\/Sources\/TreeSDK\/Modules\/NawafAI\/Logic\/NawafAIViewModel.swift",
       "kind": "IntegerLiteral",
-      "offset": 8796,
+      "offset": 9226,
       "length": 1,
       "value": "1"
     },
@@ -41867,462 +41904,462 @@
       "value": "70.0"
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 735,
       "length": 14,
       "value": "\"all-tab-icon\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 891,
       "length": 19,
       "value": "\"apple-health-icon\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 1046,
       "length": 16,
       "value": "\"bar-chart-icon\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 1199,
       "length": 16,
       "value": "\"blood-pressure\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 1346,
       "length": 13,
       "value": "\"blood-sugar\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 1507,
       "length": 22,
       "value": "\"blood-sugar-carousel\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 1663,
       "length": 14,
       "value": "\"carbohydrate\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 1808,
       "length": 13,
       "value": "\"delete-icon\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 1941,
       "length": 7,
       "value": "\"diary\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 2085,
       "length": 16,
       "value": "\"distance-route\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 2228,
       "length": 11,
       "value": "\"edit-icon\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 2379,
       "length": 18,
       "value": "\"edit-pencil-icon\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 2524,
       "length": 11,
       "value": "\"emoji-sad\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 2668,
       "length": 14,
       "value": "\"face-explode\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 2811,
       "length": 12,
       "value": "\"face-party\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 2956,
       "length": 14,
       "value": "\"fatsing-icon\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 3088,
       "length": 6,
       "value": "\"fire\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 3212,
       "length": 6,
       "value": "\"food\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 3338,
       "length": 7,
       "value": "\"hba1c\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 3478,
       "length": 14,
       "value": "\"hypo-feeling\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 3623,
       "length": 13,
       "value": "\"info-circle\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 3763,
       "length": 11,
       "value": "\"info-icon\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 3920,
       "length": 21,
       "value": "\"left-arrow-white900\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 4079,
       "length": 17,
       "value": "\"light-bulb-icon\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 4231,
       "length": 15,
       "value": "\"man-character\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 4362,
       "length": 5,
       "value": "\"map\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 4497,
       "length": 12,
       "value": "\"medication\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 4656,
       "length": 21,
       "value": "\"medication-carousel\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 4816,
       "length": 17,
       "value": "\"medication-pill\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 4965,
       "length": 13,
       "value": "\"medications\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 5103,
       "length": 10,
       "value": "\"my-diary\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 5246,
       "length": 14,
       "value": "\"nawaf-figure\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 5410,
       "length": 23,
       "value": "\"nawaf-floating-button\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 5567,
       "length": 15,
       "value": "\"new-chat-icon\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 5711,
       "length": 12,
       "value": "\"no-matches\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 5854,
       "length": 13,
       "value": "\"no-readings\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 5987,
       "length": 7,
       "value": "\"pause\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 6125,
       "length": 13,
       "value": "\"pizza-slice\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 6266,
       "length": 11,
       "value": "\"reminders\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 6397,
       "length": 7,
       "value": "\"retry\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 6546,
       "length": 19,
       "value": "\"send-message-icon\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 6700,
       "length": 15,
       "value": "\"serving-plate\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 6859,
       "length": 20,
       "value": "\"show-keyboard-icon\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 7012,
       "length": 14,
       "value": "\"soccer-field\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 7163,
       "length": 16,
       "value": "\"steps-carousel\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 7308,
       "length": 12,
       "value": "\"steps-icon\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 7449,
       "length": 12,
       "value": "\"steps-shoe\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 7587,
       "length": 10,
       "value": "\"subtract\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 7717,
       "length": 7,
       "value": "\"tired\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 7853,
       "length": 12,
       "value": "\"trash-icon\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 8003,
       "length": 17,
       "value": "\"trash-icon-pink\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 8147,
       "length": 11,
       "value": "\"tree-logo\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 8278,
       "length": 7,
       "value": "\"waist\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 8427,
       "length": 19,
       "value": "\"waist-empty-state\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 8579,
       "length": 14,
       "value": "\"waist-female\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 8722,
       "length": 12,
       "value": "\"waist-male\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 8854,
       "length": 7,
       "value": "\"water\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 8983,
       "length": 8,
       "value": "\"weight\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 9130,
       "length": 17,
       "value": "\"weight-carousel\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 9286,
       "length": 17,
       "value": "\"woman-character\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 9427,
       "length": 9,
       "value": "\"workout\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 9567,
       "length": 13,
       "value": "\"workout-gym\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 9715,
       "length": 15,
       "value": "\"workout-other\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 9869,
       "length": 17,
       "value": "\"workout-running\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 10027,
       "length": 18,
       "value": "\"workout-swimming\""
     },
     {
-      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-ggtfdvkmnvsgunfsnsybteaqumyx\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
+      "filePath": "\/Users\/ali\/Library\/Developer\/Xcode\/DerivedData\/TreeSDK-fbsqfceqycxckcclcyzsarinszcp\/Build\/Intermediates.noindex\/ArchiveIntermediates\/TreeSDK\/IntermediateBuildFilesPath\/TreeSDK.build\/Release-iphonesimulator\/TreeSDK.build\/DerivedSources\/GeneratedAssetSymbols.swift",
       "kind": "StringLiteral",
       "offset": 10184,
       "length": 17,

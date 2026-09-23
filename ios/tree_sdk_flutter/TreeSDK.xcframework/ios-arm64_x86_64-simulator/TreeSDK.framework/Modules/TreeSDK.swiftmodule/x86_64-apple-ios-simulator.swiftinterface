@@ -96,7 +96,6 @@ public enum TreeEnvironment {
 }
 public typealias TreeTokenProvider = @Sendable () async throws -> Swift.String
 public enum TreeAuth {
-  case clientCredentials(clientID: Swift.String, clientSecret: Swift.String)
   case tokenProvider(TreeSDK.TreeTokenProvider)
 }
 public enum TreeModule : Swift.String, Swift.CaseIterable, Swift.Sendable {
@@ -910,6 +909,12 @@ public struct ChatInsight : Swift.Decodable, Swift.Sendable {
     get
   }
   #endif
+  @Combine.Published @_projectedValueProperty($welcomeLoading) @_Concurrency.MainActor final public var welcomeLoading: Swift.Bool {
+    get
+  }
+  @_Concurrency.MainActor final public var $welcomeLoading: Combine.Published<Swift.Bool>.Publisher {
+    get
+  }
   @_Concurrency.MainActor public init(chat: any TreeSDK.NawafAIChatProviding)
   @_Concurrency.MainActor convenience public init(sdk: TreeSDK.Tree)
   @_Concurrency.MainActor final public var isEmpty: Swift.Bool {

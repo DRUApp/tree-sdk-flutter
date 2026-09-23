@@ -1,3 +1,23 @@
+## 0.20.0
+
+* Bundles `TreeSDK` 0.21.0.
+* **Breaking: `TreeClientCredentials` no longer works.** `start` rejects it with
+  a clear failure, and the SDK ships without the case at all — it is compiled
+  out of the binary a host links against, so a partner secret cannot be
+  embedded through the SDK. Hosts pass `TreeTokenProvider` and fetch the token
+  from their own backend, which is where the secret belongs.
+
+  Migrating: replace `auth: TreeClientCredentials(...)` with
+  `auth: TreeTokenProvider(myServer.fetchTreeToken)`. **Cache the token in your
+  provider** — the SDK asks per request, four to nine times to render Explore
+  alone, so an uncached provider hammers your auth endpoint.
+* **Nawaf's welcome is one greeting.** The screen waited to show anything until
+  the backend's greeting arrived, rather than showing the static pair and
+  swapping it a moment later — two hellos in a row read as a stutter. A backend
+  without the route, or a failure, still falls back to the static copy. The
+  greeting draws as the design has it: its opening in the accent colour above
+  the rest.
+
 ## 0.19.0
 
 * Requires `TreeSDK` 0.20.0 on iOS. No Dart API change; Android unchanged.
