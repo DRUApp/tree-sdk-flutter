@@ -31,7 +31,7 @@ class DevTokenService {
   Future<String> token() async {
     final cached = _token;
     final expiry = _expiresAt;
-    if (cached != null && expiry != null && DateTime.now().isBefore(expiry - _expiryGuard)) {
+    if (cached != null && expiry != null && DateTime.now().isBefore(expiry.subtract(_expiryGuard))) {
       return cached;
     }
 

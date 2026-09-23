@@ -82,7 +82,11 @@ public class TreeSdkFlutterPlugin: NSObject, FlutterPlugin {
 
         let auth = arguments["auth"] as? String ?? "?"
         let modules = config.enabledModules.map(\.rawValue).sorted().joined(separator: ",")
-        log.info("start: auth=\(auth, privacy: .public) env=\(config.environment.name, privacy: .public) baseURL=\(config.baseURL, privacy: .public) user=\(config.treeUserID, privacy: .public) lang=\(config.languageCode, privacy: .public) modules=\(modules, privacy: .public)")
+        // `sdk=` is the SDK's own build stamp, beside the environment because
+        // the two answer the only questions a tester build raises: which code
+        // is this, and which backend is it talking to. The SDK ships compiled,
+        // so the commit is not otherwise recoverable from an IPA.
+        log.info("start: auth=\(auth, privacy: .public) env=\(config.environment.name, privacy: .public) sdk=\(Tree.sourceBranch, privacy: .public)@\(Tree.sourceCommit, privacy: .public) baseURL=\(config.baseURL, privacy: .public) user=\(config.treeUserID, privacy: .public) lang=\(config.languageCode, privacy: .public) modules=\(modules, privacy: .public)")
 
         Task { @MainActor in
             log.debug("initialize: establishing the session")

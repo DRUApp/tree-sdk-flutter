@@ -1370,6 +1370,12 @@ public enum TreeScreen : Swift.String, Swift.CaseIterable, Swift.Sendable {
   public static var shared: TreeSDK.Tree? {
     get
   }
+  public static var sourceCommit: Swift.String {
+    get
+  }
+  public static var sourceBranch: Swift.String {
+    get
+  }
   final public let config: TreeSDK.TreeSDKConfig
   final public let api: TreeSDK.APIClient
   final public let session: TreeSDK.SessionManager
