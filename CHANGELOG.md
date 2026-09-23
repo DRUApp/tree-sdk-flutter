@@ -1,3 +1,396 @@
+## 0.21.0
+
+* **Android catches up with iOS: `TreeClientCredentials` is refused there too.**
+  Since 0.20.0 the same Dart call worked on Android and failed on iOS, which is
+  exactly the split the two SDKs are meant never to have. Now the Android plugin
+  answers with the same message, and the Kotlin SDK ships without a case a host
+  can build: `TreeAuth.ClientCredentials` has an `internal` constructor and its
+  only public factory lives in the library's `debug` source set, which is not
+  published (`singleVariant("release")`). The Kotlin equivalent of the `#if DEBUG`
+  the iOS side uses.
+
+  Migrating is unchanged: `auth: TreeTokenProvider(myServer.fetchTreeToken)`, and
+  **cache the token in your provider** - the SDK asks per request.
+* The example app now authenticates that way, with `lib/dev_token_service.dart`
+  standing in for a partner's token endpoint.
+
+## 0.20.1
+
+* Bundles `TreeSDK` 0.21.1.
+  * Arabic wording: a workout's **Start time** is وقت البداية rather than the
+    date-and-time label it shared, and a dose's plural unit reads وحدة.
+
+## 0.20.0
+
+* Bundles `TreeSDK` 0.21.0.
+* **Breaking: `TreeClientCredentials` no longer works.** `start` rejects it with
+  a clear failure, and the SDK ships without the case at all — it is compiled
+  out of the binary a host links against, so a partner secret cannot be
+  embedded through the SDK. Hosts pass `TreeTokenProvider` and fetch the token
+  from their own backend, which is where the secret belongs.
+
+  Migrating: replace `auth: TreeClientCredentials(...)` with
+  `auth: TreeTokenProvider(myServer.fetchTreeToken)`. **Cache the token in your
+  provider** — the SDK asks per request, four to nine times to render Explore
+  alone, so an uncached provider hammers your auth endpoint.
+* **Nawaf's welcome is one greeting.** The screen waited to show anything until
+  the backend's greeting arrived, rather than showing the static pair and
+  swapping it a moment later — two hellos in a row read as a stutter. A backend
+  without the route, or a failure, still falls back to the static copy. The
+  greeting draws as the design has it: its opening in the accent colour above
+  the rest.
+
+## 0.19.0
+
+* Requires `TreeSDK` 0.20.0 on iOS. No Dart API change; Android unchanged.
+  * **Nawaf greets from the backend.** `GET /ai-companion/welcome` supplies the chat
+    front page's greeting — dru's `get-welcome-message`, worded by the `welcome` prompt
+    in `chatbot_prompts`, so the Control Center owns the copy. It is fetched once and
+    never awaited: the static lines render immediately and the greeting swaps in when it
+    lands. A backend without the route 404s and the static copy simply stays, which is
+    what staging does today.
+  * **The workout duration's unit labels stop mirroring in Arabic.** The clock is one
+    string, so its digits stayed minutes-then-seconds while `Minutes`/`Seconds` mirrored
+    — putting دقائق under the seconds. The duration dialog is pinned too: its two number
+    boxes had mirrored to read minutes : hours.
+
+## 0.18.1
+
+* Requires `android-tree-sdk` 0.5.1. No Dart API change; iOS untouched.
+  * **A host is no longer pinned to our Kotlin version.** The Activity presents the SDK as
+    a plain `View` — `TreeRootHost.create(...)` — instead of calling the `@Composable`
+    `TreeRootView` itself, so this module drops the Compose compiler plugin,
+    `buildFeatures { compose = true }` and its Compose dependencies. That plugin's version
+    must equal the *host app's* Kotlin version exactly, which pinned every partner to
+    2.2.20; the failure named the Compose compiler rather than this SDK.
+  * `androidx.activity:activity-ktx` is declared explicitly — `ComponentActivity` and
+    `enableEdgeToEdge` used to arrive with `activity-compose`.
+
+  Verified in a stock `flutter create` app against a partner compatibility matrix:
+  Gradle 9.1.0, AGP 8.9.1, Kotlin 2.2.0, jvmTarget 1.8 with `desugar_jdk_libs` 2.1.4,
+  minSdk 28 — debug and a `--release` build with R8 minify and resource shrinking, the
+  latter run on the emulator to confirm the keep rules hold.
+
+## 0.18.0
+
+* Requires `TreeSDK` 0.19.0 on iOS, **vendored as a binary**. No Dart API change.
+  * **The iOS SDK ships inside this plugin as `TreeSDK.xcframework`**, instead of being
+    resolved from `DRUApp/ios-tree-sdk` by tag. A host therefore builds against a
+    compiled framework and is never given the SDK's source; SPM takes it as a
+    `.binaryTarget` and CocoaPods as a `vendored_frameworks`, so a Podfile no longer
+    names a `pod 'TreeSDK', :git => …` line at all. One repository, one tag: the SDK
+    version is whatever `Tools/build-xcframework.sh` last copied in.
+  * The SDK's entry class is `Tree`, not `TreeSDK` (`Tree.initialize(_:)`,
+    `Tree.shared`). Only the bridge's own Swift calls it — Dart hosts see nothing —
+    but it is why the SDK is 0.19.0: a type sharing its module's name makes the
+    emitted `.swiftinterface` invalid, and without a valid one the framework imports
+    only from the exact Xcode that built it.
+  * **Android does the same**, and JitPack is gone. `android-tree-sdk` 0.5.0 is vendored
+    at `android/maven` as an AAR plus its POM — a Maven repository that is just a
+    directory in this package — so a host needs no `jitpackToken`, no
+    `treeSdkVersion` pin, and no access to the Android SDK's repository either.
+  * **The repository is injected into the host build.** A plugin's own `repositories {}`
+    is not consulted for the dependency that matters: the *app* resolves the runtime
+    classpath against the *app's* repositories. This is also why the JitPack setup this
+    replaces could not have worked for a host that did not add the repository itself.
+    Verified on AGP 8.7.3 and 9.0.1.
+
+## 0.17.7
+
+* Requires `TreeSDK` 0.18.7 on iOS. No Dart API change.
+  * The edit route carries the reading it was opened for, rather than the
+    screen holding it aside — same fix as 0.17.6 for an older reading opening
+    blank, expressed on the route itself so no push site can forget it.
+
+## 0.17.6
+
+* Requires `TreeSDK` 0.18.6 on iOS. No Dart API change.
+  * **An older reading opened on a blank screen.** The edit form looked its
+    entry up in the diary's loaded page, which is replaced by page 1 on every
+    load and refresh — so anything past the newest 25 vanished out from under
+    the open form and the screen rendered nothing at all, under a bare back
+    button. The row and its metric are carried into the pushed screen now, with
+    the lookup still preferred while it succeeds.
+  * **A dose reads in units.** It printed the *medicine's* own unit, which says
+    nothing about the dose taken and left one row reading "100 ug" beside
+    another reading "3 units" — the strength is already in the medicine's name.
+    Every dose site now reads unit / units, وحدة / وحدات, pluralised by the
+    dose, which is what the old app prints.
+  * **The Medication card shows the latest dose**, like every other metric's
+    summary. It counted *today's* doses, so it read "0 doses" on any day one
+    had not been logged yet — above a time that came from the last dose,
+    whenever that was. The two never agreed. The newest dose is picked by when
+    it was taken, so one added late for an earlier time does not become the
+    latest.
+
+## 0.17.5
+
+* Requires `TreeSDK` 0.18.5 on iOS. No Dart API change.
+  * Arabic wording: the medication list is قائمة الأدوية, the three health
+    reminders read تسجيل rather than سجل, and the medicine notification's
+    snooze button is تأجيل.
+
+## 0.17.4
+
+* Requires `TreeSDK` 0.18.4 on iOS. No Dart API change.
+  * **Every log dial sweeps from 0.** Blood sugar and HbA1c swept the backend's
+    *entry* range instead (50–400, 4–14), so the knob sat mid-scale at rest and
+    the bottom of the scale could not be reached by dragging at all. Their tops
+    are clinical now — 400 mg/dL and 14 % — and HbA1c steps by 0.1, being a
+    one-decimal percentage. This is Android's rule, which the two platforms
+    share. Out-of-range messages are centred, as Android's already were.
+  * **"Total Carbs" is a total.** It showed the latest reading, so three meals
+    of 40 g read as 40 g and changing the period moved the sparkline while the
+    figure above it stayed put.
+  * **A medicine row shows its name alone**, on the list and on its log page,
+    the way Android's does. The dose and form appended to it are the medicine's
+    own configuration rather than anything about that row — the catalogue name
+    already carries the strength, so it read "Laxal 12 mg tablet 12 مجم, قرص"
+    in Arabic. The dose still shows where it is entered.
+  * **A new dose opens on 1** rather than on the last dose logged: a medicine
+    prescribed three at a time opened on 3 with nothing on screen saying why.
+  * **The reminder-duration field refuses empty and 0.** An empty one kept
+    whatever the field held before (7 by default) and a 0 was quietly clamped
+    up to 1, so both saved a course the user never asked for. Each now says
+    which of the two is wrong and blocks Save.
+  * The floating orb is smaller (it read heavy at the previous size), and the
+    Diary's "+" is centred on the orb's resting spot instead of on its own
+    margin.
+
+## 0.17.3
+
+* Requires `TreeSDK` 0.18.3 on iOS. No Dart API change.
+  * **A write grant is not a read grant.** Since the SDK started writing
+    readings back, the permission check reads the *share* status — the only one
+    HealthKit discloses — and revoking **read** access in Settings leaves that
+    untouched. A revoked user therefore still looked connected on the Steps
+    screen and a sync quietly wrote nothing. The read side can only be
+    inferred, so that inference now runs on the sync tap as well as on
+    returning to the app: days previously taken from Health reading zero is the
+    evidence, and the tap ends on the "enable it in Settings" alert rather than
+    on a sync that does nothing.
+
+## 0.17.2
+
+* Requires `TreeSDK` 0.18.2 on iOS. No Dart API change.
+  * **Tapping sync while Health access is gone asks for it back.** It used to
+    run the sync regardless and come back with nothing. Now the tap always
+    answers: iOS's own sheet where anything is still undetermined, our "enable
+    it in Settings" alert where it isn't — which is the revoked case, since a
+    permission switched off in Settings is decided and iOS will never re-ask.
+    If access does come back, the sync it was asked for carries on rather than
+    waiting for a second tap.
+  * **A successful sync clears the permission banner.** "Some data may be
+    missing" is an inference — HealthKit will not say whether a read is allowed
+    — and steps actually arriving is the strongest evidence against it, so the
+    banner goes then rather than at the next foreground.
+
+## 0.17.1
+
+* Requires `TreeSDK` 0.18.1 on iOS. No Dart API change.
+  * **A pull to refresh can no longer cost you the list.** Every list turned any
+    failure into the error screen, so a refresh that came back cancelled
+    replaced a full Diary with "Request cancelled" and a Retry button. Two
+    things were wrong: a cancellation is not a failure — SwiftUI tears that task
+    down as the refresh control retracts, and a pushed screen cancels whatever
+    its predecessor had in flight — and a reload that fails is a reason to keep
+    the content already on screen, not to clear it. The error state is now for
+    when there is nothing to fall back to.
+  * **The steps permission card is the frame's**, with the delivered ⓘ glyph,
+    and it sits under the totals rather than above the range tabs — over the
+    tabs it pushed the whole dashboard down and read as chrome for the screen.
+    Its copy follows the design too.
+  * **The sync pill is the frame's**, white inside a thin orange ring, carrying
+    Apple's own Health icon where it drew a red heart — which is the contents of
+    that icon without its tile. It sizes to its label rather than to a fixed
+    width, since the Arabic word is wider than the English one.
+
+## 0.17.0
+
+* Requires `TreeSDK` 0.18.0 on iOS. No Dart API change.
+  * **Logged readings are written to Apple Health.** Blood sugar, blood
+    pressure, carbohydrates, water, weight and waist go in as they are saved,
+    so other apps on the phone can see them; a blood pressure goes in as one
+    correlation rather than two loose numbers, which is what the Health app
+    reads. Best-effort and silent — the diary entry is already stored by then,
+    and a Health failure must never read as a failed save.
+
+    **Writing is opt-in per host**, on `NSHealthUpdateUsageDescription`. Without
+    that key nothing is written and nothing is asked for: HealthKit kills the
+    app for requesting a share it has no string for, and a host that has not
+    agreed to the sentence its users will read should not have one shown.
+  * **The Steps screen knows where it stands.** HealthKit discloses
+    authorization only for types an app can write — reads come back
+    "not determined" whether they were allowed or denied — so a host that
+    writes now gets the real answer immediately, where the old probe meant no
+    more than "the sheet has been shown" and needed a relaunch to catch up.
+  * **Signing in as someone else no longer inherits their reminders.**
+    Notifications belong to the app, not the account, and every sweep ran from a
+    screen — so a second user who never opened Reminders or Medications kept
+    getting the first one's: a medicine this account does not have, water at a
+    time it never set. The pending set is cleared at `initialize` when the user
+    or the backend changes. Re-arming still happens on those two screens, so a
+    user who opens neither now gets silence rather than someone else's.
+
+## 0.16.3
+
+* Requires `TreeSDK` 0.17.0 on iOS. No Dart API change.
+  * **A live workout keeps the real time.** The clock counted its own ticks, and
+    that timer stops with the app — leave the workout for two minutes and the
+    session came back two minutes short. It reads the elapsed time off the clock
+    now, on every tick and again on returning to the app, and a pause is
+    excluded by moving the start rather than by skipping ticks.
+  * **A metric's info card uses the approved word.** It looked the bare English
+    name up in the table, where several of those keys are something else — the
+    Carbohydrates card read النشويات while the tab beside it read الكربوهيدرات.
+    It asks for the metric's own key now, the same one the tab does.
+  * **A medicine reached through Reminders keeps the flow's name.** Its list and
+    its reminder page are headed Reminders and Reminder rather than Medication
+    and Edit medication, the way a pushed screen keeps the name of the flow it
+    was opened from. The medication list's own edit route is unchanged.
+  * **My Diary is the tall card again**, illustration above and copy at its
+    foot, which is what the frames show in both languages; a note in the other
+    direction had flipped it.
+  * Arabic wording: التذكيرات, أضف دواء جديد, أضف إلى القائمة, سجلاتك.
+
+## 0.16.2
+
+* Requires `TreeSDK` 0.16.0 on iOS. No Dart API change.
+  * **The alarm tone is the medicine reminder's alone.** Every reminder played
+    the 29-second alarm; dru sets it on the medicine notification and its
+    snoozes only, and leaves the system default everywhere else. Same tell as
+    the buttons: a dose is the thing worth waking someone for. One flag drives
+    both, so the sound and the buttons cannot disagree.
+  * **Steps notices a grant, not just a revoke.** The re-check on returning to
+    the app was guarded on being connected already, so a user who followed our
+    own "enable it in Settings" alert came back to the connect card and had to
+    relaunch. Access is decided in Settings — while the app is away — so the
+    screen re-decides on every return, both directions.
+  * **A dose's "View all" knows where the flow began.** The Diary is retained
+    behind Explore rather than torn down, so its own visibility could not
+    answer it; the screen that opens the medication list records the origin
+    instead. From the Diary it returns to that tab, from Explore, Reminders or
+    a notification it lands on All.
+  * **The add-medicine screen draws the same capsule as the list.** It kept art
+    of its own, so a catalogue medicine with no picture changed shape between
+    the list and the form that adds it. Typing a custom name now shows that
+    capsule in a mint disc over the field, per the frame.
+
+## 0.16.1
+
+* Requires `TreeSDK` 0.15.2 on iOS. No Dart API change.
+  * **Steps no longer inherits another account's Health state.** The sync
+    marker, the connected flag and the permission-requested flag were
+    install-wide constants while Health access is device-wide, so signing a
+    second user into the same install skipped the connect card and started the
+    backfill from someone else's last sync — the new user's diary got nothing
+    written and read 0 in every filter, under a "last synced" that was not
+    theirs. All three keys are scoped to the user now, the way the token store
+    is scoped to its backend. An install that connected before this re-connects
+    once; a granted prompt returns immediately.
+  * **The floating orb is the size the design asks for.** Its artwork is 70% of
+    its frame — the rest is the asset's own glow — so a 90pt frame drew a 63pt
+    orb. The frame is 128 now, which puts a 90pt orb on screen, and the Diary's
+    "+" rises with it to stay clear.
+  * **"Add to list" ends on the medication list**, as dru's flow does: adding a
+    medicine and logging a dose of it are two acts, and continuing into "Log
+    details" left the user several backs from the list they had just added to.
+  * **A dose's "View all" keeps the tab it started from.** Logging begun on the
+    Diary returns to that tab; only a flow begun on Explore lands on All, where
+    there is no tab to return to.
+
+## 0.16.0
+
+* Requires `TreeSDK` 0.15.0 on iOS. No Dart API change.
+  * **Revoked Apple Health access reaches the connection screen again.** HealthKit
+    reports nothing useful here — `authorizationStatus` answers for writes, and
+    the request status only says the prompt has been shown — so the revoke is
+    inferred from the days this app wrote from Health now reading zero. That rule
+    took its comparison window from the query's own results, and a revoked read
+    returns no samples at all: the window came out empty, the rule bailed, and
+    the dashboard stayed up showing zeros. The window is the caller's now, and it
+    is re-checked when the app becomes active, since access is revoked in
+    Settings while the app is away.
+  * **Arabic copy follows the approved wording, not the backend's.** Explore is
+    اكتشف, every Log button is سجل, and the My Diary card reads تابع رحلتك الصحية.
+    Metric names come from our own table where we have the word: the catalogue's
+    `name_ar` differs per environment — dev says الرياضة for Workout, staging
+    تمرين — so the approved copy lost to whichever backend a build pointed at.
+  * **The My Diary card puts its copy at the top** with the illustration under
+    it, the style the Reminders card beside it already used.
+  * **The chart's axis never goes below zero.** The 15% padding drew a negative
+    tick under metrics that cannot be negative; a range that starts high keeps
+    its headroom.
+  * **The empty state's skeleton bars no longer mirror in Arabic** — short
+    leading, long trailing, per the frame. The Workout tab's own copy of those
+    capsules is deleted in favour of the shared one, which is why that screen was
+    the last drawing them flipped.
+
+## 0.15.0
+
+* Requires `TreeSDK` 0.14.0 on iOS. One additive Swift type
+  (`DiaryTabRouter`); no Dart API change.
+  * **A tracked workout keeps the calories it measured.** The live session hands
+    back what the pedometer earned and the form threw it away, recomputing the
+    estimate from type × intensity × duration — so ten minutes sitting still
+    showed 0 kcal on the session screen and saved ~42 anyway, and reopening the
+    entry did it again, so a saved 0 came back as 11 and an Update wrote that
+    over it. The measured value survives from the session and from the stored
+    entry, and is recomputed only when the type, intensity or duration is
+    changed by hand.
+  * **A logged dose gets "View all"** like every other reading. The medication
+    module posted the same save toast with no action attached, so a dose was the
+    one save with nothing to press — and it had no way to reach a Diary tab,
+    since the Diary's view model is a `StateObject` inside `DiaryListView`.
+    `DiaryTabRouter` carries the request and the Diary consumes it, live or on
+    its own task when the request was made before it existed (the case whenever
+    the dose was logged from Explore).
+  * **One fallback icon for a medicine with no picture.** The four thumbnail
+    sites had four different fallbacks between them — a pill asset and
+    `pills.fill` at three sizes in two colours — so the same medicine looked
+    like a different thing on the list, the search, the log row and the log
+    details. All four draw the Medication icon now, itself a new two-tone
+    delivery.
+
+## 0.14.1
+
+* Requires `TreeSDK` 0.13.1 on iOS. No API change on either side.
+  * **The medicine snooze is per occurrence, not per medicine.** Its identifier is
+    the firing request's own plus `.snooze`, so two doses an hour apart can each be
+    snoozed without one replacing the other, and re-snoozing keeps the same id —
+    unlimited, never stacked. A medicine's requests are also keyed by *time*
+    (`…​.0930`) rather than position, which is what makes an edit visible: moving
+    09:30 to 10:45 reused the old key, so nothing could tell a new schedule from a
+    re-arming and the stale snooze survived it.
+  * **"i took it" logs at the press**, not at the reminder's fire time — the
+    acceptance criteria were rewritten. The fire time now only identifies which
+    occurrence was answered.
+  * Nawaf's card wears a `sea600` edge over a mint glow, drawn over the dim so it
+    stays crisp while the history drawer is open.
+  * **Android: crash reporting through the plugin** — the SDK activity and plugin
+    report failures, with a `CrashReport` harness in the example host.
+
+## 0.14.0
+
+* Requires `TreeSDK` 0.13.0 on iOS. Additive Swift surface only
+  (`ExploreView.init` gains a defaulted `focusMetricID`, plus the
+  `ExploreView.medicineFocus` constant); no Dart API change.
+  * **The carousel lands on the metric you just logged.** Saving from Explore
+    returns to Explore, but the view is torn down while the Diary carries the
+    form, so the pager came back on card 0 and the new reading was several
+    swipes away. A logged dose does the same through the same field — the
+    medications screen has no subcategory id, so the host names the Medicine
+    card and Explore resolves it from the catalogue.
+  * **Nawaf's card is one height across both states** and eases between them,
+    rather than jumping when the conversation starts.
+  * Air above the card on a Dynamic Island device, and its top corners go square
+    on *both* sides while the history drawer is open — the trailing one used to
+    read as a stray rounded fragment against the green behind it.
+  * **The weight drum keeps its columns left-to-right in Arabic.** SwiftUI hands
+    a representable an RTL host, so the components came out mirrored and the
+    grams sat where the kilos belong.
+  * The empty state's Arabic button is the imperative form.
+
 ## 0.13.1
 
 * Requires `TreeSDK` 0.12.1 on iOS. No API change on either side — a design round.

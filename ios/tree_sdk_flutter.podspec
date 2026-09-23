@@ -4,29 +4,26 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'tree_sdk_flutter'
-  s.version          = '0.13.1'
+  s.version          = '0.21.0'
   s.summary          = 'Flutter bridge to the native Tree SDK.'
   s.description      = <<-DESC
 Presents the native Tree SDK (Nawaf AI chat, health diary, medications,
 reminders) from a Flutter host.
                        DESC
-  s.homepage         = 'https://github.com/DRUApp/ios-tree-sdk'
+  s.homepage         = 'https://github.com/DRUApp/tree-sdk-flutter'
   s.license          = { :file => '../LICENSE' }
   s.author           = { 'DRU' => 'aelgohary@dru-app.com' }
   s.source           = { :path => '.' }
   s.source_files = 'tree_sdk_flutter/Sources/tree_sdk_flutter/**/*'
   s.dependency 'Flutter'
-  s.dependency 'TreeSDK', '>= 0.12.1'
+  s.vendored_frameworks = 'tree_sdk_flutter/TreeSDK.xcframework'
   s.platform = :ios, '15.6'
 
-  # TreeSDK is not on the CocoaPods trunk, so a CocoaPods host must name the
-  # source itself — this dependency only pins the version:
-  #
-  #   pod 'TreeSDK', :git => 'https://github.com/DRUApp/ios-tree-sdk.git', :tag => 'v0.12.1'
-  #
-  # A Swift-Package-Manager host (flutter config --enable-swift-package-manager)
-  # needs none of that — ../ios/tree_sdk_flutter/Package.swift resolves TreeSDK
-  # from the same tag. Keep this version in lockstep with that Package.swift.
+  # TreeSDK is vendored as a compiled framework rather than pulled from a second
+  # repository, so a CocoaPods host adds nothing to its Podfile and the SDK's
+  # source never leaves DRUApp/ios-tree-sdk. Swift Package Manager hosts get the
+  # same binary through tree_sdk_flutter/Package.swift's .binaryTarget.
+  # Tools/build-xcframework.sh in the SDK repo rebuilds and copies it in.
 
   # Flutter.framework does not contain a i386 slice.
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }

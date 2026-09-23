@@ -1,0 +1,459 @@
+/* Arabic (MSA) copy for the Tree SDK.
+
+   Keys are the English strings themselves (see `String.tr`), so a key missing
+   from this file falls back to readable English rather than a raw identifier.
+   Numeric placeholders keep their positional form (%1$@, %2$@) — Arabic word
+   order differs from English and the arguments must be reorderable. */
+
+// MARK: - Actions
+
+"Save" = "حفظ";
+"Save changes" = "حفظ التغييرات";
+"Update" = "تحديث";
+"Cancel" = "إلغاء";
+"Delete" = "حذف";
+"Done" = "تم";
+"Add" = "إضافة";
+"Set" = "تأكيد";
+"Confirm" = "تأكيد";
+"Retry" = "إعادة المحاولة";
+"OK" = "تم";
+"Edit" = "تعديل";
+"Discard" = "تجاهل";
+"Yes, close" = "نعم، أغلق";
+"Yes, delete" = "نعم، احذف";
+"View chart" = "عرض الرسم البياني";
+"View all" = "مشاهدة الكل";
+"All" = "الكل";
+"On" = "مفعل";
+"Off" = "متوقف";
+
+// MARK: - Screens & sections
+
+"Explore" = "اكتشف";
+"My Health" = "صحتي";
+"Diary" = "تسجيلاتي";
+"Reminders" = "التذكيرات";
+"Reminder" = "التذكير";
+"Log new" = "سجل جديد";
+"Log details" = "مراجعة التفاصيل";
+"Reading" = "القراءة";
+"Health" = "الصحة";
+"Lifestyle" = "الحياة اليومية";
+"Your list" = "قائمة الأدوية";
+
+// MARK: - Metrics
+
+"Blood Sugar" = "سكر الدم";
+"Blood Pressure" = "ضغط الدم";
+"HbA1c" = "السكر التراكمي";
+"Weight" = "الوزن";
+"Waist" = "محيط الخصر";
+"Water" = "المياه";
+"Steps" = "خطوة";
+"Carbohydrates" = "الكربوهيدرات";
+"Workout" = "الرياضة";
+"Medication" = "الأدوية";
+
+// MARK: - Form fields
+
+"Date & time" = "التاريخ والوقت";
+"Notes" = "ملاحظات";
+"Tags" = "العلامات";
+"Add a tag" = "إضافة وسم";
+"You can select more than one" = "يمكنك اختيار أكثر من واحد";
+"Amount" = "الكمية";
+"Dosage" = "الجرعة";
+"Duration" = "المدة";
+"Type" = "نوع التمرين";
+"Intensity" = "شدة التمرين";
+"Start time" = "وقت البداية";
+"Add Image" = "إضافة صورة";
+"upload Photo" = "رفع صورة";
+"Up to 2 MB" = "حتى 2 ميجابايت";
+"Measurement Tip" = "نصيحة القياس";
+"Target weight" = "الوزن المستهدف";
+"Current weight" = "الوزن الحالي";
+"Total Carbs" = "إجمالي الكربوهيدرات";
+"No available data..." = "لا توجد بيانات متاحة...";
+"Daily Average" = "المعدل اليومي";
+"%d letters left" = "بقي %d حرف";
+"%d letter" = "%d حرف";
+
+// MARK: - Diary lists & empty states
+
+"Add New Reading" = "إضافة قراءة جديدة";
+"No readings yet" = "لا توجد قراءات بعد";
+"You have no readings yet" = "ليس لديك سجلات حتي الآن";
+"you can see, add, edit and delete all your records" = "هنا ستجد كل سجلاتك ويمكنك التعديل والحذف.";
+"Tap to log your first reading" = "اضغط لتسجيل قراءتك الأولى";
+"Log %@" = "سجل %@";
+"%@ levels" = "مستويات %@";
+"Latest: %@" = "الأحدث: %@";
+"Hypoglycaemia events" = "نوبات هبوط السكر";
+"Long press on the left icon to reorder home screen" = "اضغط مطولاً على الأيقونة لإعادة ترتيب الشاشة الرئيسية";
+"You must show at least one activity." = "يجب إظهار نشاط واحد على الأقل.";
+
+// MARK: - Period comparison (whole sentences — Arabic reorders the parts)
+
+
+// MARK: - Time
+
+"Today" = "اليوم";
+"Period" = "الفترة";
+"Yesterday" = "الأمس";
+"No data" = "لا توجد بيانات";
+"Add Reading" = "إضافة قراءة";
+"Log" = "سجل";
+"recording blood sugar is the first step in taking control of diabetes" = "تسجيل قراءة السكر هي الخطوة الأولي للتحكم في السكر";
+"Earlier" = "سابقاً";
+// The chart pager's Day label. Arabic uses its own comma; the old app
+// hardcoded ، into the English pattern too.
+"EEEE, d MMMM yyyy" = "EEEE، d MMMM yyyy";
+"Day" = "يوم";
+"Week" = "أسبوع";
+"Month" = "شهر";
+"Year" = "سنة";
+"Last week" = "الأسبوع الماضي";
+"Last month" = "الشهر الماضي";
+"Last year" = "العام الماضي";
+
+// MARK: - Units
+
+"mg/dL" = "مجم/دل";
+"mmol/L" = "مليمول/لتر";
+"mmHg" = "ملم زئبقي";
+"kg" = "كجم";
+"cm" = "سم";
+"L" = "لتر";
+"g" = "جم";
+"mL" = "مل";
+"m" = "م";
+"kcal" = "سعرة حرارية";
+"steps" = "خطوة";
+"min" = "دقيقة";
+"bpm" = "نبضة/د";
+
+// MARK: - Steps
+
+"track your steps" = "تتبع خطواتك";
+"edit your target goal" = "عدل هدفك المستهدف";
+"Goal: %@ Steps" = "الهدف: %@ خطوة";
+"AVG %@" = "المتوسط %@";
+"sync" = "الاتصال";
+"last synced %@" = "آخر مزامنة %@";
+"Apple Health" = "Apple Health";
+"Apple Health isn't available on this device." = "‏Apple Health غير متاح على هذا الجهاز.";
+"Some data may be missing" = "قد لا تتوفر بعض البيانات حالياً";
+"We may not be able to track steps due to revoked permission, enable in settings." = "قد لا نتمكن من تتبع خطواتك بسبب إلغاء الإذن، فعّله من الإعدادات.";
+
+// MARK: - Workout
+
+"Add Workout" = "أضف تمرين";
+"Start Workout" = "ابدأ تمرين";
+"Workout duration" = "مدة الرياضة";
+"Hours" = "ساعة";
+"Minutes" = "دقيقة";
+"Seconds" = "ثوانٍ";
+"Kcals" = "سعرات";
+"Walking" = "المشي";
+"Running" = "الجري";
+"Swimming" = "سباحة";
+"Gym" = "الجيم";
+/* dru's fifth exercise type (`exercise_types.other`). The KSA table spells it
+   "آخر"; "أخرى" is the form already used for the medicine-form key below. */
+"Other" = "أخرى";
+
+// MARK: - Water containers
+
+"Small glass" = "كوب صغير";
+"Medium glass" = "كوب متوسط";
+"Large glass" = "كوب كبير";
+"Small bottle" = "زجاجة صغيرة";
+"Medium bottle" = "زجاجة متوسطة";
+"Large bottle" = "زجاجة كبيرة";
+
+// MARK: - Medication
+
+"Medication name" = "اسم الدواء";
+"Select medication" = "اختر دواء";
+"Search medication" = "ابحث عن دواء";
+"No matches" = "لا توجد نتائج";
+"Make sure there are no spelling mistakes in the search, or add custom medication." = "تأكد من عدم وجود أخطاء إملائية في البحث، أو أضف دواءً مخصصاً.";
+"Add custom medication" = "أضف دواء جديد";
+"Add new medication" = "أضف دواء جديد";
+"Add to list" = "أضف إلى القائمة";
+"Add medication to your list" = "أضف دواءً إلى قائمتك";
+"Add your first medication so you can log, track and understand what you take." = "أضف دواءك الأول لتتمكن من تسجيل ما تتناوله ومتابعته وفهمه.";
+"Log Medication" = "سجل الأدوية";
+"Edit details" = "تعديل التفاصيل";
+"Delete medication" = "حذف الدواء";
+"Medication controls" = "خيارات الدواء";
+"Delete dose log" = "حذف سجل الجرعة";
+"How many times per day" = "كم مرة في اليوم";
+"Reminder %d" = "التذكير %d";
+"If you take a pill several times a day, the app will send you a reminder for each intake." = "إذا كنت تتناول الدواء عدة مرات في اليوم، سيرسل لك التطبيق تذكيراً لكل جرعة.";
+
+// MARK: - Reminders
+
+"Reminder Time" = "وقت التذكير";
+"Add New Reminder" = "إضافة تذكير جديد";
+"You can add up to %d reminders." = "يمكنك إضافة %d تذكيرات كحد أقصى.";
+"Add medication" = "أضف دواء";
+"Log Blood Sugar" = "تسجيل سكر الدم";
+"Log HbA1c" = "تسجيل السكر التراكمي";
+"Log Blood Pressure" = "تسجيل ضغط الدم";
+
+// MARK: - Context tags
+
+"Fasting" = "صائم";
+"Before Breakfast" = "قبل الإفطار";
+"After Breakfast" = "بعد الإفطار";
+"Before Lunch" = "قبل الغداء";
+"After Lunch" = "بعد الغداء";
+"Before Dinner" = "قبل العشاء";
+"After Dinner" = "بعد العشاء";
+"Before Snack" = "قبل وجبة خفيفة";
+"After Snack" = "بعد وجبة خفيفة";
+"Before Activity" = "قبل النشاط";
+"During Activity" = "أثناء النشاط";
+"After Activity" = "بعد النشاط";
+"Out of Bed" = "عند الاستيقاظ";
+"Before Bed" = "قبل النوم";
+"During Night" = "أثناء الليل";
+"Hypo Feeling" = "شعور بالهبوط";
+"Menstruation" = "دورة شهرية";
+"Happy" = "سعيد";
+"Traveling" = "مسافر";
+"Sick" = "مريض";
+"Stressed" = "متوتر";
+"Tired" = "مجهد";
+
+// MARK: - Metric info cards
+
+"Recording your blood sugar is the first step to taking control of your health!" = "تسجيل مستوي السكر في دمك هو الخطوة الأولي للتحكم بصحتك!";
+"Tracking your blood pressure helps you protect your heart and stay healthy!" = "هو قوة دفع الدم ضد جدران الشرايين أثناء ضخ قلبك للدم.";
+"add your medicines here so that you can have a full history of your medications." = "سجل أدويتك عشان تبقي معاك علي طول.";
+"Tracking your weight helps you manage your blood sugar and maintain a healthier lifestyle!" = "متابعة وزنك تساعدك في التحكم بمستوي السكر في دمك و الحفاظ علي نمط حياة صحي!";
+"Tracking your HbA1c helps you stay in charge of your long-term health!" = "متابعة مستوي السكر التراكمي تساعدك علي التحكم بصحتك علي المدي الطويل!";
+"Tracking your carbohydrates helps you balance your blood sugar and stay energized!" = "متابعة الكربوهيدرات تساعدك في تحقيق توازن مستوي السكر في دمك والحفاظ علي نشاطك";
+"Measuring your waist helps track weight changes and is a useful for your health." = "قياس محيط الخصر يساعدك في تتابع إذا كنت تخسر وزن أو تزيد، وده مؤشر جيد لصحتك العامة.";
+"Doing and logging your workouts helps you manage your blood sugar and stay healthy!" = "تسجيل تمارينك يساعدك في التحكم بمستوي السكر في دمك و الحفاظ علي صحتك!";
+"Tracking your water intake keeps you hydrated and supports stable blood sugar levels!" = "متابعة شرب الماء يحافظ علي ترطيب جسمك و يدعم استقرار مستوي السكر في الدم!";
+"Daily steps are an easy way to track activity. Moving more helps manage blood sugar, weight and blood pressure." = "الخطوات اليومية طريقة سهلة لمتابعة النشاط. الحركة أكثر تساعد في ضبط سكر الدم والوزن وضغط الدم.";
+
+// MARK: - Chat (Nawaf)
+
+"Nawaf" = "نواف";
+"Need anything?" = "هل تحتاج إلى شيء؟";
+"I'm here for you" = "أنا هنا من أجلك";
+"Ask me anything" = "اسألني أي شيء...";
+"search" = "بحث";
+"new chat" = "محادثة جديدة";
+"New chat" = "محادثة جديدة";
+"chats" = "الدردشات";
+"No chats yet" = "لا توجد دردشة بعد";
+"No chats match “%@”" = "لا توجد محادثات تطابق “%@”";
+"Tree SDK is not initialized." = "لم يتم تهيئة Tree SDK.";
+
+// MARK: - Backend measurement names
+//
+// The `name` on each measurement definition, rendered as a field label / chip
+// group title (MeasurementFieldView). Server-supplied, so they appear in no
+// source literal. "steps" doubles as the unit abbreviation.
+
+"amount" = "الكمية";
+"blood_glucose" = "جلوكوز الدم";
+"calories" = "سعرات حرارية";
+"diastolic" = "الانبساطي";
+"distance" = "المسافة";
+"dose_value" = "قيمة الجرعة";
+"duration" = "المدة";
+"hba1c" = "السكر التراكمي";
+"intensity" = "الشدة";
+"meals" = "الوجبات";
+"medicine_id" = "الدواء";
+"systolic" = "الانقباضي";
+"type" = "النوع";
+"waist" = "محيط الخصر";
+"weight" = "الوزن";
+
+// MARK: - Stored measurement values
+//
+// These come from the backend's `allowed_values`, not from a source literal —
+// they reach the screen through `DiaryValue.displayLocalized` and the chip
+// picker.
+
+"breakfast" = "وجبة الإفطار";
+"lunch" = "وجبة الغداء";
+"dinner" = "وجبة العشاء";
+"snack" = "وجبة خفيفة";
+"Light" = "خفيف";
+"Moderate" = "متوسط";
+"High" = "عالٍ";
+"Yes" = "نعم";
+"No" = "لا";
+
+// MARK: - Explore cards
+
+"My Diary" = "تسجيلاتي";
+"Track " = "تابع ";
+"your wellness" = "رحلتك الصحية";
+" journey" = "";
+"Medications" = "الأدوية";
+"Add and manage " = "أضف وأدر ";
+"your medication" = "أدويتك";
+"Don't forget " = "لا تنسَ ";
+"your logs" = "سجلاتك";
+
+// MARK: - Stats & summaries
+
+"Average" = "المتوسط";
+"Time in range" = "الوقت ضمن النطاق";
+"Last weight in" = "آخر وزن في";
+"Target Weight" = "الوزن المستهدف";
+"latest reading" = "القراءة الحالية";
+"difference" = "فرق القياس";
+"previous reading" = "القراءة السابقة";
+"Lost" = "خسرت";
+"Gained" = "زدت";
+"Total Distance" = "المسافة الإجمالية";
+"Burned Calories" = "السعرات المحروقة";
+"Kilometres" = "كيلومتر";
+"KCals" = "سعرة";
+"Min" = "دقيقة";
+"Calories" = "سعرات حرارية";
+"km" = "كم";
+"Entry" = "تسجيل";
+
+// MARK: - Steps onboarding
+
+"automate daily activity tracking" = "أتمتة تتبع الأنشطة اليومية";
+"unlock personalized health insights" = "فتح رؤى صحية مخصصة";
+"monitor calories & active distance" = "مراقبة السعرات الحرارية والمسافة النشطة";
+
+// MARK: - Validation
+
+"Enter a valid number" = "أدخل رقماً صحيحاً";
+"Required" = "مطلوب";
+"Enter a step goal." = "أدخل هدف الخطوات.";
+"Enter a whole number." = "أدخل رقماً صحيحاً.";
+"Goal must be at least %d steps." = "يجب أن يكون الهدف %d خطوة على الأقل.";
+"Goal must be %@ steps or fewer." = "يجب أن يكون الهدف %@ خطوة أو أقل.";
+"Please enter a value between %1$d and %2$d cm." = "أدخل قيمة بين %1$d و%2$d سم.";
+"Please enter a value between %1$@ and %2$@." = "أدخل قيمة بين %1$@ و%2$@.";
+"Image must be under 2 MB" = "يجب أن تكون الصورة أقل من 2 ميجابايت";
+"Photo upload failed: %@" = "فشل رفع الصورة: %@";
+
+// MARK: - Waist measurement tip
+
+"Stand upright and relaxed." = "قف منتصباً ومسترخياً.";
+"Wrap the measuring tape around your waist above the hip bones directly on the skin without thick clothing." = "لُف شريط القياس حول خصرك فوق عظام الحوض مباشرة على الجلد دون ملابس سميكة.";
+"Measure after a normal exhale without tightening the tape." = "قِس بعد زفير طبيعي دون شدّ الشريط.";
+
+// MARK: - Medication duration
+
+"Reminder times" = "أوقات التذكير";
+"Always" = "دائماً";
+"Specific number of days" = "عدد محدد من الأيام";
+"Days in Total" = "أيام";
+"you should add number of reminder days" = "يجب عليك أضافة عدد من أيام التذكير";
+"Value must be greater than 0." = "يجب أن تكون القيمة أكبر من 0.";
+"Edit medication" = "تعديل الدواء";
+
+// MARK: - Medicine forms & dose units
+//
+// `medicineForms` is the backend enum; dose units come from the medicine
+// catalogue, so an unlisted one falls through to itself.
+
+"tablet" = "قرص";
+"capsule" = "كبسولة";
+"liquid" = "سائل";
+"injection" = "حقنة";
+"other" = "أخرى";
+"unit" = "وحدة";
+"units" = "وحدة";
+"mg" = "مجم";
+"ml" = "مل";
+
+// MARK: - Errors
+
+"Something went wrong" = "حدث خطأ";
+// Every delete prompt in the SDK is built from these two, plus the name of
+// the thing being deleted — see `DeleteCopy`.
+"Delete %@" = "حذف %@";
+"Delete Workout" = "حذف التمرين";
+"Delete reminder" = "حذف التذكير";
+"Are you sure you want to delete this reminder?" = "هل أنت متأكد من أنك تريد حذف هذا التذكير؟";
+"Medication Log" = "سجل الدواء";
+"Data" = "البيانات";
+"Are you sure you want to delete this data?" = "هل أنت متأكد من أنك تريد حذف هذه البيانات؟";
+"Close without saving?" = "إغلاق بدون حفظ؟";
+"Are you sure you want to close without saving?" = "هل انت متاكد من انك تريد الاغلاق بدون حفظ؟";
+"Discard workout?" = "تجاهل استكمال التمرين";
+"Yes, discard" = "نعم، تجاهل";
+"Couldn't delete" = "تعذّر الحذف";
+"Couldn't delete reading" = "تعذّر حذف القراءة";
+"Couldn't delete session" = "تعذّر حذف الجلسة";
+"Settings" = "الإعدادات";
+"Please allow photo access to upload an image" = "يُرجى السماح للتطبيق بالوصول إلى صورك لتتمكن من تحميل الصورة";
+"Photo source" = "مصدر الصورة";
+"Choose a source" = "اختر مصدرًا";
+"Camera" = "الكاميرا";
+"Photos" = "الصور";
+"Please allow camera access to take a photo" = "يرجى السماح بالوصول إلى الكاميرا لالتقاط صورة.";
+"Couldn't load image" = "تعذّر تحميل الصورة";
+"Couldn't load your diary" = "تعذّر تحميل يومياتك";
+"Couldn't load your medications" = "تعذّر تحميل أدويتك";
+"Couldn't load your medication logs" = "تعذّر تحميل سجلات أدويتك";
+"Couldn't load your reminders" = "تعذّر تحميل تذكيراتك";
+"Couldn't save goal" = "تعذّر حفظ الهدف";
+"Couldn't save target weight" = "تعذّر حفظ الوزن المستهدف";
+"Time to measure your blood sugar — log it now." = "حان وقت قياس سكر الدم — سجّله الآن.";
+"New HbA1c reading? Save it in your diary." = "هل لديك قراءة جديدة للسكر التراكمي؟ احفظها في مذكرتك.";
+"Time to measure your blood pressure — log it now." = "حان وقت قياس ضغط الدم — سجّله الآن.";
+"Time to move. Log your workout when you're done." = "حان وقت الحركة. سجّل تمرينك عند الانتهاء.";
+"Time for a drink of water." = "حان وقت شرب الماء.";
+"Time to take your medication." = "حان وقت تناول دوائك.";
+"It's time for your medicine!" = "جاء وقت دواءك!";
+"i took it" = "أخذته";
+"snooze" = "تأجيل";
+"cancel" = "إلغاء";
+"%@ added to logbook." = "تم حفظ %@.";
+"%@ updated." = "تم تعديل %@.";
+"Close" = "إغلاق";
+"HealthKit Permissions" = "أذونات تطبيق الصحة";
+"Go to settings" = "اذهب إلى الإعدادات";
+"to enable HealthKit permissions go to Settings > Health app > Data Access and Devices." = "لتفعيل أذونات HealthKit، انتقل إلى الإعدادات > تطبيق الصحة > الوصول إلى البيانات والأجهزة.";
+
+/* Explore carousel status, beside the reading's time. dru's own vocabulary for
+   all three banded metrics is VERY_LOW / LOW / NORMAL / ELEVATED / VERY_HIGH
+   (`constants.ts`: glucose_range_text, blood_pressure_range_text,
+   hba1c_range_text) — it has no "high" band, which is why the orange one is
+   "elevated" (QA, 2026-09-08). Three words only: blood pressure's extra
+   (yellow) band shares "elevated" with the orange one, and the colour is what
+   distinguishes them. Arabic is the KSA table's own pairing, "elevated" =
+   مرتفع. */
+"normal" = "طبيعي";
+"elevated" = "مرتفع";
+"very high" = "مرتفع جداً";
+/* The step goal on the Explore card — "goal" = الهدف in the KSA table. */
+"goal" = "الهدف";
+"Distance needs motion access" = "تتبع المسافة يحتاج إذن الحركة";
+
+/* MARK: - Metric names
+   The catalogue's `name_ar` differs per environment (dev says الرياضة for
+   Workout, staging تمرين), so these are the approved words and the catalogue is
+   the fallback — see `HealthSubcategory.displayName`. Keyed by the metric's
+   English name, which is why they carry a prefix: the bare words are also units
+   and screen titles elsewhere in this file ("Steps" is the step *unit*). */
+"metric.Blood Sugar" = "سكر الدم";
+"metric.HbA1c" = "السكر التراكمي";
+"metric.Blood Pressure" = "ضغط الدم";
+"metric.Weight" = "الوزن";
+"metric.Waist" = "محيط الخصر";
+"metric.Workout" = "الرياضة";
+"metric.Steps" = "الخطوات";
+"metric.Water" = "الماء";
+"metric.Carbohydrates" = "الكربوهيدرات";
+"metric.Medicine" = "الأدوية";

@@ -9,8 +9,11 @@ credentials:
 - Client secret: (see `lib/main.dart`)
 - Language: `en`
 
-It uses `TreeClientCredentials` (dev-only auth — the secret ships in the
-binary). Swap for `TreeTokenProvider` before shipping this to anyone real.
+It authenticates with `TreeTokenProvider`, like every host must: the SDK no
+longer accepts client credentials on either platform. `lib/dev_token_service.dart`
+stands in for a partner's token endpoint - it POSTs the dev credentials to
+`/auth/token` and caches the token - which is the exchange that belongs on a
+server in a real app.
 
 ## Before your first build: publish the native SDK locally (no JitPack token)
 
@@ -81,7 +84,8 @@ Notes:
 - **Bump the version for each upload.** `version: 1.0.0+1` in `pubspec.yaml`
   feeds `versionName`/`versionCode`; increment the `+N` build number or
   distribution tools will treat re-uploads as the same build.
-- **The client secret is inside this APK.** `TreeClientCredentials` embeds it in
-  the binary, and anyone who downloads the APK can unzip and read it. Fine for a
-  dev backend and a known tester list; move to `TreeTokenProvider` before this
-  goes anywhere wider.
+- **The client secret is inside this APK.** Not through the SDK any more - it
+  cannot take one - but `lib/dev_token_service.dart` holds it to mint tokens, so
+  anyone who downloads the APK can still unzip and read it. Fine for a dev
+  backend and a known tester list. A real host deletes that file and calls its
+  own server from the token provider.

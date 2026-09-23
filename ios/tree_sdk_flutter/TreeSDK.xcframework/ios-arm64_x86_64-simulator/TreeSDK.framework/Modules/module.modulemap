@@ -1,0 +1,4 @@
+framework module TreeSDK {
+  header "TreeSDK-Swift.h"
+  requires objc
+}

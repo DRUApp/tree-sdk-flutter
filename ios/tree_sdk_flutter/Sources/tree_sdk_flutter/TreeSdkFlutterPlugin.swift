@@ -82,11 +82,15 @@ public class TreeSdkFlutterPlugin: NSObject, FlutterPlugin {
 
         let auth = arguments["auth"] as? String ?? "?"
         let modules = config.enabledModules.map(\.rawValue).sorted().joined(separator: ",")
-        log.info("start: auth=\(auth, privacy: .public) env=\(config.environment.name, privacy: .public) baseURL=\(config.baseURL, privacy: .public) user=\(config.treeUserID, privacy: .public) lang=\(config.languageCode, privacy: .public) modules=\(modules, privacy: .public)")
+        // `sdk=` is the SDK's own build stamp, beside the environment because
+        // the two answer the only questions a tester build raises: which code
+        // is this, and which backend is it talking to. The SDK ships compiled,
+        // so the commit is not otherwise recoverable from an IPA.
+        log.info("start: auth=\(auth, privacy: .public) env=\(config.environment.name, privacy: .public) sdk=\(Tree.sourceBranch, privacy: .public)@\(Tree.sourceCommit, privacy: .public) baseURL=\(config.baseURL, privacy: .public) user=\(config.treeUserID, privacy: .public) lang=\(config.languageCode, privacy: .public) modules=\(modules, privacy: .public)")
 
         Task { @MainActor in
             log.debug("initialize: establishing the session")
-            switch await TreeSDK.initialize(config) {
+            switch await Tree.initialize(config) {
             case let .err(failure):
                 let code = Self.code(for: failure)
                 log.error("start FAILED at initialize — code=\(code, privacy: .public) message=\(failure.message, privacy: .public)")
@@ -99,7 +103,7 @@ public class TreeSdkFlutterPlugin: NSObject, FlutterPlugin {
     }
 
     @MainActor
-    private func present(_ sdk: TreeSDK, initial: TreeScreen, result: @escaping FlutterResult) {
+    private func present(_ sdk: Tree, initial: TreeScreen, result: @escaping FlutterResult) {
         guard let host = Self.topViewController() else {
             log.error("start FAILED at present — no view controller to present from")
             result(Self.error("no_window", "No view controller to present from."))
@@ -182,13 +186,16 @@ public class TreeSdkFlutterPlugin: NSObject, FlutterPlugin {
         case "tokenProvider":
             auth = .tokenProvider { [self] in try await hostToken() }
         case "clientCredentials":
-            guard
-                let clientID = arguments["clientId"] as? String,
-                let clientSecret = arguments["clientSecret"] as? String
-            else {
-                return .failure("clientCredentials auth requires clientId and clientSecret.")
-            }
-            auth = .clientCredentials(clientID: clientID, clientSecret: clientSecret)
+            // The SDK ships as a **release-built** binary, where
+            // `TreeAuth.clientCredentials` is compiled out — so this branch
+            // cannot reference it in any host configuration: a debug host
+            // linking against that binary fails with "Undefined symbol: enum
+            // case for TreeSDK.TreeAuth.clientCredentials". A host embeds its
+            // own token exchange instead.
+            return .failure(
+                "clientCredentials auth is not available: the SDK ships without it "
+                + "so a partner secret cannot be embedded. Use tokenProvider."
+            )
         default:
             return .failure("auth must be 'tokenProvider' or 'clientCredentials'.")
         }

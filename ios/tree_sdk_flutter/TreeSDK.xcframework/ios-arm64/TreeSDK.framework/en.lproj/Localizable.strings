@@ -1,0 +1,3 @@
+/* The English copy is used directly as the lookup key (see String.tr), so this
+   table is intentionally empty — a miss returns the key, which is the English
+   string. Only ar.lproj/Localizable.strings needs entries. */

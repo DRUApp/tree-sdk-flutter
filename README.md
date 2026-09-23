@@ -16,7 +16,7 @@ dependencies:
   tree_sdk_flutter:
     git:
       url: https://github.com/DRUApp/tree-sdk-flutter.git
-      ref: v0.13.1
+      ref: v0.20.1
 ```
 
 ## Use
@@ -70,16 +70,18 @@ you build the set dynamically.
 
 ## Auth
 
-Two options; pick at the call site.
+One option. Your server mints the token; no secret is in the app binary.
 
 ```dart
-// Production. Your server mints the token; no secret is in the app binary.
 TreeTokenProvider(() => myBackend.fetchTreeToken())
-
-// Development only. Puts the partner secret in the binary, where anyone who
-// unzips the build can read it.
-TreeClientCredentials(clientId: '…', clientSecret: '…')
 ```
+
+`TreeClientCredentials` still exists in the Dart API but **both platforms reject
+it**: `start` fails with a `configuration` error saying so. Neither SDK ships the
+case a host could pass a secret to - it is compiled out of the iOS binary under
+`#if DEBUG`, and on Android its constructor is `internal` with the only public
+factory in the library's unpublished `debug` variant. An app binary is
+extractable; the secret belongs on your server.
 
 `getToken` is called on **every backend request**, so return a cached token and
 refresh only when it's near expiry. Throwing from it fails that request.
@@ -106,16 +108,12 @@ in Dart before anything reaches the platform.
 - **Swift Package Manager** (`flutter config --enable-swift-package-manager`) is
   the preferred route: `Package.swift` resolves `TreeSDK` from its tag for you,
   and it coexists with CocoaPods, so your other pods keep working.
-- **CocoaPods** works too. `TreeSDK` is not on the CocoaPods trunk, so name its
-  source in your `Podfile` — the plugin's podspec only pins the version:
-
-  ```ruby
-  pod 'TreeSDK', :git => 'https://github.com/DRUApp/ios-tree-sdk.git', :tag => 'v0.12.1'
-  ```
-
-  Keep that tag in step with the plugin version you are on.
-- **Repository access.** Both this repo and `DRUApp/ios-tree-sdk` are private, so
-  the host's machine and CI need credentials for each.
+- **CocoaPods** works too, and needs nothing added to the `Podfile`: the native
+  SDK is vendored inside this plugin's pod.
+- **Repository access.** Only this repo. `TreeSDK.xcframework` is committed at
+  `ios/tree_sdk_flutter/`, so an iOS host resolves one repository and never sees
+  the SDK's source, which stays in the private `DRUApp/ios-tree-sdk`. Rebuild it
+  there with `Tools/build-xcframework.sh`, which copies it here.
 - **HealthKit, photos and notifications are not configured by this plugin.**
   Steps sync needs the HealthKit entitlement and `NSHealthShareUsageDescription`;
   reminder notifications need the SDK's permission prompt, which it currently
@@ -133,18 +131,20 @@ in Dart before anything reaches the platform.
 
 - **`minSdkVersion 26` minimum** in your app's `android/app/build.gradle` (the
   `treesdk` library itself declares `minSdk = 26`).
-- **JitPack, with credentials.** `android/build.gradle.kts` pulls
-  `com.github.DRUApp.android-tree-sdk:treesdk:$treeSdkVersion` from
-  `https://jitpack.io` — the Android equivalent of the iOS side resolving
-  `TreeSDK` from a git tag via SPM, since `android-tree-sdk` has no Maven
-  publishing step of its own. `DRUApp/android-tree-sdk` is private, so set a
-  JitPack token in the consuming app's `~/.gradle/gradle.properties` as
-  `jitpackToken=...`, or export `JITPACK_TOKEN` — the same "host's machine and
-  CI need credentials" requirement as the iOS side, for the other repo.
-- **Pin `treeSdkVersion`.** It defaults to `main-SNAPSHOT` (JitPack's
-  build-the-tip-of-a-branch mode), which is not reproducible across builds. Set
-  a real tag or commit SHA once one exists on GitHub, e.g. in your app's
-  `android/gradle.properties`: `treeSdkVersion=1.2.3`.
+- **The SDK is vendored, like the iOS one.** `android/maven` is a Maven repository
+  that is just a directory in this package, holding
+  `com.github.DRUApp.android-tree-sdk:treesdk` as an AAR plus its POM. A host
+  needs no `jitpackToken`, no `treeSdkVersion` pin and no access to
+  `DRUApp/android-tree-sdk`, where the sources stay. Rebuild it with that repo's
+  `tools/build-aar.sh`, which publishes into this directory and clears the
+  previous version.
+- **The repository is injected into the host, not declared here.** A plugin's own
+  `repositories {}` block is not consulted for the dependency that matters — the
+  *app* resolves the runtime classpath against the *app's* repositories — so
+  `rootProject.allprojects { repositories { … } }` adds it everywhere. Capture the
+  path outside that closure: inside it, `projectDir` is each project's own.
+- **Local SDK work still wins.** `mavenLocal()` plus `-PtreeSdkVersion=…` overrides
+  the vendored copy after `./gradlew :treesdk:publishToMavenLocal`.
 - **Notifications are not configured by this plugin.** Reminder notifications
   need the SDK's own permission prompt, requested on its own schedule, same as
   iOS.
