@@ -333,14 +333,16 @@ class TreeSdkFlutterPlugin : FlutterPlugin, ActivityAware, MethodChannel.MethodC
 
         val auth: TreeAuth = when (arguments["auth"] as? String) {
             "tokenProvider" -> TreeAuth.TokenProvider { hostToken() }
-            "clientCredentials" -> {
-                val clientId = arguments["clientId"] as? String
-                val clientSecret = arguments["clientSecret"] as? String
-                if (clientId == null || clientSecret == null) {
-                    return ParsedConfig.Failure("clientCredentials auth requires clientId and clientSecret.")
-                }
-                TreeAuth.ClientCredentials(clientID = clientId, clientSecret = clientSecret)
-            }
+            "clientCredentials" ->
+                // The SDK is consumed as its **release** AAR, where
+                // `TreeAuth.ClientCredentials` has an internal constructor and the debug-only
+                // factory that reaches it is not published - so this branch cannot build one in
+                // any host configuration. Word for word what the iOS plugin answers, because the
+                // Dart API is shared and the two must not disagree about the same call.
+                return ParsedConfig.Failure(
+                    "clientCredentials auth is not available: the SDK ships without it " +
+                        "so a partner secret cannot be embedded. Use tokenProvider.",
+                )
             else -> return ParsedConfig.Failure("auth must be 'tokenProvider' or 'clientCredentials'.")
         }
 
