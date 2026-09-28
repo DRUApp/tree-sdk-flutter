@@ -829,19 +829,15 @@ public protocol NawafAIChatProviding : AnyObject {
   func getMessages(sessionID: Swift.String, page: Swift.Int, limit: Swift.Int) async -> TreeSDK.TreeResult<[TreeSDK.ChatMessage]>
   func resume(_ sessionID: Swift.String)
   func reset()
-  #if compiler(>=5.3) && $NonescapableTypes
-  func welcome() async -> TreeSDK.TreeResult<Swift.String?>
-  #endif
+  func welcome() async -> TreeSDK.TreeResult<[Swift.String]>
 }
 extension TreeSDK.NawafAIChatProviding {
-  #if compiler(>=5.3) && $NonescapableTypes
-  public func welcome() async -> TreeSDK.TreeResult<Swift.String?>
-  #endif
+  public func welcome() async -> TreeSDK.TreeResult<[Swift.String]>
 }
 public protocol NawafInsightRequesting : AnyObject {
   func insight(diaryEntryID: Swift.String) async -> TreeSDK.TreeResult<TreeSDK.ChatInsight>
 }
-final public class NawafAIRepository : TreeSDK.NawafAIChatProviding, TreeSDK.NawafInsightRequesting {
+@_hasMissingDesignatedInitializers final public class NawafAIRepository : TreeSDK.NawafAIChatProviding, TreeSDK.NawafInsightRequesting {
   final public var sessionID: Swift.String? {
     get
   }
@@ -853,9 +849,7 @@ final public class NawafAIRepository : TreeSDK.NawafAIChatProviding, TreeSDK.Naw
   #endif
   final public func getMessages(sessionID: Swift.String, page: Swift.Int = 1, limit: Swift.Int = 50) async -> TreeSDK.TreeResult<[TreeSDK.ChatMessage]>
   final public func insight(diaryEntryID: Swift.String) async -> TreeSDK.TreeResult<TreeSDK.ChatInsight>
-  #if compiler(>=5.3) && $NonescapableTypes
-  final public func welcome() async -> TreeSDK.TreeResult<Swift.String?>
-  #endif
+  final public func welcome() async -> TreeSDK.TreeResult<[Swift.String]>
   final public func resume(_ sessionID: Swift.String)
   final public func reset()
   @objc deinit
@@ -909,12 +903,6 @@ public struct ChatInsight : Swift.Decodable, Swift.Sendable {
     get
   }
   #endif
-  @Combine.Published @_projectedValueProperty($welcomeLoading) @_Concurrency.MainActor final public var welcomeLoading: Swift.Bool {
-    get
-  }
-  @_Concurrency.MainActor final public var $welcomeLoading: Combine.Published<Swift.Bool>.Publisher {
-    get
-  }
   @_Concurrency.MainActor public init(chat: any TreeSDK.NawafAIChatProviding)
   @_Concurrency.MainActor convenience public init(sdk: TreeSDK.Tree)
   @_Concurrency.MainActor final public var isEmpty: Swift.Bool {
