@@ -903,6 +903,12 @@ public struct ChatInsight : Swift.Decodable, Swift.Sendable {
     get
   }
   #endif
+  @Combine.Published @_projectedValueProperty($welcomeReady) @_Concurrency.MainActor final public var welcomeReady: Swift.Bool {
+    get
+  }
+  @_Concurrency.MainActor final public var $welcomeReady: Combine.Published<Swift.Bool>.Publisher {
+    get
+  }
   @_Concurrency.MainActor public init(chat: any TreeSDK.NawafAIChatProviding)
   @_Concurrency.MainActor convenience public init(sdk: TreeSDK.Tree)
   @_Concurrency.MainActor final public var isEmpty: Swift.Bool {
